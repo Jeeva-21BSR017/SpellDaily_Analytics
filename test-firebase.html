@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test - Game Codes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background: #6b4eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5a41e8;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success { border-color: #28a745; background: #d4edda; }
+        .error { border-color: #dc3545; background: #f8d7da; }
+        .info { border-color: #17a2b8; background: #d1ecf1; }
+    </style>
+</head>
+<body>
+    <h1>Firebase Game Codes Test</h1>
+    
+    <div class="container">
+        <h2>1. Test Firebase Connection</h2>
+        <button onclick="testConnection()">Test Firebase Connection</button>
+        <div id="connectionResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>2. Test Game Code "unik"</h2>
+        <button onclick="testGameCode()">Load Game Code "unik"</button>
+        <div id="gameCodeResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>3. Test Default Questions</h2>
+        <button onclick="testDefaultQuestions()">Test Default Questions</button>
+        <div id="defaultQuestionsResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>4. Create Sample Game Code</h2>
+        <button onclick="createSampleGameCode()">Create Sample in Firebase</button>
+        <div id="createResult" class="result"></div>
+    </div>
+
+    <script type="module">
+        // Firebase configuration (same as main app)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnbzIQcJJ6tF4oZi8TfQpSyab2GTsShPs",
+            authDomain: "spellbee-a0a3a.firebaseapp.com",
+            projectId: "spellbee-a0a3a",
+            storageBucket: "spellbee-a0a3a.firebasestorage.app",
+            messagingSenderId: "118357873181",
+            appId: "1:118357873181:web:1fdcaa4b1f6c52b3f56cf4"
+        };
+
+        // Initialize Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make functions available globally
+        window.testConnection = async function() {
+            const resultDiv = document.getElementById('connectionResult');
+            try {
+                resultDiv.textContent = 'Testing Firebase connection...';
+                resultDiv.className = 'result info';
+                
+                // Test with a simple read operation
+                const testRef = doc(db, "connection-test", "test");
+                await setDoc(testRef, { timestamp: new Date().toISOString() });
+                
+                resultDiv.textContent = '✅ Firebase connection successful!\nDatabase: ' + db._delegate._databaseId;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = '❌ Firebase connection failed:\n' + error.message;
+                resultDiv.className = 'result error';
+            }
+        };
+
+        window.testGameCode = async function() {
+            const resultDiv = document.getElementById('gameCodeResult');
+            try {
+                resultDiv.textContent = 'Loading game code "unik"...';
+                resultDiv.className = 'result info';
+                
+                const gameCodeRef = doc(db, "game-codes", "unik");
+                const gameCodeDoc = await getDoc(gameCodeRef);
+                
+                if (gameCodeDoc.exists()) {
+                    const gameData = gameCodeDoc.data();
+                    resultDiv.textContent = '✅ Game code "unik" loaded successfully!\n\n' + 
+                        JSON.stringify(gameData, null, 2);
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.textContent = '⚠️ Game code "unik" not found in Firebase.\n\n' +
+                        'Please create the document in the game-codes collection.';
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.textContent = '❌ Error loading game code:\n' + error.message;
+                resultDiv.className = 'result error';
+            }
+        };
+
+        window.testDefaultQuestions = function() {
+            const resultDiv = document.getElementById('defaultQuestionsResult');
+            
+            // Show the default questions that would be used as fallback
+            const defaultQuestions = {
+                reviewWords: ['culture', 'history', 'dessert', 'essay', 'measure', 'future', 'survey', 'schedule'],
+                newWords: ['grammar', 'struggle', 'fantasy', 'flavour', 'visualise', 'opinion', 'familiar', 'envelope']
+            };
+            
+            resultDiv.textContent = '📚 Default questions (fallback):\n\n' + 
+                JSON.stringify(defaultQuestions, null, 2);
+            resultDiv.className = 'result info';
+        };
+
+        window.createSampleGameCode = async function() {
+            const resultDiv = document.getElementById('createResult');
+            try {
+                resultDiv.textContent = 'Creating sample game code "unik"...';
+                resultDiv.className = 'result info';
+                
+                const sampleData = {
+                    code: "unik",
+                    name: "Unique Words Set",
+                    description: "A special collection of challenging spelling words",
+                    questions: [
+                        {
+                            word: "serendipity",
+                            hint: "🎯 A pleasant surprise or fortunate accident",
+                            parts: ["ser", "en", "dip", "i", "ty"],
+                            options: [
+                                ["ser", "sir", "sur"],
+                                ["en", "an", "in"],
+                                ["dip", "dop", "dap"],
+                                ["i", "a", "e"],
+                                ["ty", "te", "ti"]
+                            ]
+                        },
+                        {
+                            word: "ephemeral",
+                            hint: "⏰ Lasting for a very short time",
+                            parts: ["e", "phe", "mer", "al"],
+                            options: [
+                                ["e", "a", "i"],
+                                ["phe", "fee", "fie"],
+                                ["mer", "mar", "mir"],
+                                ["al", "el", "ol"]
+                            ]
+                        }
+                    ],
+                    createdAt: new Date().toISOString(),
+                    active: true
+                };
+                
+                const gameCodeRef = doc(db, "game-codes", "unik");
+                await setDoc(gameCodeRef, sampleData);
+                
+                resultDiv.textContent = '✅ Sample game code "unik" created successfully!\n\n' +
+                    'You can now test it in the main app by entering "unik" as the code.';
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = '❌ Error creating sample game code:\n' + error.message;
+                resultDiv.className = 'result error';
+            }
+        };
+    </script>
+</body>
+</html>

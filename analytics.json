@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "word": "culture",
+      "timeTaken": 10,
+      "answerCorrectly": true,
+      "type": "mcq", // mcq, typing, letter-scramble, fillups, 2-option 
+      "attempts": [
+        {
+          "attempt": 1,
+          "answer": "cultur",
+          "timeTaken": 10,
+          "answerCorrectly": false
+        },
+        {
+          "attempt": 2,
+          "answer": "culture",
+          "timeTaken": 10,
+          "answerCorrectly": true
+        }
+      ],
+      "hasUsedSoundHint": true, // true or false
+      "hasUsedSoundHintTimes": 1,
+	  "startTime": "2025-01-01 12:00:00",
+	  "endTime": "2025-01-01 12:00:10"
+    }
+  ]
+}

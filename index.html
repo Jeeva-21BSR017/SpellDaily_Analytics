@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Interactive spelling practice game with multiple game modes" />
+    <meta
+      name="keywords"
+      content="spelling, practice, game, education, learning, vocabulary, word, interactive, quiz"
+    />
+    <meta name="author" content="Spell Daily" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#6b4eff" />
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Spell Daily - Interactive Spelling Practice Game" />
+    <meta
+      property="og:description"
+      content="Interactive spelling practice game with multiple game modes to improve your vocabulary and spelling skills"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="logo.png" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="Spell Daily" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spell Daily - Interactive Spelling Practice Game" />
+    <meta
+      name="twitter:description"
+      content="Interactive spelling practice game with multiple game modes to improve your vocabulary and spelling skills"
+    />
+    <meta name="twitter:image" content="logo.png" />
+
+    <!-- Progressive Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Spell Daily" />
+    <meta name="application-name" content="Spell Daily" />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#6b4eff" />
+    <meta name="msapplication-config" content="browserconfig.xml" />
+
+    <title>Spell Daily - Interactive Spelling Practice Game</title>
+
+    <!-- Audio files for sound effects (lazy loaded) -->
+    <audio id="keyClickSound" preload="none">
+      <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="optionClickSound" preload="none">
+      <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mp3" />
+    </audio>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="script.js" as="script" />
+
+    <!-- Firebase SDKs - Modern ES6 modules -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAnbzIQcJJ6tF4oZi8TfQpSyab2GTsShPs",
+        authDomain: "spellbee-a0a3a.firebaseapp.com",
+        projectId: "spellbee-a0a3a",
+        storageBucket: "spellbee-a0a3a.firebasestorage.app",
+        messagingSenderId: "118357873181",
+        appId: "1:118357873181:web:1fdcaa4b1f6c52b3f56cf4",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Make Firebase available globally
+      window.firebaseApp = app;
+      window.firebaseDb = db;
+      window.firebaseInitialized = true;
+
+      console.log("✅ Firebase initialized successfully with modern SDK");
+    </script>
+
+
+    <link rel="stylesheet" href="styles.css" />
+    <!-- CSS moved to external file -->
+  </head>
+  <body>
+    <!-- Username Prompt Screen -->
+    <div id="usernameScreen" class="username-screen">
+      <div class="username-container">
+        <img src="logo.png" alt="Word360 Logo" class="welcome-logo" />
+        <p>Please enter code to begin</p>
+        <input
+          type="text"
+          id="usernameInput"
+          class="username-input"
+          placeholder="AbC123"
+          maxlength="6"
+        />
+        <button id="startGameBtn" class="btn btn-primary">Start Game</button>
+      </div>
+    </div>
+
+    <div class="app-container" style="display: none">
+      <!-- Test Mode Indicator -->
+      <div id="testModeIndicator" class="test-mode-indicator" style="display: none">
+        🧪 TEST MODE
+      </div>
+      
+      <div class="header">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <!-- Removed numbers from progress bar as requested -->
+        <div class="question-counter" id="questionCounter"></div>
+      </div>
+
+      <div id="gameContent">
+        <div class="question-type" id="questionType">Type what you hear</div>
+        <div class="mode-indicator" id="modeIndicator" style="display: none">Learning Mode</div>
+
+        <div class="sound-buttons-container">
+          <button class="sound-button" id="soundButton">🔊</button>
+          <button class="sound-button slow-sound-button" id="slowSoundButton">🐢</button>
+        </div>
+
+        <!-- Removed questionText div as requested -->
+
+        <div class="word-hint" id="wordHint" style="display: none">
+          <div class="hint-text" id="hintText"></div>
+        </div>
+
+        <div class="input-container" id="inputContainer">
+          <input type="text" class="word-input" id="wordInput" placeholder="Type here..." />
+
+          <div class="attempts-container" id="attemptsContainer">
+            <!-- Previous attempts will be shown here -->
+            <div class="attempt-section" id="previousAttempt" style="display: none">
+              <div class="word-boxes" id="previousWordBoxes"></div>
+            </div>
+
+            <!-- Current attempt -->
+            <div class="attempt-section" id="currentAttempt">
+              <div class="word-boxes" id="wordBoxes"></div>
+            </div>
+          </div>
+
+          <div class="keyboard" id="keyboard">
+            <div class="keyboard-row">
+              <button class="key letter" data-key="q">Q</button>
+              <button class="key letter" data-key="w">W</button>
+              <button class="key letter" data-key="e">E</button>
+              <button class="key letter" data-key="r">R</button>
+              <button class="key letter" data-key="t">T</button>
+              <button class="key letter" data-key="y">Y</button>
+              <button class="key letter" data-key="u">U</button>
+              <button class="key letter" data-key="i">I</button>
+              <button class="key letter" data-key="o">O</button>
+              <button class="key letter" data-key="p">P</button>
+            </div>
+            <div class="keyboard-row">
+              <button class="key letter" data-key="a">A</button>
+              <button class="key letter" data-key="s">S</button>
+              <button class="key letter" data-key="d">D</button>
+              <button class="key letter" data-key="f">F</button>
+              <button class="key letter" data-key="g">G</button>
+              <button class="key letter" data-key="h">H</button>
+              <button class="key letter" data-key="j">J</button>
+              <button class="key letter" data-key="k">K</button>
+              <button class="key letter" data-key="l">L</button>
+            </div>
+            <div class="keyboard-row">
+              <button class="key letter" data-key="z">Z</button>
+              <button class="key letter" data-key="x">X</button>
+              <button class="key letter" data-key="c">C</button>
+              <button class="key letter" data-key="v">V</button>
+              <button class="key letter" data-key="b">B</button>
+              <button class="key letter" data-key="n">N</button>
+              <button class="key letter" data-key="m">M</button>
+              <button class="key wide" data-key="backspace">⌫</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="options-container" id="optionsContainer" style="display: none"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="buttons-container">
+          <button class="btn btn-check" id="checkButton">Check</button>
+          <button class="btn btn-continue" id="continueButton" style="display: none">Continue</button>
+        </div>
+      </div>
+
+      <div id="completionScreen" style="display: none">
+        <div class="completion-screen">
+          <div class="completion-title">🎉 Great Job!</div>
+
+          <!-- Dance Animation -->
+          <div class="dance-animation">
+            <dotlottie-player
+              src="lottie/girl.lottie"
+              background="transparent"
+              speed="1"
+              style="width: 200px; height: 200px; margin: 20px auto"
+              loop
+              autoplay
+            ></dotlottie-player>
+          </div>
+
+          <!-- Failed words display -->
+          <div id="failedWordsDisplay" style="display: none">
+            <button class="btn btn-continue" id="startPracticeButton">Start Review</button>
+          </div>
+
+          <!-- Show card button for perfect scores -->
+          <div id="perfectScoreCard" style="display: none">
+            <button class="btn btn-continue" id="showCardButton">🎉 Claim Your Reward Card!</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Display Screen -->
+      <div id="cardScreen" style="display: none">
+        <div class="card-display">
+          <div class="card-title">Congratulations!</div>
+          <div class="card-subtitle">Test completed</div>
+          <div class="card-container">
+            <img src="26.png" alt="Reward Card" class="reward-card" id="rewardCardImage" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consolidated polyfills (async) -->
+    <script
+      src="https://polyfill.io/v3/polyfill.min.js?features=default,fetch,Promise,Array.prototype.includes,Object.assign,Map,Set,Symbol,URL,URLSearchParams"
+      async
+    ></script>
+
+    <!-- LogRocket initialization (async) -->
+    <script src="https://cdn.lr-ingest.com/LogRocket.min.js" async></script>
+
+    <!-- Animation Players (deferred) -->
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+      defer
+    ></script>
+
+    <script src="https://unpkg.com/@rive-app/canvas@2.10.0" defer></script>
+
+    <!-- LogRocket initialization moved to script.js -->
+
+    <!-- Main application script loaded before closing body -->
+    <script src="script.js"></script>
+  </body>
+</html>

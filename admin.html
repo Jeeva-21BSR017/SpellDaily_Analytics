@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spelling Game Admin Panel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .tabs {
+        display: flex;
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 20px;
+        text-align: center;
+        background: none;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #6c757d;
+      }
+
+      .tab.active {
+        background: white;
+        color: #4facfe;
+        border-bottom: 3px solid #4facfe;
+      }
+
+      .tab:hover {
+        background: #e9ecef;
+      }
+
+      .tab-content {
+        padding: 40px;
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #495057;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      }
+
+      .status-message {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .status-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .status-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .status-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+
+      .code-display {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .advanced-section {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .advanced-section h3 {
+        color: #495057;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .game-mode-tag {
+        display: inline-block;
+        background: #4facfe;
+        color: white;
+        padding: 8px 16px;
+        margin: 4px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: grab;
+        user-select: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .game-mode-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+      }
+
+      .game-mode-tag.dragging {
+        opacity: 0.5;
+        transform: rotate(5deg);
+      }
+
+      .game-mode-tag.selected {
+        background: #28a745;
+        border-color: #20c997;
+      }
+
+      .game-mode-tag.removable {
+        background: #28a745;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .game-mode-tag.removable:after {
+        content: "×";
+        margin-left: 8px;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .game-mode-tag.removable:hover {
+        background: #dc3545;
+      }
+
+      #available-game-modes,
+      #selected-game-modes {
+        min-height: 60px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        align-content: flex-start;
+      }
+
+      #selected-game-modes.drag-over {
+        background: #c3e6cb !important;
+        border-color: #155724 !important;
+      }
+
+      .drop-hint {
+        color: #6c757d;
+        font-style: italic;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .position-number {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-right: 6px;
+        font-size: 0.8rem;
+      }
+
+      /* Analytics Styles */
+      .analytics-container {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .analytics-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .summary-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 12px;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+
+      .summary-card h3 {
+        color: #495057;
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+      }
+
+      .summary-card .value {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #4facfe;
+        margin-bottom: 3px;
+      }
+
+      .summary-card .label {
+        color: #6c757d;
+        font-size: 0.75rem;
+      }
+
+      .analytics-details {
+        margin-top: 20px;
+      }
+
+      .word-analytics {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .word-header {
+        background: #e9ecef;
+        padding: 8px 12px;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: bold;
+        color: #495057;
+        font-size: 0.9rem;
+      }
+
+      .word-content {
+        padding: 12px;
+      }
+
+      .analytics-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f8f9fa;
+      }
+
+      .analytics-row:last-child {
+        border-bottom: none;
+      }
+
+      .analytics-label {
+        font-weight: 600;
+        color: #495057;
+        min-width: 80px;
+        font-size: 0.8rem;
+      }
+
+      .analytics-value {
+        color: #6c757d;
+        text-align: right;
+        font-size: 0.8rem;
+      }
+
+      .attempts-list {
+        background: #f8f9fa;
+        border-radius: 4px;
+        padding: 8px;
+        margin-top: 6px;
+      }
+
+      .attempt-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 0.75rem;
+      }
+
+      .attempt-item:last-child {
+        border-bottom: none;
+      }
+
+      .attempt-word {
+        font-weight: 600;
+        color: #495057;
+      }
+
+      .attempt-time {
+        color: #6c757d;
+        margin-right: 6px;
+      }
+
+      .attempt-correct {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .attempt-incorrect {
+        color: #dc3545;
+        font-weight: bold;
+      }
+
+      .backspace-list {
+        background: #f8f9fa;
+        border-radius: 4px;
+        padding: 8px;
+        margin-top: 6px;
+      }
+
+      .backspace-item {
+        display: inline-block;
+        background: #e9ecef;
+        color: #495057;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin: 1px;
+        font-size: 0.7rem;
+      }
+
+      /* Table-based analytics styles */
+      .analytics-table-container {
+        overflow: auto;
+        max-height: 70vh;
+        margin-top: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .analytics-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
+        background: white;
+      }
+
+      .analytics-table th,
+      .analytics-table td {
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .analytics-table th {
+        background: #f8f9fa;
+        font-weight: bold;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .analytics-table th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 20;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      }
+
+      .analytics-table th:nth-child(2) {
+        position: sticky;
+        left: 120px;
+        z-index: 20;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        min-width: 80px;
+      }
+
+      .analytics-table .word-column {
+        background: #f8f9fa;
+        font-weight: bold;
+        text-align: left;
+        position: sticky;
+        left: 0;
+        z-index: 15;
+        min-width: 120px;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      }
+
+      .analytics-table .attempt-cell {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        min-width: 80px;
+        height: 60px;
+        position: relative;
+      }
+
+      .analytics-table .attempt-cell:hover {
+        background: #e3f2fd;
+      }
+
+      .attempt-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        height: 100%;
+        justify-content: center;
+      }
+
+      .attempt-item-table {
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+
+      .attempt-correct-table {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .attempt-incorrect-table {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .attempt-mixed-table {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .day-header {
+        min-width: 80px;
+        font-size: 0.7rem;
+        text-align: center;
+        padding: 8px 4px;
+        line-height: 1.2;
+      }
+
+      /* Popup modal styles */
+      .analytics-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      .analytics-modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .modal-close:hover {
+        color: #000;
+      }
+
+      .modal-header {
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+
+      .modal-section {
+        margin-bottom: 15px;
+      }
+
+      .modal-section h4 {
+        margin-bottom: 8px;
+        color: #495057;
+        font-size: 0.9rem;
+      }
+
+      /* Analytics Table Styles */
+      .analytics-table-container {
+        overflow-x: auto;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      .analytics-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        font-size: 0.8rem;
+      }
+
+      .analytics-table th {
+        background: #4facfe;
+        color: white;
+        padding: 8px 6px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #3d8bfe;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .analytics-table td {
+        padding: 6px;
+        border-bottom: 1px solid #e9ecef;
+        vertical-align: top;
+      }
+
+      .analytics-table tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      .word-cell {
+        font-weight: 600;
+        color: #495057;
+        min-width: 80px;
+      }
+
+      .accuracy-cell {
+        text-align: center;
+        font-weight: 600;
+        min-width: 60px;
+      }
+
+      .time-cell, .speaker-cell, .attempts-cell, .correct-cell {
+        text-align: center;
+        min-width: 50px;
+      }
+
+      .duration-cell {
+        text-align: center;
+        min-width: 80px;
+      }
+
+      .submitted-cell {
+        font-size: 0.7rem;
+        min-width: 120px;
+      }
+
+      .attempts-detail-cell, .backspace-cell {
+        max-width: 200px;
+      }
+
+      .attempts-detail-cell .attempt-item {
+        display: block;
+        margin: 2px 0;
+        padding: 2px 4px;
+        background: #f8f9fa;
+        border-radius: 3px;
+        font-size: 0.7rem;
+      }
+
+      .attempts-detail-cell .attempt-correct {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .attempts-detail-cell .attempt-incorrect {
+        color: #dc3545;
+        font-weight: bold;
+      }
+
+      .backspace-cell .backspace-item {
+        display: inline-block;
+        background: #e9ecef;
+        color: #495057;
+        padding: 1px 4px;
+        border-radius: 2px;
+        margin: 1px;
+        font-size: 0.65rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎯 Spelling Game Admin Panel</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('create-questions')">Create Questions</button>
+        <button class="tab" onclick="switchTab('check-code')">Check Code</button>
+        <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+      </div>
+
+      <!-- Create Questions Tab -->
+      <div id="create-questions" class="tab-content active">
+        <h2 style="margin-bottom: 20px">📝 Create Questions</h2>
+
+        <div id="question-status"></div>
+
+        <form id="question-form">
+          <!-- Admin Configuration Section -->
+          <div style="border-radius: 10px; margin-bottom: 30px">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+              <div class="form-group" style="margin-bottom: 0">
+                <label for="uid">Enter the UID (6-character alphanumeric code)</label>
+                <input
+                  type="text"
+                  id="uid"
+                  placeholder="AbC123"
+                  maxlength="6"
+                  oninput="validateUID(this); checkUIDAndShowNameField()"
+                />
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <label for="date">Date</label>
+                <input type="date" id="date" />
+              </div>
+            </div>
+            <div style="margin-top: 15px;">
+              <div class="form-group" id="user-name-group" style="display: none;">
+                <label for="user-name">Student Name (required for new UID)</label>
+                <input
+                  type="text"
+                  id="user-name"
+                  placeholder="Enter student's full name"
+                  style="width: 100%;"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Word Lists Section -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px">
+            <div class="form-group">
+              <label for="new-words">New words</label>
+              <textarea id="new-words" placeholder="Words separated in comma" rows="4" style="width: 100%"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="review-words">Review words</label>
+              <textarea
+                id="review-words"
+                placeholder="Words separated in comma"
+                rows="4"
+                style="width: 100%"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Template Selection Section -->
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px">
+            <h3 style="margin-bottom: 20px; color: #495057">📝 Template Configuration</h3>
+
+            <!-- Game Mode Selection -->
+            <div class="form-group">
+              <label>Game Mode Sequence (Drag & Drop)</label>
+              <div
+                id="available-game-modes"
+                style="background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 10px; min-height: 60px"
+              >
+                <div class="game-mode-tag draggable" draggable="true" data-mode="4-option">4-option</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="typing">typing</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="fillups">fillups</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="word-parts">word-parts</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="letter-scramble">letter-scramble</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="correct-word">correct-word</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="2-option">2-option</div>
+              </div>
+              <div style="margin-bottom: 10px">
+                <strong>Selected Game Modes:</strong>
+              </div>
+              <div
+                id="selected-game-modes"
+                style="
+                  background: #d4edda;
+                  padding: 15px;
+                  border-radius: 8px;
+                  border: 2px dashed #28a745;
+                  min-height: 60px;
+                "
+              >
+                <div class="drop-hint">Drag game modes here to select them</div>
+              </div>
+              <input type="hidden" id="selected-game-mode" value="" />
+              <input type="hidden" id="edit-mode" value="false" />
+            </div>
+          </div>
+
+          <!-- Advanced Configuration Sections -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0">
+            <!-- Word Hints Section -->
+            <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border: 2px solid #ffc107">
+              <h3 style="margin-bottom: 15px; color: #495057">💡 Word Hints</h3>
+              <div id="word-hints-container">
+                <textarea id="word-hints" rows="6" style="width: 100%; margin-bottom: 10px"></textarea>
+              </div>
+            </div>
+
+            <!-- Word Distractors Section -->
+            <div style="background: #f8d7da; padding: 20px; border-radius: 10px; border: 2px solid #dc3545">
+              <h3 style="margin-bottom: 15px; color: #495057">🎯 Word Distractors</h3>
+              <div id="word-distractors-container">
+                <textarea id="word-distractors" rows="6" style="width: 100%; margin-bottom: 10px"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0">
+            <!-- Sentence Templates Section -->
+            <div style="background: #d1ecf1; padding: 20px; border-radius: 10px; border: 2px solid #17a2b8">
+              <h3 style="margin-bottom: 15px; color: #495057">📚 Sentence Templates</h3>
+              <div id="sentence-templates-container">
+                <textarea id="sentence-templates" rows="6" style="width: 100%"></textarea>
+              </div>
+            </div>
+
+            <!-- Word Parts Data Section -->
+            <div style="background: #e2e3e5; padding: 20px; border-radius: 10px; border: 2px solid #6c757d">
+              <h3 style="margin-bottom: 15px; color: #495057">🔤 Word Parts Data</h3>
+              <div id="word-parts-data-container">
+                <textarea id="word-parts-data" rows="6" style="width: 100%"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0">
+            <!-- Fillups Blank Positions Section -->
+            <div style="background: #f0e6ff; padding: 20px; border-radius: 10px; border: 2px solid #8e44ad">
+              <h3 style="margin-bottom: 15px; color: #495057">🕳️ Fillups Blank Positions</h3>
+              <div id="fillups-blank-positions-container">
+                <textarea id="fillups-blank-positions" rows="6" style="width: 100%"></textarea>
+              </div>
+            </div>
+
+            <!-- Two Option Distractors Section -->
+            <div style="background: #ffe6e6; padding: 20px; border-radius: 10px; border: 2px solid #e74c3c">
+              <h3 style="margin-bottom: 15px; color: #495057">🎯 Two Option Distractors</h3>
+              <div id="two-option-distractors-container">
+                <textarea id="two-option-distractors" rows="6" style="width: 100%"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px">
+            <button type="submit" class="btn" id="submit-btn">✨ Submit Question</button>
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">🗑️ Clear</button>
+            <button type="button" class="btn btn-success" onclick="retrieveQuestion()">📥 Retrieve Question</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Check Code Tab -->
+      <div id="check-code" class="tab-content">
+        <h2>🔍 Check Code Availability</h2>
+
+        <div id="check-status"></div>
+
+        <div class="form-group">
+          <label for="code-to-check">Enter 6-Character Alphanumeric Code</label>
+          <input
+            type="text"
+            id="code-to-check"
+            placeholder="AbC123"
+            maxlength="6"
+            oninput="validateCodeToCheck(this)"
+          />
+        </div>
+
+        <div style="margin-bottom: 30px">
+          <button type="button" class="btn" onclick="checkCodeAvailability()">🔍 Check Availability</button>
+        </div>
+
+        <div id="code-result" style="display: none">
+          <div class="code-display">
+            <div id="result-message"></div>
+            <div id="code-details" style="margin-top: 15px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Tab -->
+      <div id="analytics" class="tab-content">
+        <h2>📊 Analytics Report</h2>
+
+        <div id="analytics-status"></div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px">
+          <div class="form-group">
+            <label for="analytics-code">Enter 6-Character Alphanumeric Code to View Analytics</label>
+            <input
+              type="text"
+              id="analytics-code"
+              placeholder="AbC123"
+              maxlength="6"
+              oninput="validateAnalyticsCode(this)"
+            />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 30px">
+          <button type="button" class="btn" onclick="fetchAnalytics()">📊 Fetch Analytics</button>
+          <button type="button" class="btn btn-secondary" onclick="clearAnalytics()">🗑️ Clear</button>
+        </div>
+
+        <div id="analytics-results" style="display: none">
+          <div class="analytics-container">
+            <div id="analytics-summary"></div>
+            <div id="analytics-table-view"></div>
+            <div id="analytics-details"></div>
+          </div>
+        </div>
+
+        <!-- Analytics Modal -->
+        <div id="analytics-modal" class="analytics-modal">
+          <div class="analytics-modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-header">
+              <h3 id="modal-title">Word Details</h3>
+            </div>
+            <div id="modal-body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+        doc,
+        getDoc,
+        query,
+        orderBy,
+        limit,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAnbzIQcJJ6tF4oZi8TfQpSyab2GTsShPs",
+        authDomain: "spellbee-a0a3a.firebaseapp.com",
+        projectId: "spellbee-a0a3a",
+        storageBucket: "spellbee-a0a3a.firebasestorage.app",
+        messagingSenderId: "118357873181",
+        appId: "1:118357873181:web:1fdcaa4b1f6c52b3f56cf4",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Make Firebase available globally
+      window.db = db;
+      window.addDoc = addDoc;
+      window.collection = collection;
+      window.getDocs = getDocs;
+      window.doc = doc;
+      window.getDoc = getDoc;
+      window.query = query;
+      window.orderBy = orderBy;
+      window.limit = limit;
+      window.firebaseInitialized = true;
+
+      console.log("✅ Firebase initialized for admin panel");
+    </script>
+
+    <script>
+      let selectedGameModes = [];
+
+      // UID validation function
+      function validateUID(input) {
+        // Remove any non-alphanumeric characters (preserve original case)
+        let value = input.value.replace(/[^a-zA-Z0-9]/g, "");
+
+        // Limit to 6 characters
+        if (value.length > 6) {
+          value = value.substring(0, 6);
+        }
+
+        // Update the input value
+        input.value = value;
+
+        // Visual feedback
+        if (value.length === 6) {
+          input.style.borderColor = "#28a745";
+          input.style.backgroundColor = "#d4edda";
+        } else if (value.length > 0) {
+          input.style.borderColor = "#ffc107";
+          input.style.backgroundColor = "#fff3cd";
+        } else {
+          input.style.borderColor = "#e9ecef";
+          input.style.backgroundColor = "white";
+        }
+      }
+
+      // Code-to-check validation function
+      function validateCodeToCheck(input) {
+        // Remove any non-alphanumeric characters (preserve original case)
+        let value = input.value.replace(/[^a-zA-Z0-9]/g, "");
+
+        // Limit to 6 characters
+        if (value.length > 6) {
+          value = value.substring(0, 6);
+        }
+
+        // Update the input value
+        input.value = value;
+
+        // Visual feedback
+        if (value.length === 6) {
+          input.style.borderColor = "#28a745";
+          input.style.backgroundColor = "#d4edda";
+        } else if (value.length > 0) {
+          input.style.borderColor = "#ffc107";
+          input.style.backgroundColor = "#fff3cd";
+        } else {
+          input.style.borderColor = "#e9ecef";
+          input.style.backgroundColor = "white";
+        }
+      }
+
+      // Tab switching function
+      function switchTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.remove("active");
+        });
+
+        // Remove active class from all tabs
+        document.querySelectorAll(".tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected tab content
+        document.getElementById(tabName).classList.add("active");
+
+        // Add active class to clicked tab
+        event.target.classList.add("active");
+      }
+
+      // Code availability check function
+      async function checkCodeAvailability() {
+        const codeInput = document.getElementById("code-to-check");
+        const code = codeInput.value.trim();
+
+        if (!code) {
+          showStatus("check-status", "Please enter a code to check.", "error");
+          return;
+        }
+
+        if (code.length !== 6 || !/^[a-zA-Z0-9]{6}$/.test(code)) {
+          showStatus("check-status", "Code must be exactly 6 alphanumeric characters.", "error");
+          return;
+        }
+
+        try {
+          showStatus("check-status", "Checking code availability...", "info");
+
+          // Check if document exists in Firebase
+          const docRef = doc(db, "questions", code);
+          const docSnap = await getDoc(docRef);
+
+          const resultDiv = document.getElementById("code-result");
+          const messageDiv = document.getElementById("result-message");
+          const detailsDiv = document.getElementById("code-details");
+
+          if (docSnap.exists()) {
+            // Code exists
+            const data = docSnap.data();
+            messageDiv.innerHTML = `❌ Code "${code}" is <strong>NOT AVAILABLE</strong>`;
+            messageDiv.style.color = "#dc3545";
+            detailsDiv.innerHTML = `
+              <div style="text-align: left; margin-top: 15px;">
+                <strong>Existing Data:</strong><br>
+                📅 Created: ${data.date || "N/A"}<br>
+                🆕 New Words: ${data.newWords ? data.newWords.length : 0} words<br>
+                🔄 Review Words: ${data.reviewWords ? data.reviewWords.length : 0} words<br>
+                🎮 Game Modes: ${data.gameModes ? data.gameModes.length : 0} modes
+              </div>
+            `;
+            showStatus("check-status", `Code "${code}" already exists in Firebase.`, "error");
+          } else {
+            // Code is available
+            messageDiv.innerHTML = `✅ Code "${code}" is <strong>AVAILABLE</strong>`;
+            messageDiv.style.color = "#28a745";
+            detailsDiv.innerHTML = `
+              <div style="color: #28a745; margin-top: 10px;">
+                🎉 This code can be used for a new question set!
+                    </div>
+                `;
+            showStatus("check-status", `Code "${code}" is available and can be used.`, "success");
+          }
+
+          resultDiv.style.display = "block";
+        } catch (error) {
+          console.error("Error checking code:", error);
+          showStatus("check-status", `❌ Error checking code: ${error.message}`, "error");
+        }
+      }
+
+      function initializeDragAndDrop() {
+        const availableContainer = document.getElementById("available-game-modes");
+        const selectedContainer = document.getElementById("selected-game-modes");
+
+        // Add drag event listeners to available game mode tags
+        availableContainer.addEventListener("dragstart", handleDragStart);
+        availableContainer.addEventListener("dragend", handleDragEnd);
+
+        // Add drop event listeners to selected container
+        selectedContainer.addEventListener("dragover", handleDragOver);
+        selectedContainer.addEventListener("drop", handleDrop);
+        selectedContainer.addEventListener("dragenter", handleDragEnter);
+        selectedContainer.addEventListener("dragleave", handleDragLeave);
+        selectedContainer.addEventListener("click", handleRemoveMode);
+      }
+
+      function handleDragStart(e) {
+        if (e.target.classList.contains("draggable")) {
+          e.target.classList.add("dragging");
+          e.dataTransfer.setData("text/plain", e.target.dataset.mode);
+          e.dataTransfer.effectAllowed = "copy";
+        }
+      }
+
+      function handleDragEnd(e) {
+        if (e.target.classList.contains("draggable")) {
+          e.target.classList.remove("dragging");
+        }
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+      }
+
+      function handleDragEnter(e) {
+        e.preventDefault();
+        document.getElementById("selected-game-modes").classList.add("drag-over");
+      }
+
+      function handleDragLeave(e) {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          document.getElementById("selected-game-modes").classList.remove("drag-over");
+        }
+      }
+
+      function handleDrop(e) {
+        e.preventDefault();
+        const selectedContainer = document.getElementById("selected-game-modes");
+        selectedContainer.classList.remove("drag-over");
+
+        const mode = e.dataTransfer.getData("text/plain");
+
+        // Allow duplicates since order matters
+        addGameMode(mode);
+      }
+
+      function addGameMode(mode) {
+        selectedGameModes.push(mode);
+        updateSelectedGameModesDisplay();
+        updateGameModeValue();
+        showStatus("question-status", `Game mode "${mode}" added at position ${selectedGameModes.length}.`, "success");
+      }
+
+      function removeGameMode(index) {
+        if (index > -1 && index < selectedGameModes.length) {
+          const mode = selectedGameModes[index];
+          selectedGameModes.splice(index, 1);
+          updateSelectedGameModesDisplay();
+          updateGameModeValue();
+          showStatus("question-status", `Game mode "${mode}" removed from position ${index + 1}.`, "info");
+        }
+      }
+
+      function handleRemoveMode(e) {
+        if (e.target.classList.contains("removable") || e.target.closest(".removable")) {
+          const tag = e.target.classList.contains("removable") ? e.target : e.target.closest(".removable");
+          const index = parseInt(tag.dataset.index);
+          removeGameMode(index);
+        }
+      }
+
+      function updateSelectedGameModesDisplay() {
+        const container = document.getElementById("selected-game-modes");
+
+        if (selectedGameModes.length === 0) {
+          container.innerHTML =
+            '<div class="drop-hint">Drag game modes here to build your sequence (duplicates allowed, order matters)</div>';
+          return;
+        }
+
+        container.innerHTML = "";
+        selectedGameModes.forEach((mode, index) => {
+          const tag = document.createElement("div");
+          tag.className = "game-mode-tag removable";
+          tag.dataset.mode = mode;
+          tag.dataset.index = index;
+          tag.innerHTML = `<span class="position-number">${index + 1}.</span> ${mode}`;
+          container.appendChild(tag);
+        });
+      }
+
+      function updateGameModeValue() {
+        document.getElementById("selected-game-mode").value = selectedGameModes.join(",");
+      }
+
+      function clearForm() {
+        document.getElementById("question-form").reset();
+        selectedGameModes = [];
+
+        // Reset UID field styling
+        const uidField = document.getElementById("uid");
+        uidField.style.borderColor = "#e9ecef";
+        uidField.style.backgroundColor = "white";
+
+        // Reset game modes
+        updateSelectedGameModesDisplay();
+        updateGameModeValue();
+
+        // Clear word lists
+        document.getElementById("new-words").value = "";
+        document.getElementById("review-words").value = "";
+
+        // Clear additional text areas
+        document.getElementById("word-hints").value = "";
+        document.getElementById("word-distractors").value = "";
+        document.getElementById("sentence-templates").value = "";
+        document.getElementById("word-parts-data").value = "";
+        document.getElementById("fillups-blank-positions").value = "";
+        document.getElementById("two-option-distractors").value = "";
+
+        // Reset edit mode
+        document.getElementById("edit-mode").value = "false";
+        document.getElementById("submit-btn").textContent = "✨ Submit Question";
+
+        showStatus("question-status", "Form cleared.", "info");
+      }
+
+      // Submit question
+      document.getElementById("question-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Get additional form data
+        const code = document.getElementById("uid").value.trim();
+        const userName = document.getElementById("user-name").value.trim();
+        const date = document.getElementById("date").value;
+        const newWords = document.getElementById("new-words").value.trim();
+        const reviewWords = document.getElementById("review-words").value.trim();
+        const gameModes = selectedGameModes; // Use the array instead of single value
+        const wordHints = document.getElementById("word-hints").value.trim();
+        const wordDistractors = document.getElementById("word-distractors").value.trim();
+        const sentenceTemplates = document.getElementById("sentence-templates").value.trim();
+        const wordPartsData = document.getElementById("word-parts-data").value.trim();
+        const fillupsBlankPositions = document.getElementById("fillups-blank-positions").value.trim();
+        const twoOptionDistractors = document.getElementById("two-option-distractors").value.trim();
+
+        // Parse JSON fields or create empty objects/arrays
+        let parsedSentenceTemplates = {};
+        let parsedWordDistractors = {};
+        let parsedWordHints = {};
+        let parsedWordPartsData = {};
+        let parsedFillupsBlankPositions = {};
+        let parsedTwoOptionDistractors = {};
+
+        try {
+          if (sentenceTemplates.trim()) {
+            JSON.parse(sentenceTemplates);
+            parsedSentenceTemplates = JSON.stringify(sentenceTemplates);
+          }
+        } catch (e) {
+          alert("Invalid JSON for sentence templates");
+          return;
+        }
+
+        try {
+          if (wordDistractors.trim()) {
+            JSON.parse(wordDistractors);
+            parsedWordDistractors = JSON.stringify(wordDistractors);
+          }
+        } catch (e) {
+          alert("Invalid JSON for word distractors");
+          return;
+        }
+
+        try {
+          if (wordHints.trim()) {
+            JSON.parse(wordHints);
+            parsedWordHints = JSON.stringify(wordHints);
+          }
+        } catch (e) {
+          console.error("Error parsing word hints:", e);
+          alert("Invalid JSON for word hints");
+          return;
+        }
+
+        try {
+          if (wordPartsData.trim()) {
+            JSON.parse(wordPartsData);
+            parsedWordPartsData = JSON.stringify(wordPartsData);
+          }
+        } catch (e) {
+          alert("Invalid JSON for word parts data");
+          return;
+        }
+
+        try {
+          if (fillupsBlankPositions.trim()) {
+            JSON.parse(fillupsBlankPositions);
+            parsedFillupsBlankPositions = JSON.stringify(fillupsBlankPositions);
+          }
+        } catch (e) {
+          alert("Invalid JSON for fillups blank positions");
+          return;
+        }
+
+        try {
+          if (twoOptionDistractors.trim()) {
+            JSON.parse(twoOptionDistractors);
+            parsedTwoOptionDistractors = JSON.stringify(twoOptionDistractors);
+          }
+        } catch (e) {
+          alert("Invalid JSON for two option distractors");
+          return;
+        }
+
+        const questionData = {
+          code: code,
+          date: date ? date.split("-").reverse().join("/") : "",
+          createdAt: new Date().toISOString(),
+          newWords: newWords ? newWords.split(",").map((w) => w.trim()) : [],
+          reviewWords: reviewWords ? reviewWords.split(",").map((w) => w.trim()) : [],
+          gameSequence: gameModes.map((mode, i) => ({
+            word: `word${i + 1}`,
+            type: mode,
+          })),
+          wordHints: parsedWordHints,
+          wordDistractors: parsedWordDistractors,
+          sentenceTemplates: parsedSentenceTemplates,
+          wordPartsData: parsedWordPartsData,
+          fillupsBlankPositions: parsedFillupsBlankPositions,
+          twoOptionDistractors: parsedTwoOptionDistractors,
+        };
+
+        // Check if name is required for new UID
+        const nameGroup = document.getElementById("user-name-group");
+        const isNameRequired = nameGroup.style.display !== "none";
+        
+        // Validate required fields
+        if (!code || !date || !newWords) {
+          showStatus("question-status", "Please fill in all required fields (UID, Date, New Words).", "error");
+          return;
+        }
+        
+        if (isNameRequired && !userName) {
+          showStatus("question-status", "Please enter the student name for this new UID.", "error");
+          return;
+        }
+
+        // Validate UID format
+        if (code.length !== 6 || !/^[a-zA-Z0-9]{6}$/.test(code)) {
+          showStatus("question-status", "UID must be exactly 6 alphanumeric characters.", "error");
+          return;
+        }
+
+        try {
+          const isEditMode = document.getElementById("edit-mode").value === "true";
+          const actionText = isEditMode ? "Updating" : "Creating";
+          const successText = isEditMode ? "updated" : "created";
+          
+          showStatus("question-status", `${actionText} question...`, "info");
+
+          // Add user name to question data if provided
+          if (userName) {
+            questionData.userName = userName;
+          }
+
+          // Use setDoc with the user-entered code as the document ID
+          const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          await setDoc(doc(db, "questions", code), questionData);
+
+          console.log(`✅ Question successfully ${successText} in Firebase with document ID:`, code);
+          showStatus("question-status", `✅ Question ${successText} successfully! Document ID: ${code}`, "success");
+
+          // Show alert message
+          alert(`✅ Question successfully ${successText}!\n\nDocument ID: ${code}`);
+
+          // Reset to create mode after successful update
+          if (isEditMode) {
+            document.getElementById("edit-mode").value = "false";
+            document.getElementById("submit-btn").textContent = "✨ Submit Question";
+          }
+
+          clearForm();
+        } catch (error) {
+          console.error("Error saving question:", error);
+          showStatus("question-status", `❌ Error saving question: ${error.message}`, "error");
+        }
+      });
+
+      // Utility functions
+      function showStatus(containerId, message, type) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+
+        // Auto-hide success and info messages after 5 seconds
+        if (type === "success" || type === "info") {
+          setTimeout(() => {
+            container.innerHTML = "";
+          }, 5000);
+        }
+      }
+
+      // Check if UID is new and show name field
+      async function checkUIDAndShowNameField() {
+        const codeInput = document.getElementById("uid");
+        const code = codeInput.value.trim();
+        const nameGroup = document.getElementById("user-name-group");
+        
+        if (!code || code.length !== 6) {
+          nameGroup.style.display = "none";
+          return;
+        }
+
+        try {
+          const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "questions", code);
+          const docSnap = await getDoc(docRef);
+          
+          if (!docSnap.exists()) {
+            // New UID - show name field
+            nameGroup.style.display = "block";
+            document.getElementById("user-name").required = true;
+          } else {
+            // Existing UID - hide name field
+            nameGroup.style.display = "none";
+            document.getElementById("user-name").required = false;
+          }
+        } catch (error) {
+          console.error("Error checking UID:", error);
+          nameGroup.style.display = "none";
+        }
+      }
+
+      // Retrieve question function
+      async function retrieveQuestion() {
+        const codeInput = document.getElementById("uid");
+        const code = codeInput.value.trim();
+
+        if (!code) {
+          showStatus("question-status", "Please enter a UID to retrieve question data.", "error");
+          return;
+        }
+
+        if (code.length !== 6 || !/^[a-zA-Z0-9]{6}$/.test(code)) {
+          showStatus("question-status", "UID must be exactly 6 alphanumeric characters.", "error");
+          return;
+        }
+
+        try {
+          showStatus("question-status", "Retrieving question data...", "info");
+
+          // Fetch question data from Firebase
+          const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "questions", code);
+          const docSnap = await getDoc(docRef);
+
+          if (!docSnap.exists()) {
+            showStatus("question-status", `No question found with UID "${code}".`, "error");
+            return;
+          }
+
+          const questionData = docSnap.data();
+          
+          // Check if user name exists, if not show name input
+          if (!questionData.userName) {
+            const nameGroup = document.getElementById("user-name-group");
+            nameGroup.style.display = "block";
+            document.getElementById("user-name").required = true;
+            document.getElementById("user-name").placeholder = "Enter student's name (missing from existing data)";
+            showStatus("question-status", `⚠️ Student name is missing for UID "${code}". Please provide the name below.`, "error");
+          } else {
+            // Name exists, populate it and hide the name group
+            document.getElementById("user-name").value = questionData.userName;
+            const nameGroup = document.getElementById("user-name-group");
+            nameGroup.style.display = "none";
+            document.getElementById("user-name").required = false;
+          }
+          
+          // Populate the form with retrieved data
+          populateFormWithData(questionData);
+          
+          // Set edit mode
+          document.getElementById("edit-mode").value = "true";
+          document.getElementById("submit-btn").textContent = "🔄 Update Question";
+          
+          if (questionData.userName) {
+            showStatus("question-status", `✅ Question data retrieved successfully for UID "${code}".`, "success");
+          }
+
+        } catch (error) {
+          console.error("Error retrieving question:", error);
+          showStatus("question-status", `❌ Error retrieving question: ${error.message}`, "error");
+        }
+      }
+
+      // Populate form with retrieved data
+      function populateFormWithData(data) {
+        // Populate basic fields
+        document.getElementById("uid").value = data.code || "";
+        document.getElementById("date").value = data.date ? data.date.split("/").reverse().join("-") : "";
+        
+        // Populate word lists
+        document.getElementById("new-words").value = data.newWords ? data.newWords.join(", ") : "";
+        document.getElementById("review-words").value = data.reviewWords ? data.reviewWords.join(", ") : "";
+        
+        // Populate game modes
+        if (data.gameSequence && data.gameSequence.length > 0) {
+          selectedGameModes = data.gameSequence.map(item => item.type);
+          updateSelectedGameModesDisplay();
+          updateGameModeValue();
+        }
+        
+        // Populate JSON fields - handle stringified JSON properly
+        try {
+          if (data.wordHints) {
+            // If it's already a string, use it directly; if it's an object, stringify it
+            const wordHintsValue = typeof data.wordHints === 'string' ? data.wordHints : JSON.stringify(data.wordHints, null, 2);
+            document.getElementById("word-hints").value = JSON.parse(wordHintsValue);
+          } else {
+            document.getElementById("word-hints").value = "";
+          }
+        } catch (e) {
+          document.getElementById("word-hints").value = data.wordHints || "";
+        }
+        
+        try {
+          if (data.wordDistractors) {
+            const wordDistractorsValue = typeof data.wordDistractors === 'string' ? data.wordDistractors : JSON.stringify(data.wordDistractors, null, 2);
+            document.getElementById("word-distractors").value = JSON.parse(wordDistractorsValue);
+          } else {
+            document.getElementById("word-distractors").value = "";
+          }
+        } catch (e) {
+          document.getElementById("word-distractors").value = data.wordDistractors || "";
+        }
+        
+        try {
+          if (data.sentenceTemplates) {
+            const sentenceTemplatesValue = typeof data.sentenceTemplates === 'string' ? data.sentenceTemplates : JSON.stringify(data.sentenceTemplates, null, 2);
+            document.getElementById("sentence-templates").value = JSON.parse(sentenceTemplatesValue);
+          } else {
+            document.getElementById("sentence-templates").value = "";
+          }
+        } catch (e) {
+          document.getElementById("sentence-templates").value = data.sentenceTemplates || "";
+        }
+        
+        try {
+          if (data.wordPartsData) {
+            const wordPartsDataValue = typeof data.wordPartsData === 'string' ? data.wordPartsData : JSON.stringify(data.wordPartsData, null, 2);
+            document.getElementById("word-parts-data").value = JSON.parse(wordPartsDataValue);
+          } else {
+            document.getElementById("word-parts-data").value = "";
+          }
+        } catch (e) {
+          document.getElementById("word-parts-data").value = data.wordPartsData || "";
+        }
+        
+        try {
+          if (data.fillupsBlankPositions) {
+            const fillupsBlankPositionsValue = typeof data.fillupsBlankPositions === 'string' ? data.fillupsBlankPositions : JSON.stringify(data.fillupsBlankPositions, null, 2);
+            document.getElementById("fillups-blank-positions").value = JSON.parse(fillupsBlankPositionsValue);
+          } else {
+            document.getElementById("fillups-blank-positions").value = "";
+          }
+        } catch (e) {
+          document.getElementById("fillups-blank-positions").value = data.fillupsBlankPositions || "";
+        }
+        
+        try {
+          if (data.twoOptionDistractors) {
+            const twoOptionDistractorsValue = typeof data.twoOptionDistractors === 'string' ? data.twoOptionDistractors : JSON.stringify(data.twoOptionDistractors, null, 2);
+            document.getElementById("two-option-distractors").value = JSON.parse(twoOptionDistractorsValue);
+          } else {
+            document.getElementById("two-option-distractors").value = "";
+          }
+        } catch (e) {
+          document.getElementById("two-option-distractors").value = data.twoOptionDistractors || "";
+        }
+        
+        // Update UID field styling
+        const uidField = document.getElementById("uid");
+        uidField.style.borderColor = "#28a745";
+        uidField.style.backgroundColor = "#d4edda";
+      }
+
+      // Analytics validation function
+      function validateAnalyticsCode(input) {
+        // Remove any non-alphanumeric characters (preserve original case)
+        let value = input.value.replace(/[^a-zA-Z0-9]/g, "");
+
+        // Limit to 6 characters
+        if (value.length > 6) {
+          value = value.substring(0, 6);
+        }
+
+        // Update the input value
+        input.value = value;
+
+        // Visual feedback
+        if (value.length === 6) {
+          input.style.borderColor = "#28a745";
+          input.style.backgroundColor = "#d4edda";
+        } else if (value.length > 0) {
+          input.style.borderColor = "#ffc107";
+          input.style.backgroundColor = "#fff3cd";
+        } else {
+          input.style.borderColor = "#e9ecef";
+          input.style.backgroundColor = "white";
+        }
+      }
+
+      // Fetch analytics function
+      async function fetchAnalytics() {
+        const codeInput = document.getElementById("analytics-code");
+        const code = codeInput.value.trim();
+
+        if (!code) {
+          showStatus("analytics-status", "Please enter a code to fetch analytics.", "error");
+          return;
+        }
+
+        if (code.length !== 6 || !/^[a-zA-Z0-9]{6}$/.test(code)) {
+          showStatus("analytics-status", "Code must be exactly 6 alphanumeric characters.", "error");
+
+        }
+
+        try {
+          showStatus("analytics-status", "Fetching analytics data...", "info");
+
+          // Query Firebase for user-activity collection
+          const { collection, query, where, getDocs, orderBy } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          
+          const q = query(
+            collection(db, "user-activity"),
+            where("code", "==", code),
+            orderBy("submittedAt", "desc")
+          );
+
+          const querySnapshot = await getDocs(q);
+          const analyticsData = [];
+
+          querySnapshot.forEach((doc) => {
+            analyticsData.push({ id: doc.id, ...doc.data() });
+          });
+
+          if (analyticsData.length === 0) {
+            showStatus("analytics-status", `No analytics data found for code "${code}".`, "error");
+            document.getElementById("analytics-results").style.display = "none";
+            return;
+          }
+
+          // Display analytics
+          displayAnalytics(analyticsData, code);
+          showStatus("analytics-status", `Found ${analyticsData.length} analytics records for code "${code}".`, "success");
+
+        } catch (error) {
+          console.error("Error fetching analytics:", error);
+          showStatus("analytics-status", `❌ Error fetching analytics: ${error.message}`, "error");
+        }
+      }
+
+      // Store analytics data globally
+      let allAnalyticsData = [];
+
+      // Display analytics function
+      function displayAnalytics(data, code) {
+        allAnalyticsData = data;
+
+        const resultsDiv = document.getElementById("analytics-results");
+        const summaryDiv = document.getElementById("analytics-summary");
+        const detailsDiv = document.getElementById("analytics-details");
+
+        // Display table-based analytics with ALL data (not filtered by date)
+        displayTableAnalytics(data);
+
+        // Remove detailed analytics view - table is sufficient
+        detailsDiv.innerHTML = '';
+
+        resultsDiv.style.display = "block";
+      }
+
+      // Function to display table-based analytics
+      function displayTableAnalytics(data) {
+        const tableViewDiv = document.getElementById("analytics-table-view");
+        
+        // Group data by word and date
+        const wordsByDate = {};
+        const allDates = new Set();
+        const allWords = new Set();
+
+        data.forEach(item => {
+          const date = new Date(item.submittedAt).toDateString();
+          const word = item.word;
+          
+          allDates.add(date);
+          allWords.add(word);
+          
+          if (!wordsByDate[word]) {
+            wordsByDate[word] = {};
+          }
+          if (!wordsByDate[word][date]) {
+            wordsByDate[word][date] = [];
+          }
+          wordsByDate[word][date].push(item);
+        });
+
+        const sortedDates = Array.from(allDates).sort((a, b) => new Date(a) - new Date(b));
+        const sortedWords = Array.from(allWords).sort();
+
+        // Create table HTML
+        let tableHTML = `
+          <div class="analytics-table-container">
+            <table class="analytics-table">
+              <thead>
+                <tr>
+                  <th class="word-column">Word</th>
+                  <th>Attempt</th>
+                  ${sortedDates.map((date, index) => `
+                    <th class="day-header">Day ${index + 1}<br/>${new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</th>
+                  `).join('')}
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        sortedWords.forEach(word => {
+          // First attempt row
+          tableHTML += `
+            <tr>
+              <td class="word-column" rowspan="2">${word}</td>
+              <td style="position: sticky; left: 120px; background: #f8f9fa; z-index: 15; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">Attempt 1</td>
+              ${sortedDates.map(date => {
+                const dayData = wordsByDate[word][date];
+                if (dayData && dayData.length > 0) {
+                  const firstAttempt = dayData[0].check[0];
+                  const secondAttempt = dayData[0].check[1];
+                  if (firstAttempt) {
+                    // First attempt shows its own result (no yellow for first attempt)
+                    const cellClass = firstAttempt.isCorrect ? 'attempt-correct-table' : 'attempt-incorrect-table';
+                    return `
+                      <td class="attempt-cell ${cellClass}" 
+                          onclick="showWordDetails('${word}', '${date}', 0)">
+                        <div class="attempt-content">
+                          <div class="attempt-item-table">${firstAttempt.word}</div>
+                        </div>
+                      </td>
+                    `;
+                  }
+                }
+                return '<td class="attempt-cell">-</td>';
+              }).join('')}
+            </tr>
+          `;
+
+          // Second attempt row
+          tableHTML += `
+            <tr>
+              <td style="position: sticky; left: 120px; background: #f8f9fa; z-index: 15; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">Attempt 2</td>
+              ${sortedDates.map(date => {
+                const dayData = wordsByDate[word][date];
+                if (dayData && dayData.length > 0) {
+                  const firstAttempt = dayData[0].check[0];
+                  const secondAttempt = dayData[0].check[1];
+                  if (secondAttempt) {
+                    // Check if first wrong and second correct (yellow)
+                    const isMixed = firstAttempt && !firstAttempt.isCorrect && secondAttempt.isCorrect;
+                    const cellClass = isMixed ? 'attempt-mixed-table' : 
+                                     (secondAttempt.isCorrect ? 'attempt-correct-table' : 'attempt-incorrect-table');
+                    return `
+                      <td class="attempt-cell ${cellClass}" 
+                          onclick="showWordDetails('${word}', '${date}', 1)">
+                        <div class="attempt-content">
+                          <div class="attempt-item-table">${secondAttempt.word}</div>
+                        </div>
+                      </td>
+                    `;
+                  }
+                }
+                return '<td class="attempt-cell">-</td>';
+              }).join('')}
+            </tr>
+          `;
+        });
+
+        tableHTML += `
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        tableViewDiv.innerHTML = tableHTML;
+      }
+
+      // Function to show word details in modal
+      function showWordDetails(word, date, attemptIndex) {
+        const wordData = allAnalyticsData.find(item => 
+          item.word === word && new Date(item.submittedAt).toDateString() === date
+        );
+        
+        if (!wordData) return;
+
+        const modal = document.getElementById("analytics-modal");
+        const modalTitle = document.getElementById("modal-title");
+        const modalBody = document.getElementById("modal-body");
+
+        modalTitle.textContent = `${word} - ${new Date(date).toLocaleDateString()}`;
+
+        const dayTotalAttempts = wordData.check.length;
+        const dayCorrectAttempts = wordData.check.filter(attempt => attempt.isCorrect).length;
+        const dayAvgTime = dayTotalAttempts > 0 ? Math.round(wordData.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0) / dayTotalAttempts) : 0;
+
+        // Get all attempts for this word across all dates for comprehensive view
+        const allWordData = allAnalyticsData.filter(item => item.word === word);
+        const allWordAttempts = allWordData.reduce((acc, item) => acc + item.check.length, 0);
+        const allWordCorrect = allWordData.reduce((acc, item) => acc + item.check.filter(attempt => attempt.isCorrect).length, 0);
+        const allWordAvgTime = allWordData.length > 0 ? Math.round(
+          allWordData.reduce((acc, item) => acc + item.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0), 0) / 
+          allWordData.reduce((acc, item) => acc + item.check.length, 0)
+        ) : 0;
+
+        modalBody.innerHTML = `
+          <div class="modal-section">
+            <h4>📊 Summary</h4>
+            <p><strong>Average Time:</strong> ${dayAvgTime}s</p>
+            <p><strong>Total Attempts:</strong> ${dayTotalAttempts}</p>
+            <p><strong>Correct Attempts:</strong> ${dayCorrectAttempts}</p>
+            <p><strong>Accuracy:</strong> ${dayTotalAttempts > 0 ? Math.round((dayCorrectAttempts / dayTotalAttempts) * 100) : 0}%</p>
+            <p><strong>Speaker Clicks:</strong> ${wordData.speakerClicks}</p>
+          </div>
+
+          <div class="modal-section">
+            <h4>📝 Attempts Detail</h4>
+            <div class="attempts-list">
+              ${wordData.check.map((attempt, index) => `
+                <div class="attempt-item" style="background: ${attempt.isCorrect ? '#d4edda' : '#f8d7da'}; margin: 4px 0; padding: 6px; border-radius: 4px;">
+                  <strong>Attempt ${index + 1}:</strong> "${attempt.word}" 
+                  <span style="color: #666;">(${attempt.timeTaken}s)</span>
+                  <span style="color: ${attempt.isCorrect ? '#155724' : '#721c24'}; font-weight: bold;">
+                    ${attempt.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          ${wordData.backspace.length > 0 ? `
+            <div class="modal-section">
+              <h4>⌫ Backspaces</h4>
+              <div class="backspace-list">
+                ${wordData.backspace.map(partial => `<span class="backspace-item">"${partial}"</span>`).join(' ')}
+              </div>
+            </div>
+          ` : ''}
+        `;
+
+        modal.style.display = "block";
+      }
+
+
+      // Clear analytics function
+      function clearAnalytics() {
+        document.getElementById("analytics-code").value = "";
+        document.getElementById("analytics-results").style.display = "none";
+        document.getElementById("analytics-summary").innerHTML = "";
+        document.getElementById("analytics-details").innerHTML = "";
+        allAnalyticsData = [];
+        
+        // Reset input styling
+        const codeInput = document.getElementById("analytics-code");
+        codeInput.style.borderColor = "#e9ecef";
+        codeInput.style.backgroundColor = "white";
+        
+        showStatus("analytics-status", "", "");
+      }
+
+      // Modal close functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById("analytics-modal");
+        const closeBtn = document.querySelector(".modal-close");
+        
+        closeBtn.onclick = function() {
+          modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        // Set current date as default
+        const today = new Date();
+        const dateString = today.getFullYear() + '-' + 
+                          String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                          String(today.getDate()).padStart(2, '0');
+        document.getElementById("analytics-date").value = dateString;
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎯 Admin panel initialized");
+
+        // Set current date as default
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("date").value = today;
+
+        // Initialize drag and drop functionality
+        initializeDragAndDrop();
+      });
+    </script>
+  </body>
+</html>
