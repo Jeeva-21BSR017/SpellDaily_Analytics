@@ -1129,7 +1129,7 @@ class SpellingApp {
     }
 
     try {
-      const { doc, setDoc, query, collection, where, getDocs } = await import(
+      const { doc, setDoc, query, collection, where, getDocs, Timestamp } = await import(
         "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js"
       );
 
@@ -1157,7 +1157,7 @@ class SpellingApp {
 
       const analyticsData = {
         ...this.typingAnalytics,
-        submittedAt: new Date().toISOString(),
+        submittedAt: Timestamp.now(),
         gameType: "typing",
         sessionId: this.sessionId || "unknown",
       };
