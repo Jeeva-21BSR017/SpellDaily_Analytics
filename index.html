@@ -57,7 +57,7 @@
 
     <!-- Preload critical resources -->
     <link rel="preload" href="styles.css" as="style" />
-    <link rel="preload" href="script.js" as="script" />
+    <link rel="preload" href="script1.js?v=0.0.1" as="script" />
 
     <!-- Firebase SDKs - Modern ES6 modules -->
     <script type="module">
@@ -150,6 +150,12 @@
             <!-- Current attempt -->
             <div class="attempt-section" id="currentAttempt">
               <div class="word-boxes" id="wordBoxes"></div>
+            </div>
+            
+            <!-- Correct Answer Section -->
+            <div class="attempt-section" id="correctAnswerSection" style="display: none; margin-top: 15px;">
+              <div class="section-title">Correct Answer</div>
+              <div class="word-boxes" id="correctAnswerBoxes"></div>
             </div>
           </div>
 
@@ -261,6 +267,6 @@
     <!-- LogRocket initialization moved to script.js -->
 
     <!-- Main application script loaded before closing body -->
-    <script src="script.js"></script>
+    <script src="script1.js?v=0.0.1"></script>
   </body>
 </html>

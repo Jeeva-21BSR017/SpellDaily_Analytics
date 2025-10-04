@@ -714,23 +714,12 @@
                   id="uid"
                   placeholder="AbC123"
                   maxlength="6"
-                  oninput="validateUID(this); checkUIDAndShowNameField()"
+                  oninput="validateUID(this)"
                 />
               </div>
               <div class="form-group" style="margin-bottom: 0">
                 <label for="date">Date</label>
                 <input type="date" id="date" />
-              </div>
-            </div>
-            <div style="margin-top: 15px;">
-              <div class="form-group" id="user-name-group" style="display: none;">
-                <label for="user-name">Student Name (required for new UID)</label>
-                <input
-                  type="text"
-                  id="user-name"
-                  placeholder="Enter student's full name"
-                  style="width: 100%;"
-                />
               </div>
             </div>
           </div>
@@ -770,6 +759,9 @@
                 <div class="game-mode-tag draggable" draggable="true" data-mode="letter-scramble">letter-scramble</div>
                 <div class="game-mode-tag draggable" draggable="true" data-mode="correct-word">correct-word</div>
                 <div class="game-mode-tag draggable" draggable="true" data-mode="2-option">2-option</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="words-meaning">words-meaning</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="context-choice">context-choice</div>
+                <div class="game-mode-tag draggable" draggable="true" data-mode="correct-sentence">correct-sentence</div>
               </div>
               <div style="margin-bottom: 10px">
                 <strong>Selected Game Modes:</strong>
@@ -842,6 +834,80 @@
               <h3 style="margin-bottom: 15px; color: #495057">🎯 Two Option Distractors</h3>
               <div id="two-option-distractors-container">
                 <textarea id="two-option-distractors" rows="6" style="width: 100%"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Word Meanings Section -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin: 30px 0">
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border: 2px solid #4caf50">
+              <h3 style="margin-bottom: 15px; color: #495057">🧠 Word Meanings (for words-meaning game)</h3>
+              <div id="word-meanings-container">
+                <textarea id="word-meanings" rows="8" style="width: 100%" placeholder='Example format:
+{
+  "resilient": {
+    "correct": "Quick to recover",
+    "options": ["Easy to break", "Quick to recover", "Hard to decide", "Slow to move"]
+  },
+  "abundant": {
+    "correct": "Existing in large quantities", 
+    "options": ["Very rare", "Existing in large quantities", "Difficult to find", "Small in size"]
+  }
+}'></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Context Choice Section -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin: 30px 0">
+            <div style="background: #fff3e0; padding: 20px; border-radius: 10px; border: 2px solid #ff9800">
+              <h3 style="margin-bottom: 15px; color: #495057">📖 Context Choice (for context-choice game)</h3>
+              <div id="context-choice-container">
+                <textarea id="context-choice" rows="10" style="width: 100%" placeholder='Example format:
+{
+  "resilient": {
+    "sentence": "The boy was resilient. Even after falling many times, he stood up and tried again.",
+    "correct": "Kept trying",
+    "options": ["Gave up", "Kept trying", "Slept early", "Ran away"]
+  },
+  "abundant": {
+    "sentence": "The garden had abundant flowers. There were so many colorful blooms everywhere you looked.",
+    "correct": "Plenty of",
+    "options": ["Very few", "Plenty of", "Ugly", "Expensive"]
+  }
+}'></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Correct Sentence Section -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin: 30px 0">
+            <div style="background: #f3e5f5; padding: 20px; border-radius: 10px; border: 2px solid #9c27b0">
+              <h3 style="margin-bottom: 15px; color: #495057">📝 Correct Sentence (for correct-sentence game)</h3>
+              <div id="correct-sentence-container">
+                <textarea id="correct-sentence" rows="12" style="width: 100%" placeholder='Example format:
+{
+  "resilient": {
+    "question": "Which sentence shows someone being resilient?",
+    "correct": "Rina fell while skating but stood up to try again",
+    "options": [
+      "Rina fell while skating but stood up to try again",
+      "Arjun got a puzzle wrong and threw it away angrily",
+      "A dog slept in the sun all day",
+      "A boy ate five chocolates quickly"
+    ]
+  },
+  "abundant": {
+    "question": "Which sentence shows something being abundant?",
+    "correct": "The library had abundant books on every topic imaginable",
+    "options": [
+      "The library had abundant books on every topic imaginable",
+      "There was only one apple left in the basket",
+      "The room was completely empty and quiet",
+      "She found a single coin in her pocket"
+    ]
+  }
+}'></textarea>
               </div>
             </div>
           </div>
@@ -1235,6 +1301,9 @@
         document.getElementById("word-parts-data").value = "";
         document.getElementById("fillups-blank-positions").value = "";
         document.getElementById("two-option-distractors").value = "";
+        document.getElementById("word-meanings").value = "";
+        document.getElementById("context-choice").value = "";
+        document.getElementById("correct-sentence").value = "";
 
         // Reset edit mode
         document.getElementById("edit-mode").value = "false";
@@ -1249,7 +1318,6 @@
 
         // Get additional form data
         const code = document.getElementById("uid").value.trim();
-        const userName = document.getElementById("user-name").value.trim();
         const date = document.getElementById("date").value;
         const newWords = document.getElementById("new-words").value.trim();
         const reviewWords = document.getElementById("review-words").value.trim();
@@ -1260,6 +1328,9 @@
         const wordPartsData = document.getElementById("word-parts-data").value.trim();
         const fillupsBlankPositions = document.getElementById("fillups-blank-positions").value.trim();
         const twoOptionDistractors = document.getElementById("two-option-distractors").value.trim();
+        const wordMeanings = document.getElementById("word-meanings").value.trim();
+        const contextChoice = document.getElementById("context-choice").value.trim();
+        const correctSentence = document.getElementById("correct-sentence").value.trim();
 
         // Parse JSON fields or create empty objects/arrays
         let parsedSentenceTemplates = {};
@@ -1268,6 +1339,9 @@
         let parsedWordPartsData = {};
         let parsedFillupsBlankPositions = {};
         let parsedTwoOptionDistractors = {};
+        let parsedWordMeanings = {};
+        let parsedContextChoice = {};
+        let parsedCorrectSentence = {};
 
         try {
           if (sentenceTemplates.trim()) {
@@ -1330,6 +1404,33 @@
           return;
         }
 
+        try {
+          if (wordMeanings.trim()) {
+            parsedWordMeanings = JSON.parse(wordMeanings);
+          }
+        } catch (e) {
+          alert("Invalid JSON for word meanings");
+          return;
+        }
+
+        try {
+          if (contextChoice.trim()) {
+            parsedContextChoice = JSON.parse(contextChoice);
+          }
+        } catch (e) {
+          alert("Invalid JSON for context choice");
+          return;
+        }
+
+        try {
+          if (correctSentence.trim()) {
+            parsedCorrectSentence = JSON.parse(correctSentence);
+          }
+        } catch (e) {
+          alert("Invalid JSON for correct sentence");
+          return;
+        }
+
         const questionData = {
           code: code,
           date: date ? date.split("-").reverse().join("/") : "",
@@ -1346,20 +1447,22 @@
           wordPartsData: parsedWordPartsData,
           fillupsBlankPositions: parsedFillupsBlankPositions,
           twoOptionDistractors: parsedTwoOptionDistractors,
+          wordMeanings: parsedWordMeanings,
+          contextChoice: parsedContextChoice,
+          correctSentence: parsedCorrectSentence,
         };
 
-        // Check if name is required for new UID
-        const nameGroup = document.getElementById("user-name-group");
-        const isNameRequired = nameGroup.style.display !== "none";
-        
-        // Validate required fields
-        if (!code || !date || !newWords) {
-          showStatus("question-status", "Please fill in all required fields (UID, Date, New Words).", "error");
-          return;
-        }
-        
-        if (isNameRequired && !userName) {
-          showStatus("question-status", "Please enter the student name for this new UID.", "error");
+        // // Console log the complete question data before submission
+        // console.log("📝 Question Data to be submitted:");
+        // console.log("=====================================");
+        // console.table(questionData);
+        // console.log("Raw Question Data Object:", questionData);
+        // console.log("JSON Format:", JSON.stringify(questionData, null, 2));
+        // console.log("=====================================");
+
+        // Validate that code is provided
+        if (!code) {
+          showStatus("question-status", "Please enter a code to use as document ID.", "error");
           return;
         }
 
@@ -1375,11 +1478,6 @@
           const successText = isEditMode ? "updated" : "created";
           
           showStatus("question-status", `${actionText} question...`, "info");
-
-          // Add user name to question data if provided
-          if (userName) {
-            questionData.userName = userName;
-          }
 
           // Use setDoc with the user-entered code as the document ID
           const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
@@ -1417,37 +1515,6 @@
         }
       }
 
-      // Check if UID is new and show name field
-      async function checkUIDAndShowNameField() {
-        const codeInput = document.getElementById("uid");
-        const code = codeInput.value.trim();
-        const nameGroup = document.getElementById("user-name-group");
-        
-        if (!code || code.length !== 6) {
-          nameGroup.style.display = "none";
-          return;
-        }
-
-        try {
-          const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-          const docRef = doc(db, "questions", code);
-          const docSnap = await getDoc(docRef);
-          
-          if (!docSnap.exists()) {
-            // New UID - show name field
-            nameGroup.style.display = "block";
-            document.getElementById("user-name").required = true;
-          } else {
-            // Existing UID - hide name field
-            nameGroup.style.display = "none";
-            document.getElementById("user-name").required = false;
-          }
-        } catch (error) {
-          console.error("Error checking UID:", error);
-          nameGroup.style.display = "none";
-        }
-      }
-
       // Retrieve question function
       async function retrieveQuestion() {
         const codeInput = document.getElementById("uid");
@@ -1478,21 +1545,6 @@
 
           const questionData = docSnap.data();
           
-          // Check if user name exists, if not show name input
-          if (!questionData.userName) {
-            const nameGroup = document.getElementById("user-name-group");
-            nameGroup.style.display = "block";
-            document.getElementById("user-name").required = true;
-            document.getElementById("user-name").placeholder = "Enter student's name (missing from existing data)";
-            showStatus("question-status", `⚠️ Student name is missing for UID "${code}". Please provide the name below.`, "error");
-          } else {
-            // Name exists, populate it and hide the name group
-            document.getElementById("user-name").value = questionData.userName;
-            const nameGroup = document.getElementById("user-name-group");
-            nameGroup.style.display = "none";
-            document.getElementById("user-name").required = false;
-          }
-          
           // Populate the form with retrieved data
           populateFormWithData(questionData);
           
@@ -1500,9 +1552,7 @@
           document.getElementById("edit-mode").value = "true";
           document.getElementById("submit-btn").textContent = "🔄 Update Question";
           
-          if (questionData.userName) {
-            showStatus("question-status", `✅ Question data retrieved successfully for UID "${code}".`, "success");
-          }
+          showStatus("question-status", `✅ Question data retrieved successfully for UID "${code}".`, "success");
 
         } catch (error) {
           console.error("Error retrieving question:", error);
@@ -1593,6 +1643,39 @@
           }
         } catch (e) {
           document.getElementById("two-option-distractors").value = data.twoOptionDistractors || "";
+        }
+        
+        try {
+          if (data.wordMeanings) {
+            const wordMeaningsValue = typeof data.wordMeanings === 'string' ? data.wordMeanings : JSON.stringify(data.wordMeanings, null, 2);
+            document.getElementById("word-meanings").value = wordMeaningsValue;
+          } else {
+            document.getElementById("word-meanings").value = "";
+          }
+        } catch (e) {
+          document.getElementById("word-meanings").value = data.wordMeanings || "";
+        }
+        
+        try {
+          if (data.contextChoice) {
+            const contextChoiceValue = typeof data.contextChoice === 'string' ? data.contextChoice : JSON.stringify(data.contextChoice, null, 2);
+            document.getElementById("context-choice").value = contextChoiceValue;
+          } else {
+            document.getElementById("context-choice").value = "";
+          }
+        } catch (e) {
+          document.getElementById("context-choice").value = data.contextChoice || "";
+        }
+        
+        try {
+          if (data.correctSentence) {
+            const correctSentenceValue = typeof data.correctSentence === 'string' ? data.correctSentence : JSON.stringify(data.correctSentence, null, 2);
+            document.getElementById("correct-sentence").value = correctSentenceValue;
+          } else {
+            document.getElementById("correct-sentence").value = "";
+          }
+        } catch (e) {
+          document.getElementById("correct-sentence").value = data.correctSentence || "";
         }
         
         // Update UID field styling
