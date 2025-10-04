@@ -1,0 +1,368 @@
+{
+  "Abide": {
+    "parts": ["a", "bi", "de"],
+    "options": [
+      ["a", "e", "o"],
+      ["bi", "by", "be"],
+      ["de", "di", "dy"]
+    ]
+  },
+  "Alien": {
+    "parts": ["a", "li", "en"],
+    "options": [
+      ["a", "e", "o"],
+      ["li", "le", "ly"],
+      ["en", "an", "in"]
+    ]
+  },
+  "Allow": {
+    "parts": ["al", "lo", "w"],
+    "options": [
+      ["al", "el", "ol"],
+      ["lo", "la", "lu"],
+      ["w", "ww", "ow"]
+    ]
+  },
+  "Angel": {
+    "parts": ["an", "ge", "l"],
+    "options": [
+      ["an", "en", "on"],
+      ["ge", "je", "ga"],
+      ["l", "ll", "le"]
+    ]
+  },
+  "Apple": {
+    "parts": ["ap", "pl", "e"],
+    "options": [
+      ["ap", "ep", "op"],
+      ["pl", "ple", "ppl"],
+      ["e", "el", "le"]
+    ]
+  },
+  "Apply": {
+    "parts": ["ap", "pl", "y"],
+    "options": [
+      ["ap", "ep", "op"],
+      ["pl", "ply", "ppl"],
+      ["y", "i", "ie"]
+    ]
+  },
+  "Audio": {
+    "parts": ["au", "di", "o"],
+    "options": [
+      ["au", "aw", "ou"],
+      ["di", "dy", "de"],
+      ["o", "eo", "io"]
+    ]
+  },
+  "Awake": {
+    "parts": ["a", "wa", "ke"],
+    "options": [
+      ["a", "e", "o"],
+      ["wa", "we", "wai"],
+      ["ke", "k", "ck"]
+    ]
+  },
+  "Award": {
+    "parts": ["a", "war", "d"],
+    "options": [
+      ["a", "e", "o"],
+      ["war", "wor", "wer"],
+      ["d", "rd", "de"]
+    ]
+  },
+  "Badge": {
+    "parts": ["ba", "dg", "e"],
+    "options": [
+      ["ba", "be", "bo"],
+      ["dg", "dge", "dj"],
+      ["e", "ge", "je"]
+    ]
+  },
+  "Basic": {
+    "parts": ["ba", "si", "c"],
+    "options": [
+      ["ba", "be", "bo"],
+      ["si", "se", "sy"],
+      ["c", "ck", "ic"]
+    ]
+  },
+  "Beach": {
+    "parts": ["bea", "ch"],
+    "options": [
+      ["bea", "bee", "bia"],
+      ["ch", "tch", "che"]
+    ]
+  },
+  "Blast": {
+    "parts": ["bla", "st"],
+    "options": [
+      ["bla", "ble", "blu"],
+      ["st", "ste", "sst"]
+    ]
+  },
+  "Blend": {
+    "parts": ["ble", "nd"],
+    "options": [
+      ["ble", "bla", "blo"],
+      ["nd", "ned", "nde"]
+    ]
+  },
+  "Blood": {
+    "parts": ["blo", "od"],
+    "options": [
+      ["blo", "blu", "bla"],
+      ["od", "ood", "ud"]
+    ]
+  },
+  "Board": {
+    "parts": ["boa", "rd"],
+    "options": [
+      ["boa", "bor", "bore"],
+      ["rd", "red", "ard"]
+    ]
+  },
+  "Boost": {
+    "parts": ["boo", "st"],
+    "options": [
+      ["boo", "bo", "bou"],
+      ["st", "ste", "sst"]
+    ]
+  },
+  "Brain": {
+    "parts": ["bra", "in"],
+    "options": [
+      ["bra", "bre", "bri"],
+      ["in", "ain", "ine"]
+    ]
+  },
+  "Brave": {
+    "parts": ["bra", "ve"],
+    "options": [
+      ["bra", "bre", "bri"],
+      ["ve", "v", "ive"]
+    ]
+  },
+  "Break": {
+    "parts": ["bre", "ak"],
+    "options": [
+      ["bre", "bra", "bri"],
+      ["ak", "ake", "eik"]
+    ]
+  },
+  "Brief": {
+    "parts": ["bri", "ef"],
+    "options": [
+      ["bri", "bre", "brei"],
+      ["ef", "ief", "eef"]
+    ]
+  },
+  "Broad": {
+    "parts": ["bro", "ad"],
+    "options": [
+      ["bro", "bra", "bru"],
+      ["ad", "oad", "od"]
+    ]
+  },
+  "Build": {
+    "parts": ["bui", "ld"],
+    "options": [
+      ["bui", "bi", "bu"],
+      ["ld", "ild", "lde"]
+    ]
+  },
+  "Cabin": {
+    "parts": ["ca", "bi", "n"],
+    "options": [
+      ["ca", "ke", "ko"],
+      ["bi", "be", "ba"],
+      ["n", "nn", "in"]
+    ]
+  },
+  "Candy": {
+    "parts": ["can", "dy"],
+    "options": [
+      ["can", "cen", "con"],
+      ["dy", "di", "dey"]
+    ]
+  },
+  "Catch": {
+    "parts": ["ca", "tch"],
+    "options": [
+      ["ca", "ke", "ko"],
+      ["tch", "ch", "che"]
+    ]
+  },
+  "Chain": {
+    "parts": ["cha", "in"],
+    "options": [
+      ["cha", "che", "chi"],
+      ["in", "ain", "ine"]
+    ]
+  },
+  "Chair": {
+    "parts": ["cha", "ir"],
+    "options": [
+      ["cha", "che", "chi"],
+      ["ir", "air", "ire"]
+    ]
+  },
+  "Chart": {
+    "parts": ["cha", "rt"],
+    "options": [
+      ["cha", "che", "chi"],
+      ["rt", "art", "rte"]
+    ]
+  },
+  "Cheap": {
+    "parts": ["che", "ap"],
+    "options": [
+      ["che", "cha", "chi"],
+      ["ap", "eap", "eep"]
+    ]
+  },
+  "Chief": {
+    "parts": ["chi", "ef"],
+    "options": [
+      ["chi", "che", "cha"],
+      ["ef", "ief", "eef"]
+    ]
+  },
+  "Child": {
+    "parts": ["chi", "ld"],
+    "options": [
+      ["chi", "che", "chy"],
+      ["ld", "ild", "lde"]
+    ]
+  },
+  "Chunk": {
+    "parts": ["chu", "nk"],
+    "options": [
+      ["chu", "cho", "chi"],
+      ["nk", "unk", "nck"]
+    ]
+  },
+  "Civil": {
+    "parts": ["ci", "vi", "l"],
+    "options": [
+      ["ci", "se", "sy"],
+      ["vi", "ve", "vy"],
+      ["l", "ll", "le"]
+    ]
+  },
+  "Clean": {
+    "parts": ["cle", "an"],
+    "options": [
+      ["cle", "cli", "cla"],
+      ["an", "ean", "een"]
+    ]
+  },
+  "Clear": {
+    "parts": ["cle", "ar"],
+    "options": [
+      ["cle", "cli", "cla"],
+      ["ar", "ear", "eer"]
+    ]
+  },
+  "Click": {
+    "parts": ["cli", "ck"],
+    "options": [
+      ["cli", "cle", "cla"],
+      ["ck", "k", "ic"]
+    ]
+  },
+  "Clock": {
+    "parts": ["clo", "ck"],
+    "options": [
+      ["clo", "cla", "clu"],
+      ["ck", "k", "ok"]
+    ]
+  },
+  "Close": {
+    "parts": ["clo", "se"],
+    "options": [
+      ["clo", "cla", "clu"],
+      ["se", "ze", "ce"]
+    ]
+  },
+  "Coach": {
+    "parts": ["coa", "ch"],
+    "options": [
+      ["coa", "co", "cou"],
+      ["ch", "tch", "che"]
+    ]
+  },
+  "Coast": {
+    "parts": ["coa", "st"],
+    "options": [
+      ["coa", "co", "cou"],
+      ["st", "ste", "ast"]
+    ]
+  },
+  "Color": {
+    "parts": ["co", "lo", "r"],
+    "options": [
+      ["co", "cu", "ko"],
+      ["lo", "lu", "lar"],
+      ["r", "ur", "er"]
+    ]
+  },
+  "Court": {
+    "parts": ["cou", "rt"],
+    "options": [
+      ["cou", "cor", "co"],
+      ["rt", "urt", "rte"]
+    ]
+  },
+  "Cover": {
+    "parts": ["co", "ve", "r"],
+    "options": [
+      ["co", "cu", "ko"],
+      ["ve", "vi", "ver"],
+      ["r", "rr", "er"]
+    ]
+  },
+  "Craft": {
+    "parts": ["cra", "ft"],
+    "options": [
+      ["cra", "kra", "cre"],
+      ["ft", "aft", "fft"]
+    ]
+  },
+  "Cross": {
+    "parts": ["cro", "ss"],
+    "options": [
+      ["cro", "kro", "cru"],
+      ["ss", "s", "se"]
+    ]
+  },
+  "Crown": {
+    "parts": ["cro", "wn"],
+    "options": [
+      ["cro", "crou", "cru"],
+      ["wn", "own", "un"]
+    ]
+  },
+  "Dance": {
+    "parts": ["dan", "ce"],
+    "options": [
+      ["dan", "den", "don"],
+      ["ce", "se", "nce"]
+    ]
+  },
+  "Death": {
+    "parts": ["dea", "th"],
+    "options": [
+      ["dea", "de", "dee"],
+      ["th", "ath", "the"]
+    ]
+  },
+  "Document": {
+    "parts": ["do", "cu", "ment"],
+    "options": [
+      ["do", "dok", "doo"],
+      ["cu", "ku", "co"],
+      ["ment", "mant", "meent"]
+    ]
+  }
+}

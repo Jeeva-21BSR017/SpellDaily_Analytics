@@ -1,0 +1,395 @@
+{
+    "Petroleum": {
+      "parts": ["pet", "ro", "leum"],
+      "options": [
+        ["pet", "pat", "put"],
+        ["ro", "ru", "ra"],
+        ["leum", "lium", "lum"]
+      ]
+    },
+    "Patience": {
+      "parts": ["pa", "tien", "ce"],
+      "options": [
+        ["pa", "pe", "po"],
+        ["tien", "tin", "tyen"],
+        ["ce", "se", "ze"]
+      ]
+    },
+    "Success": {
+      "parts": ["suc", "ces", "s"],
+      "options": [
+        ["suc", "suk", "suc"],
+        ["ces", "ses", "cys"],
+        ["s", "ss", "z"]
+      ]
+    },
+    "Careful": {
+      "parts": ["car", "e", "ful"],
+      "options": [
+        ["car", "cer", "cor"],
+        ["e", "i", "a"],
+        ["ful", "fol", "foul"]
+      ]
+    },
+    "Leisure": {
+      "parts": ["lei", "su", "re"],
+      "options": [
+        ["lei", "lay", "lee"],
+        ["su", "so", "sa"],
+        ["re", "ra", "ri"]
+      ]
+    },
+    "Technique": {
+      "parts": ["tech", "ni", "que"],
+      "options": [
+        ["tech", "tek", "techh"],
+        ["ni", "ne", "ny"],
+        ["que", "qui", "qua"]
+      ]
+    },
+    "Agriculture": {
+      "parts": ["agri", "cul", "ture"],
+      "options": [
+        ["agri", "agro", "agrih"],
+        ["cul", "cal", "col"],
+        ["ture", "tur", "tor"]
+      ]
+    },
+    "Economy": {
+      "parts": ["eco", "no", "my"],
+      "options": [
+        ["eco", "eck", "eco"],
+        ["no", "nu", "na"],
+        ["my", "mi", "me"]
+      ]
+    },
+    "Culture": {
+      "parts": ["cul", "tu", "re"],
+      "options": [
+        ["cul", "col", "kal"],
+        ["tu", "to", "ta"],
+        ["re", "ri", "ra"]
+      ]
+    },
+    "Textile": {
+      "parts": ["tex", "ti", "le"],
+      "options": [
+        ["tex", "tix", "tax"],
+        ["ti", "ta", "to"],
+        ["le", "li", "la"]
+      ]
+    },
+    "Military": {
+      "parts": ["mil", "i", "tary"],
+      "options": [
+        ["mil", "mel", "mal"],
+        ["i", "e", "a"],
+        ["tary", "teri", "tari"]
+      ]
+    },
+    "Aggression": {
+      "parts": ["ag", "gres", "sion"],
+      "options": [
+        ["ag", "eg", "ig"],
+        ["gres", "gris", "grys"],
+        ["sion", "shun", "cion"]
+      ]
+    },
+    "Architecture": {
+      "parts": ["archi", "tec", "ture"],
+      "options": [
+        ["archi", "arci", "arche"],
+        ["tec", "tek", "tik"],
+        ["ture", "tur", "tor"]
+      ]
+    },
+    "Tolerance": {
+      "parts": ["tol", "er", "ance"],
+      "options": [
+        ["tol", "tal", "tel"],
+        ["er", "ir", "ur"],
+        ["ance", "ans", "anse"]
+      ]
+    },
+    "Fascinate": {
+      "parts": ["fas", "ci", "nate"],
+      "options": [
+        ["fas", "fes", "fys"],
+        ["ci", "ce", "cy"],
+        ["nate", "nat", "nait"]
+      ]
+    },
+    "Receive": {
+      "parts": ["re", "cei", "ve"],
+      "options": [
+        ["re", "ri", "ra"],
+        ["cei", "cie", "sy"],
+        ["ve", "vi", "va"]
+      ]
+    },
+    "Grammar": {
+      "parts": ["gra", "mm", "ar"],
+      "options": [
+        ["gra", "grah", "gre"],
+        ["mm", "m", "mn"],
+        ["ar", "er", "or"]
+      ]
+    },
+    "Revenue": {
+      "parts": ["rev", "en", "ue"],
+      "options": [
+        ["rev", "re", "riv"],
+        ["en", "an", "in"],
+        ["ue", "u", "oo"]
+      ]
+    },
+    "Necessary": {
+      "parts": ["nec", "es", "sary"],
+      "options": [
+        ["nec", "nes", "nik"],
+        ["es", "is", "as"],
+        ["sary", "sari", "sery"]
+      ]
+    },
+    "Discipline": {
+      "parts": ["dis", "ci", "pline"],
+      "options": [
+        ["dis", "des", "dys"],
+        ["ci", "si", "cy"],
+        ["pline", "plin", "plaine"]
+      ]
+    },
+    "Feasible": {
+      "parts": ["fea", "si", "ble"],
+      "options": [
+        ["fea", "fe", "fia"],
+        ["si", "se", "sy"],
+        ["ble", "bul", "bel"]
+      ]
+    },
+    "Weather": {
+      "parts": ["we", "ath", "er"],
+      "options": [
+        ["we", "wi", "wa"],
+        ["ath", "eth", "oth"],
+        ["er", "ar", "ir"]
+      ]
+    },
+    "Foreign": {
+      "parts": ["fo", "re", "ign"],
+      "options": [
+        ["fo", "fa", "fu"],
+        ["re", "ra", "ri"],
+        ["ign", "egn", "ain"]
+      ]
+    },
+    "Vacuum": {
+      "parts": ["vac", "u", "um"],
+      "options": [
+        ["vac", "vak", "vec"],
+        ["u", "oo", "a"],
+        ["um", "umm", "umh"]
+      ]
+    },
+    "Category": {
+      "parts": ["cat", "e", "gory"],
+      "options": [
+        ["cat", "kat", "cot"],
+        ["e", "i", "a"],
+        ["gory", "gari", "gorye"]
+      ]
+    },
+    "Rhythm": {
+      "parts": ["rhy", "th", "m"],
+      "options": [
+        ["rhy", "ryh", "rah"],
+        ["th", "t", "tha"],
+        ["m", "em", "um"]
+      ]
+    },
+    "Beginning": {
+      "parts": ["be", "gin", "ning"],
+      "options": [
+        ["be", "bi", "ba"],
+        ["gin", "gan", "gen"],
+        ["ning", "ningg", "neng"]
+      ]
+    },
+    "Pursue": {
+      "parts": ["pur", "su", "e"],
+      "options": [
+        ["pur", "par", "por"],
+        ["su", "si", "sa"],
+        ["e", "i", "a"]
+      ]
+    },
+    "Gesture": {
+      "parts": ["ges", "tu", "re"],
+      "options": [
+        ["ges", "gas", "gez"],
+        ["tu", "to", "ta"],
+        ["re", "ri", "ra"]
+      ]
+    },
+    "Trivial": {
+      "parts": ["tri", "vi", "al"],
+      "options": [
+        ["tri", "try", "tra"],
+        ["vi", "vy", "ve"],
+        ["al", "el", "il"]
+      ]
+    },
+    "Resolute": {
+      "parts": ["res", "o", "lute"],
+      "options": [
+        ["res", "ras", "rus"],
+        ["o", "a", "u"],
+        ["lute", "loot", "luit"]
+      ]
+    },
+    "Privilege": {
+      "parts": ["pri", "vi", "lege"],
+      "options": [
+        ["pri", "pre", "pro"],
+        ["vi", "vy", "ve"],
+        ["lege", "lej", "leg"]
+      ]
+    },
+    "Plateau": {
+      "parts": ["pla", "te", "au"],
+      "options": [
+        ["pla", "ple", "plo"],
+        ["te", "ta", "ti"],
+        ["au", "o", "ow"]
+      ]
+    },
+    "Opportunity": {
+      "parts": ["op", "por", "tunity"],
+      "options": [
+        ["op", "up", "ap"],
+        ["por", "pur", "par"],
+        ["tunity", "tuniti", "tunety"]
+      ]
+    },
+    "Conqueror": {
+      "parts": ["con", "quer", "or"],
+      "options": [
+        ["con", "cun", "kan"],
+        ["quer", "kwur", "queri"],
+        ["or", "our", "oar"]
+      ]
+    },
+    "Campaign": {
+      "parts": ["cam", "pai", "gn"],
+      "options": [
+        ["cam", "kam", "com"],
+        ["pai", "pe", "pi"],
+        ["gn", "gnn", "gyn"]
+      ]
+    },
+    "Embarrass": {
+      "parts": ["em", "bar", "rass"],
+      "options": [
+        ["em", "im", "am"],
+        ["bar", "ber", "bor"],
+        ["rass", "ras", "ress"]
+      ]
+    },
+    "Schedule": {
+      "parts": ["sche", "du", "le"],
+      "options": [
+        ["sche", "sci", "shie"],
+        ["du", "do", "da"],
+        ["le", "li", "la"]
+      ]
+    },
+    "Reveal": {
+      "parts": ["re", "ve", "al"],
+      "options": [
+        ["re", "ri", "ra"],
+        ["ve", "vi", "va"],
+        ["al", "el", "ul"]
+      ]
+    },
+    "Awkward": {
+      "parts": ["awk", "wa", "rd"],
+      "options": [
+        ["awk", "awkq", "ack"],
+        ["wa", "wo", "wae"],
+        ["rd", "rt", "rdh"]
+      ]
+    },
+    "Chocolate": {
+      "parts": ["cho", "co", "late"],
+      "options": [
+        ["cho", "choco", "choe"],
+        ["co", "ca", "cu"],
+        ["late", "latt", "laet"]
+      ]
+    },
+    "Resilience": {
+      "parts": ["re", "sil", "ience"],
+      "options": [
+        ["re", "ri", "rae"],
+        ["sil", "sel", "syl"],
+        ["ience", "ians", "ianss"]
+      ]
+    },
+    "Dynasties": {
+      "parts": ["dy", "nas", "ties"],
+      "options": [
+        ["dy", "di", "dae"],
+        ["nas", "nes", "nass"],
+        ["ties", "teas", "tiess"]
+      ]
+    },
+    "Regimes": {
+      "parts": ["re", "gi", "mes"],
+      "options": [
+        ["re", "ri", "rae"],
+        ["gi", "ge", "gee"],
+        ["mes", "mez", "mess"]
+      ]
+    },
+    "Restaurant": {
+      "parts": ["res", "tau", "rant"],
+      "options": [
+        ["res", "ras", "rez"],
+        ["tau", "to", "taw"],
+        ["rant", "rent", "rannt"]
+      ]
+    },
+    "Tomorrow": {
+      "parts": ["to", "mor", "row"],
+      "options": [
+        ["to", "too", "tow"],
+        ["mor", "mur", "mo"],
+        ["row", "ro", "rau"]
+      ]
+    },
+    "Possess": {
+      "parts": ["pos", "ses", "s"],
+      "options": [
+        ["pos", "pus", "pas"],
+        ["ses", "ces", "sse"],
+        ["s", "ss", "se"]
+      ]
+    },
+    "Immediately": {
+      "parts": ["im", "me", "diately"],
+      "options": [
+        ["im", "em", "am"],
+        ["me", "mi", "mae"],
+        ["diately", "daitely", "diatly"]
+      ]
+    },
+    "Business": {
+      "parts": ["bus", "i", "ness"],
+      "options": [
+        ["bus", "bas", "bos"],
+        ["i", "e", "ie"],
+        ["ness", "nes", "nees"]
+      ]
+    }
+  }
+  
