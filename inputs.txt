@@ -1,5 +1,0 @@
-1. There should a code and check button (6 digit) check whether it available or not.
-
-2. If exsits - We have 
-
-3. Complete question frame the question. with code as document ID and then. push the json to the firebase

@@ -2884,7 +2884,7 @@ class SpellingApp {
     const streakCount = this.consecutiveCorrect;
 
     // Play thunder sound only once
-    const thunderSound = new Audio("./sound.mp3");
+    const thunderSound = new Audio("./audio/thunder.mp3");
     thunderSound.volume = 1.0;
     thunderSound.currentTime = 0; // Reset to beginning
     thunderSound.play().catch((e) => console.log("Thunder sound play error:", e));
@@ -2944,7 +2944,7 @@ class SpellingApp {
     // Check if Rive is available and initialize animation with mobile fallback
     if (typeof rive !== "undefined" && rive.Rive) {
       // Initialize Rive animation with mobile-optimized settings
-      fetch("./thunder2.riv")
+      fetch("./rive/thunder2.riv")
         .then((res) => {
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
