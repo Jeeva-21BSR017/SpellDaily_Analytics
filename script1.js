@@ -34,16 +34,6 @@ function getTodayDateString() {
   return `${year}-${month}-${day}`;
 }
 
-async function getFirebaseTimestamp() { 
-  const { Timestamp } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
-  
-  if (customDate) {
-    return Timestamp.fromDate(new Date(customDate));
-  }
-
-  return Timestamp.now();
-}
-
 // Wait for Firebase to be initialized from the module in HTML
 function waitForFirebase() {
   return new Promise((resolve) => {
@@ -773,7 +763,7 @@ class SpellingApp {
 
       const analyticsData = {
         ...this.typingAnalytics,
-        submittedAt: await getFirebaseTimestamp(),
+        submittedAt: getTodayDateString(),
         gameType: "typing",
         sessionId: this.sessionId || "unknown",
       };
