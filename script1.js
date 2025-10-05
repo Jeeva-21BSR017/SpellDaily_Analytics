@@ -34,7 +34,9 @@ function getTodayDateString() {
   return `${year}-${month}-${day}`;
 }
 
-function getFirebaseTimestamp() {
+async function getFirebaseTimestamp() { 
+  const { Timestamp } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
+  
   if (customDate) {
     return Timestamp.fromDate(new Date(customDate));
   }
@@ -1249,7 +1251,7 @@ class SpellingApp {
 
       const analyticsData = {
         ...this.typingAnalytics,
-        submittedAt: getFirebaseTimestamp(),
+        submittedAt: await getFirebaseTimestamp(),
         gameType: "typing",
         sessionId: this.sessionId || "unknown",
       };
