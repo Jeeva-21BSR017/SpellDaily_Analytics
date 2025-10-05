@@ -2,11 +2,11 @@
 // Firebase is initialized in HTML as a module, we just need to wait for it
 let db = null;
 
+// const customDate = "2025-10-05";
+const customDate = null;
+
 // Common function to get today's date in YYYY-MM-DD format
 function getTodayDate() {
-  // const customDate = "2025-10-05";
-  const customDate = null;
-
   if (customDate) {
     return new Date(customDate);
   }
@@ -15,13 +15,10 @@ function getTodayDate() {
 }
 
 function getTodayDateNow() {
-  // const customDate = "2025-10-05";
-  const customDate = null;
-  
   if (customDate) {
     return new Date(customDate).getTime();
   }
-  
+
   return Date.now();
 }
 
@@ -35,6 +32,14 @@ function getTodayDateString() {
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function getFirebaseTimestamp() {
+  if (customDate) {
+    return Timestamp.fromDate(new Date(customDate));
+  }
+
+  return Timestamp.now();
 }
 
 // Wait for Firebase to be initialized from the module in HTML
@@ -1244,7 +1249,7 @@ class SpellingApp {
 
       const analyticsData = {
         ...this.typingAnalytics,
-        submittedAt: Timestamp.now(),
+        submittedAt: getFirebaseTimestamp(),
         gameType: "typing",
         sessionId: this.sessionId || "unknown",
       };
