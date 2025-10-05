@@ -99,26 +99,8 @@ class SpellingApp {
     }
 
     // Default words (fallback if no game code is used)
-    this.reviewWords = reviewWords || [
-      "culture",
-      "history",
-      "dessert",
-      "essay",
-      "resilient",
-      "future",
-      "survey",
-      "schedule",
-    ];
-    this.newWords = newWords || [
-      "grammar",
-      "struggle",
-      "fantasy",
-      "flavour",
-      "abundant",
-      "opinion",
-      "meticulous",
-      "eloquent",
-    ];
+    this.reviewWords = reviewWords || []
+    this.newWords = newWords || [];
 
     this.learningWords = [];
 
@@ -138,317 +120,19 @@ class SpellingApp {
     };
 
     // Word hints for better understanding
-    this.wordHints = JSON.parse(wordHints) || {
-      culture: "🎭 The arts, customs, and beliefs of a society",
-      history: "📜 The study of past events and civilizations",
-      dessert: "🍰 A sweet course eaten at the end of a meal",
-      essay: "📝 A piece of writing on a particular subject",
-      measure: "📏 To find the size, amount, or degree of something",
-      future: "🔮 The time that is to come",
-      survey: "📊 A detailed study or investigation",
-      schedule: "📅 A plan for carrying out activities",
-      grammar: "📖 The rules of language structure",
-      struggle: "💪 To make forceful efforts to get free",
-      fantasy: "🧚 The faculty of imagination",
-      flavour: "👅 The distinctive taste of food or drink",
-      visualise: "👁️ To form a mental image of something",
-      opinion: "💭 A view or judgment about something",
-      familiar: "🤝 Well-known from long association",
-      envelope: "✉️ A flat paper container for a letter",
-    };
+    this.wordHints = JSON.parse(wordHints) || {};
 
     // Word meanings data for the words-meaning game
-    this.wordMeanings = wordMeanings || {
-      resilient: {
-        correct: "Quick to recover",
-        options: ["Easy to break", "Quick to recover", "Hard to decide", "Slow to move"],
-      },
-      abundant: {
-        correct: "Existing in large quantities",
-        options: ["Very rare", "Existing in large quantities", "Difficult to find", "Small in size"],
-      },
-      meticulous: {
-        correct: "Showing great attention to detail",
-        options: ["Careless and sloppy", "Showing great attention to detail", "Moving very quickly", "Speaking loudly"],
-      },
-      eloquent: {
-        correct: "Fluent and persuasive in speaking",
-        options: [
-          "Unable to speak clearly",
-          "Fluent and persuasive in speaking",
-          "Writing very slowly",
-          "Thinking quietly",
-        ],
-      },
-      serene: {
-        correct: "Calm and peaceful",
-        options: ["Very noisy and chaotic", "Calm and peaceful", "Extremely angry", "Moving rapidly"],
-      },
-      innovative: {
-        correct: "Introducing new ideas",
-        options: [
-          "Following old traditions",
-          "Introducing new ideas",
-          "Avoiding all changes",
-          "Copying others exactly",
-        ],
-      },
-      tenacious: {
-        correct: "Holding firmly to something",
-        options: [
-          "Giving up very easily",
-          "Holding firmly to something",
-          "Moving without direction",
-          "Speaking very softly",
-        ],
-      },
-      pragmatic: {
-        correct: "Dealing with things practically",
-        options: [
-          "Ignoring all practical matters",
-          "Dealing with things practically",
-          "Dreaming without action",
-          "Acting without thinking",
-        ],
-      },
-      disgrace: {
-        correct: "Loss of reputation or respect",
-        options: [
-          "Great honor and pride",
-          "Loss of reputation or respect",
-          "Feeling of happiness",
-          "State of confusion",
-        ],
-      },
-      console: {
-        correct: "To comfort someone in distress",
-        options: [
-          "To comfort someone in distress",
-          "To argue with someone",
-          "To ignore completely",
-          "To celebrate loudly",
-        ],
-      },
-      suspect: {
-        correct: "To believe something is likely true",
-        options: [
-          "To know for certain",
-          "To believe something is likely true",
-          "To completely ignore",
-          "To prove wrong",
-        ],
-      },
-      everlasting: {
-        correct: "Lasting forever or for a very long time",
-        options: [
-          "Ending very quickly",
-          "Lasting forever or for a very long time",
-          "Happening once only",
-          "Changing constantly",
-        ],
-      },
-      special: {
-        correct: "Better, greater, or different from what is usual",
-        options: [
-          "Completely ordinary",
-          "Better, greater, or different from what is usual",
-          "Very boring",
-          "Always the same",
-        ],
-      },
-      tender: {
-        correct: "Gentle and caring",
-        options: ["Rough and harsh", "Gentle and caring", "Loud and noisy", "Cold and distant"],
-      },
-      clutch: {
-        correct: "To hold tightly",
-        options: ["To throw away", "To hold tightly", "To push gently", "To ignore completely"],
-      },
-      impose: {
-        correct: "To force something on others",
-        options: ["To ask politely", "To force something on others", "To give freely", "To take away"],
-      },
-    };
+    this.wordMeanings = wordMeanings || {};
 
     // Context choice data for the context-choice game
-    this.contextChoiceData = contextChoice || {
-      resilient: {
-        sentence: "The boy was resilient. Even after falling many times, he stood up and tried again.",
-        correct: "Kept trying",
-        options: ["Gave up", "Kept trying", "Slept early", "Ran away"],
-      },
-      abundant: {
-        sentence: "The garden had abundant flowers. There were so many colorful blooms everywhere you looked.",
-        correct: "Plenty of",
-        options: ["Very few", "Plenty of", "Ugly", "Expensive"],
-      },
-      meticulous: {
-        sentence:
-          "Sarah was meticulous with her homework. She checked every answer twice and made sure her handwriting was perfect.",
-        correct: "Very careful",
-        options: ["Very careless", "Very careful", "Very fast", "Very lazy"],
-      },
-      eloquent: {
-        sentence:
-          "The speaker was eloquent during the presentation. Everyone listened carefully to his clear and persuasive words.",
-        correct: "Spoke beautifully",
-        options: ["Spoke quietly", "Spoke beautifully", "Spoke angrily", "Spoke quickly"],
-      },
-      serene: {
-        sentence: "The lake was serene in the morning. The water was perfectly still and peaceful.",
-        correct: "Calm and quiet",
-        options: ["Rough and noisy", "Calm and quiet", "Deep and dark", "Cold and frozen"],
-      },
-      innovative: {
-        sentence:
-          "The company was innovative with their new product. They created something completely different from anything before.",
-        correct: "Creative and new",
-        options: ["Old-fashioned", "Creative and new", "Expensive", "Complicated"],
-      },
-      tenacious: {
-        sentence:
-          "The athlete was tenacious during training. She never gave up, even when the exercises became very difficult.",
-        correct: "Never gave up",
-        options: ["Gave up easily", "Never gave up", "Worked slowly", "Complained often"],
-      },
-      pragmatic: {
-        sentence:
-          "His approach to the problem was pragmatic. He focused on what would actually work rather than perfect theories.",
-        correct: "Practical and realistic",
-        options: ["Dreamy and idealistic", "Practical and realistic", "Complicated and confusing", "Quick and simple"],
-      },
-    };
+    this.contextChoiceData = contextChoice || {};
 
     // Correct sentence data for the correct-sentence game
-    this.correctSentenceData = correctSentence || {
-      resilient: {
-        question: "Which sentence shows someone being resilient?",
-        correct: "Rina fell while skating but stood up to try again",
-        options: [
-          "Rina fell while skating but stood up to try again",
-          "Arjun got a puzzle wrong and threw it away angrily",
-          "A dog slept in the sun all day",
-          "A boy ate five chocolates quickly",
-        ],
-      },
-      abundant: {
-        question: "Which sentence shows something being abundant?",
-        correct: "The library had abundant books on every topic imaginable",
-        options: [
-          "The library had abundant books on every topic imaginable",
-          "There was only one apple left in the basket",
-          "The room was completely empty and quiet",
-          "She found a single coin in her pocket",
-        ],
-      },
-      meticulous: {
-        question: "Which sentence shows someone being meticulous?",
-        correct: "Sarah checked her homework three times to make sure every answer was perfect",
-        options: [
-          "Tom rushed through his work without looking back",
-          "Sarah checked her homework three times to make sure every answer was perfect",
-          "The painter splashed colors randomly on the canvas",
-          "He quickly signed the document without reading it",
-        ],
-      },
-      eloquent: {
-        question: "Which sentence shows someone being eloquent?",
-        correct: "The speaker captivated the audience with her beautiful and persuasive words",
-        options: [
-          "He mumbled quietly so no one could understand him",
-          "The speaker captivated the audience with her beautiful and persuasive words",
-          "She wrote a short note with just two words",
-          "The student remained silent during the entire presentation",
-        ],
-      },
-      serene: {
-        question: "Which sentence describes something serene?",
-        correct: "The lake was perfectly calm and peaceful in the morning light",
-        options: [
-          "The construction site was loud and chaotic all day",
-          "The lake was perfectly calm and peaceful in the morning light",
-          "The busy street was filled with honking cars and shouting",
-          "The storm brought heavy rain and strong winds",
-        ],
-      },
-      innovative: {
-        question: "Which sentence shows someone being innovative?",
-        correct: "Maya invented a new way to organize her school supplies using recycled materials",
-        options: [
-          "He always did things exactly the same way his grandfather taught him",
-          "Maya invented a new way to organize her school supplies using recycled materials",
-          "She copied her friend's project word for word",
-          "The company used the same old methods they had used for decades",
-        ],
-      },
-      tenacious: {
-        question: "Which sentence shows someone being tenacious?",
-        correct: "Despite failing the test twice, Alex kept studying and finally passed on the third try",
-        options: [
-          "After one mistake, Lisa gave up and walked away",
-          "Despite failing the test twice, Alex kept studying and finally passed on the third try",
-          "He quit the team after the first practice session",
-          "She stopped trying when things became slightly difficult",
-        ],
-      },
-      pragmatic: {
-        question: "Which sentence shows someone being pragmatic?",
-        correct: "Instead of dreaming about perfect solutions, she chose the approach that would actually work",
-        options: [
-          "He spent hours planning impossible and unrealistic schemes",
-          "Instead of dreaming about perfect solutions, she chose the approach that would actually work",
-          "She ignored all practical concerns and followed her wild imagination",
-          "The team focused only on theoretical ideas without considering reality",
-        ],
-      },
-    };
+    this.correctSentenceData = correctSentence || {};
 
     // Word parts data for the word parts puzzle game
-    this.wordPartsData = JSON.parse(wordPartsData) || {
-      culture: {
-        parts: ["cul", "ture"],
-        options: [
-          ["cul", "cal", "col"], // correct: 'cul' (position 0)
-          ["ture", "tare", "tire"], // correct: 'ture' (position 0)
-        ],
-      },
-      history: {
-        parts: ["his", "to", "ry"],
-        options: [
-          ["his", "has", "hes"], // correct: 'his' (position 0)
-          ["to", "ta", "te"], // correct: 'to' (position 0)
-          ["ry", "ra", "re"], // correct: 'ry' (position 0)
-        ],
-      },
-      dessert: {
-        parts: ["des", "sert"],
-        options: [
-          ["des", "dis", "dos"], // correct: 'des' (position 0)
-          ["sert", "sort", "sart"], // correct: 'sert' (position 0)
-        ],
-      },
-      essay: {
-        parts: ["es", "say"],
-        options: [
-          ["es", "as", "is"], // correct: 'es' (position 0)
-          ["say", "soy", "sey"], // correct: 'say' (position 0)
-        ],
-      },
-      measure: {
-        parts: ["mea", "sure"],
-        options: [
-          ["mea", "mia", "moa"], // correct: 'mea' (position 0)
-          ["sure", "sore", "sire"], // correct: 'sure' (position 0)
-        ],
-      },
-      future: {
-        parts: ["fu", "ture"],
-        options: [
-          ["fu", "fa", "fe"], // correct: 'fu' (position 0)
-          ["ture", "tare", "tire"], // correct: 'ture' (position 0)
-        ],
-      },
-    };
+    this.wordPartsData = JSON.parse(wordPartsData) || {};
 
     this.allQuestions = [];
     this.currentQuestionIndex = 0;
@@ -499,183 +183,20 @@ class SpellingApp {
     this.preloadLottieAnimations();
 
     // Initialize sentence templates and word distractors for correct-word game
-    this.sentenceTemplates = JSON.parse(sentenceTemplates) || {
-      culture: [
-        "Every country has its own unique ____________.",
-        "The museum displays artifacts from ancient ____________.",
-        "Learning about different ____________ broadens your mind.",
-      ],
-      history: [
-        "We study world ____________ in social studies class.",
-        "The ____________ of this building dates back 200 years.",
-        "She loves reading books about ancient ____________.",
-      ],
-      dessert: [
-        "What would you like for ____________ tonight?",
-        "The chocolate cake was a delicious ____________.",
-        "Ice cream is my favorite ____________ in summer.",
-      ],
-      essay: [
-        "I need to write a five-page ____________ for English class.",
-        "Her ____________ about climate change won first prize.",
-        "The teacher assigned a persuasive ____________.",
-      ],
-      measure: [
-        "Please ____________ the length of this table.",
-        "We need to ____________ the ingredients carefully.",
-        "The doctor will ____________ your blood pressure.",
-      ],
-      future: [
-        "What do you want to be in the ____________?",
-        "Technology will shape our ____________.",
-        "Planning ahead helps secure your ____________.",
-      ],
-      survey: [
-        "The company conducted a customer satisfaction ____________.",
-        "Please fill out this quick ____________ about our service.",
-        "The ____________ results showed interesting trends.",
-      ],
-      schedule: [
-        "What's on your ____________ for tomorrow?",
-        "The train runs on a strict ____________.",
-        "I need to check my ____________ before making plans.",
-      ],
-      grammar: [
-        "Good ____________ is important for clear writing.",
-        "The teacher corrected my ____________ mistakes.",
-        "English ____________ can be quite challenging.",
-      ],
-      struggle: [
-        "Many students ____________ with math problems.",
-        "It's okay to ____________ when learning something new.",
-        "She had to ____________ to reach her goals.",
-      ],
-      fantasy: [
-        "Dragons exist only in ____________ stories.",
-        "She loves reading ____________ novels about magic.",
-        "His ____________ about becoming famous came true.",
-      ],
-      flavour: [
-        "This ice cream has a delicious vanilla ____________.",
-        "The soup lacks ____________ and needs more spices.",
-        "What ____________ of cake would you prefer?",
-      ],
-      visualise: [
-        "Try to ____________ yourself succeeding in the exam.",
-        "Athletes ____________ their performance before competing.",
-        "Can you ____________ what the house will look like?",
-      ],
-      opinion: [
-        "What's your ____________ about the new movie?",
-        "Everyone is entitled to their own ____________.",
-        "In my ____________, this is the best solution.",
-      ],
-      familiar: [
-        "This song sounds ____________ to me.",
-        "I'm not ____________ with that author's work.",
-        "The neighborhood looks ____________ even after years.",
-      ],
-      envelope: [
-        "Please put the letter in an ____________.",
-        "The ____________ was addressed to my grandmother.",
-        "Don't forget to seal the ____________ before mailing.",
-      ],
-    };
+    this.sentenceTemplates = JSON.parse(sentenceTemplates) || {};
 
-    this.wordDistractors = JSON.parse(wordDistractors) || {
-      culture: ["cultur", "cultuer", "cultre", "cultire", "cultere", "cultyure"],
-      history: ["histery", "histroy", "histary", "histori", "histery", "histery"],
-      dessert: ["desert", "desart", "dessart", "deseret", "desseret", "desurt"],
-      essay: ["esay", "essai", "essey", "essaye", "essey", "essaay"],
-      measure: ["measur", "mesure", "measuer", "meausre", "measrue", "measere"],
-      future: ["futur", "futuer", "futre", "futire", "futere", "futyure"],
-      survey: ["survay", "survei", "survye", "surway", "survery", "survay"],
-      schedule: ["scedule", "schedual", "shedule", "scheduel", "schdule", "schedile"],
-      grammar: ["grammer", "gramar", "gramor", "gramer", "grammir", "gramar"],
-      struggle: ["strugle", "strugle", "stuggle", "struggel", "strugle", "struggal"],
-      fantasy: ["fantacy", "fantasi", "fantasey", "fantazy", "fantaisy", "fantacy"],
-      flavour: ["flavor", "flavur", "flavoer", "flavore", "flavoure", "flavir"],
-      visualise: ["visualize", "visualis", "visulaize", "visualice", "visualyse", "visualese"],
-      opinion: ["opinon", "oppinion", "opinoin", "opnion", "opinien", "opinoin"],
-      familiar: ["familar", "familier", "familer", "familair", "familliar", "familar"],
-      envelope: ["envelop", "envelupe", "envelpe", "envelop", "enveloppe", "envelupe"],
-    };
+    this.wordDistractors = JSON.parse(wordDistractors) || {}
 
     // Create dynamic finalSequence - can handle any number of games
     if (finalSequence && finalSequence.length > 0) {
       this.finalSequence = finalSequence;
       console.log(`🎮 Using provided sequence with ${finalSequence.length} games`);
-    } else {
-      // Default fallback sequence (16 games) - only used if no sequence provided
-      this.finalSequence = [
-        { word: "word1", type: "4-option" }, // 1. culture - 4-option (easy)
-        { word: "word2", type: "correct-word" }, // 2. history - correct-word (easy)
-        { word: "word3", type: "word-parts" }, // 3. dessert - word-parts (easy)
-        { word: "word4", type: "fillups" }, // 4. survey - fillups (intermediate)
-        { word: "word5", type: "words-meaning" }, // 5. resilient - words-meaning (easy)
-        { word: "word6", type: "letter-scramble" }, // 6. grammar - letter-scramble (intermediate)
-        { word: "word7", type: "context-choice" }, // 7. measure - context-choice (easy)
-        { word: "word8", type: "correct-sentence" }, // 8. flavour - correct-sentence (easy)
-        { word: "word9", type: "words-meaning" }, // 9. abundant - words-meaning (easy)
-        { word: "word10", type: "2-option" }, // 10. schedule - 2-option (intermediate)
-        { word: "word11", type: "context-choice" }, // 11. visualise - context-choice (hard)
-        { word: "word12", type: "correct-sentence" }, // 12. struggle - correct-sentence (intermediate)
-        { word: "word13", type: "words-meaning" }, // 13. meticulous - words-meaning (intermediate)
-        { word: "word14", type: "typing" }, // 14. opinion - typing (hard)
-        { word: "word15", type: "correct-sentence" }, // 15. familiar - correct-sentence (hard as exception)
-        { word: "word16", type: "words-meaning" }, // 16. eloquent - words-meaning (hard)
-      ];
     }
 
-    // console.log("🔍 Word hints:", typeof wordHints);
-    // console.log("🔍 Word parts data:", typeof wordPartsData);
-    // console.log("🔍 Sentence templates:", typeof sentenceTemplates);
-    // console.log("🔍 Word distractors:", typeof wordDistractors);
-    // console.log("🔍 Final sequence:", typeof finalSequence);
+    this.fillupsBlankPositions = JSON.parse(fillupsBlankPositions) || {};
 
-    this.fillupsBlankPositions = JSON.parse(fillupsBlankPositions) || {
-      patience: [2, 3, 4, 5], // p_t_e_ce -> blanks at positions 1, 4, 6 (a, i, n)
-      careful: [1, 4, 6], // c_r_f_l -> blanks at positions 1, 4, 6 (a, e, u)
-      aggression: [0, 1, 2, 6], // A___ession -> blanks at positions 0, 1, 2, 6 (g, g, r)
-      architecture: [0, 4, 8, 11], // _rch_tec_ur_ -> blanks at positions 0, 4, 8, 11 (a, i, t, e)
-      petroleum: [1, 3, 6], // p_t_ol_um -> blanks at positions 1, 3, 6 (e, r, e)
-      receive: [1, 3, 5], // r_c_i_e -> blanks at positions 1, 3, 5 (e, e, v)
-      weather: [1, 4, 6], // w_at_e_ -> blanks at positions 1, 4, 6 (e, h, r)
-      success: [1, 4, 6], // s_cc_s_ -> blanks at positions 1, 4, 6 (u, e, s)
-      leisure: [0, 3, 4], // L__sure -> blanks at positions 0, 3, 4 (e, i)
-      tolerance: [1, 3, 6, 8], // t_l_ra_c_ -> blanks at positions 1, 3, 6, 8 (o, e, n, e)
-      necessary: [1, 4, 7], // n_ce_sa_y -> blanks at positions 1, 4, 7 (e, s, r)
-      feasible: [1, 3, 6], // f_a_ib_e -> blanks at positions 1, 3, 6 (e, s, l)
-      beginning: [1, 4, 7], // b_gi_ni_g -> blanks at positions 1, 4, 7 (e, n, n)
-      rhythm: [2, 4], // rh_th_ -> blanks at positions 2, 4 (y, m)
-      foreign: [3, 4, 5], // f_r_ig_ -> blanks at positions 1, 3, 6 (o, e, n)
-      vacuum: [1, 3, 5], // v_c_u_ -> blanks at positions 1, 3, 5 (a, u, m)
-      discipline: [1, 4, 7], // d_sc_pl_ne -> blanks at positions 1, 4, 7 (i, i, i)
-      imagination: [1, 4, 8], // i_ag_nat_on -> blanks at positions 1, 4, 8 (m, i, i)
-      sculpture: [1, 4, 7], // s_ul_tu_e -> blanks at positions 1, 4, 7 (c, p, r)
-    };
+    this.twoOptionDistractors = JSON.parse(twoOptionDistractors) || {};
 
-    this.twoOptionDistractors = JSON.parse(twoOptionDistractors) || {
-      category: "catagory", // Use 'catagory' as the distractor for category
-      careful: "carful", // Use 'carful' as the distractor for careful
-      aggression: "agression", // Use 'agression' as the distractor for aggression
-      architecture: "architechure", // Use 'architechure' as the distractor for architecture
-      petroleum: "petrolium", // Use 'petrolium' as the distractor for petroleum
-      receive: "recieve", // Use 'recieve' as the distractor for receive
-      weather: "wheather", // Use 'wheather' as the distractor for weather
-      success: "sucess", // Use 'sucess' as the distractor for success
-      leisure: "lishere", // Use 'liesure' as the distractor for leisure
-      tolerance: "tolerence", // Use 'tolerence' as the distractor for tolerance
-      necessary: "neccessary", // Use 'neccessary' as the distractor for necessary
-      feasible: "feasable", // Use 'feasable' as the distractor for feasible
-      beginning: "begining", // Use 'begining' as the distractor for beginning
-      rhythm: "rythm", // Use 'rythm' as the distractor for rhythm
-      foreign: "foriegn", // Use 'foriegn' as the distractor for foreign
-      vacuum: "vaccum", // Use 'vaccum' as the distractor for vacuum
-      discipline: "disipline", // Use 'disipline' as the distractor for discipline
-      imagination: "imagenation", // Use 'imagenation' as the distractor for imagination
-      sculpture: "sculpcher", // Use 'sculpcher' as the distractor for sculpture
-    };
 
     this.initializeQuestions();
     this.bindEvents();
@@ -685,6 +206,16 @@ class SpellingApp {
 
     // Check for existing progress before starting the game
     this.initializeGame();
+
+
+    // console.log("🔍 Word hints:",  wordHints);
+    // console.log("🔍 Word parts data:",  wordPartsData);
+    // console.log("🔍 Sentence templates:",  sentenceTemplates);
+    // console.log("🔍 Word distractors:",  wordDistractors);
+    // console.log("🔍 Final sequence:",  finalSequence);
+    // console.log("🔍 Fillups blank positions:",  fillupsBlankPositions);
+    // console.log("🔍 Two option distractors:",  twoOptionDistractors);
+
   }
 
   async initializeGame() {
@@ -761,13 +292,7 @@ class SpellingApp {
         type: item.type,
       });
 
-      console.log(`✅ Added game ${index + 1}: ${item.type} for word "${actualWord}"`);
-    });
-
-    console.log(
-      `🎮 Total questions created: ${this.allQuestions.length} out of ${this.finalSequence.length} requested`
-    );
-  }
+    });  }
 
   bindEvents() {
     document.getElementById("soundButton").addEventListener("click", () => {
@@ -2572,7 +2097,6 @@ class SpellingApp {
     // Console log analytics for typing games when question is completed
     if (question.type === "typing" && this.typingAnalytics) {
       this.typingAnalytics.endTime = Math.round(getTodayDateNow() / 1000);
-      console.log("Typing Game Analytics:", JSON.stringify(this.typingAnalytics, null, 2));
     }
 
     if (isCorrect) {
@@ -2733,7 +2257,6 @@ class SpellingApp {
         const box = document.getElementById(`box-${i}`);
         if (box) {
           box.classList.add("correct");
-          console.log(`Box ${i}: Added 'correct' class`);
         }
       }
     } else {
@@ -2753,7 +2276,6 @@ class SpellingApp {
           const box = document.getElementById(`box-${i}`);
           if (box) {
             box.classList.add("correct-position");
-            console.log(`Box ${i}: Added 'correct-position' class for letter '${letterInGuess}'`);
             // Decrement the count for this letter
             letterMap[letterInGuess]--;
           }
@@ -2772,12 +2294,10 @@ class SpellingApp {
         if (box) {
           if (correctWord.includes(letterInGuess) && letterMap[letterInGuess] > 0) {
             box.classList.add("wrong-position");
-            console.log(`Box ${i}: Added 'wrong-position' class for letter '${letterInGuess}'`);
             // Decrement the count for this letter
             letterMap[letterInGuess]--;
           } else {
             box.classList.add("incorrect");
-            console.log(`Box ${i}: Added 'incorrect' class for letter '${letterInGuess}'`);
           }
         }
       }
@@ -3191,8 +2711,6 @@ class SpellingApp {
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
     const actualWord = currentQuestion.word;
 
-    console.log("Word parameter:", word); // Debug log
-    console.log("Actual word from question:", actualWord); // Debug log
 
     // Get context choice data using the actual word
     const contextData = this.contextChoiceData[actualWord];
@@ -3202,15 +2720,10 @@ class SpellingApp {
       return;
     }
 
-    console.log("Context data:", contextData); // Debug log
-
     // Create the sentence display
     const sentenceDiv = document.createElement("div");
     sentenceDiv.className = "context-sentence";
     sentenceDiv.innerHTML = `<p>${contextData.sentence}</p><p class="context-question">Which word fits best?</p>`;
-
-    console.log("Sentence div created:", sentenceDiv); // Debug log
-
     const options = [...contextData.options]; // Create a copy to shuffle
     const shuffledOptions = this.shuffleArray(options);
 
@@ -3285,8 +2798,6 @@ class SpellingApp {
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
     const actualWord = currentQuestion.word;
 
-    console.log("Word parameter:", word); // Debug log
-    console.log("Actual word from question:", actualWord); // Debug log
 
     // Get correct sentence data using the actual word
     const sentenceData = this.correctSentenceData[actualWord];
@@ -3295,8 +2806,6 @@ class SpellingApp {
       console.log("Available correct sentence words:", Object.keys(this.correctSentenceData));
       return;
     }
-
-    console.log("Sentence data:", sentenceData); // Debug log
 
     document.getElementById("questionType").textContent = "CORRECT SENTENCE";
     document.getElementById("inputContainer").style.display = "none";
@@ -3315,8 +2824,6 @@ class SpellingApp {
     const questionDiv = document.createElement("div");
     questionDiv.className = "sentence-question";
     questionDiv.innerHTML = `<p>${sentenceData.question}</p>`;
-
-    console.log("Question div created:", questionDiv); // Debug log
 
     // Add the question div first
     optionsContainer.appendChild(questionDiv);
@@ -3484,7 +2991,6 @@ class SpellingApp {
       player.setAttribute("preload", "");
       preloadContainer.appendChild(player);
 
-      console.log(`Preloading animation: ${animation}`);
     });
 
     // Store reference to preload container for potential cleanup later
@@ -3752,7 +3258,6 @@ class SpellingApp {
               enableRiveAssetCDN: false, // Disable CDN for local files
               shouldDisableRiveListeners: true, // Optimize for mobile
               onLoad: () => {
-                console.log(`Thunder animation loaded for ${streakCount}-in-a-row streak`);
                 try {
                   riveInstance.resizeDrawingSurfaceToCanvas();
                 } catch (e) {
