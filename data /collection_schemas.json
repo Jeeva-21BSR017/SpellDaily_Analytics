@@ -1,0 +1,86 @@
+{
+  "wordPools": {
+    "fields": {
+      "userCode": { "type": "string", "required": true },
+      "words": { "type": "array<string>", "required": false },
+      "createdAt": { "type": "string(yyyy-MM-dd)", "required": false },
+      "updatedAt": { "type": "string(yyyy-MM-dd)", "required": false }
+    },
+    "queries": [
+      { "where": [["userCode", "==", ":userCode"]] }
+    ]
+  },
+  "words": {
+    "fields": {
+      "userCode": { "type": "string", "required": true },
+      "word": { "type": "string", "required": true },
+      "streak": { "type": "number", "required": true },
+      "scheduledDate": { "type": "string(yyyy-MM-dd)|empty", "required": false },
+      "lastAttended": { "type": "string(yyyy-MM-dd)", "required": false },
+      "createdAt": { "type": "string(yyyy-MM-dd)", "required": false },
+      "updatedAt": { "type": "string(yyyy-MM-dd)", "required": false },
+      "ticker": { "type": "number", "required": false },
+      "last_mcq_seen": { "type": "string(yyyy-MM-dd)", "required": false },
+      "is_preview": { "type": "boolean", "required": false }
+    },
+    "queries": [
+      { "where": [["userCode", "==", ":userCode"], ["word", "==", ":word"]] },
+      { "where": [["userCode", "==", ":userCode"], ["streak", ">", 0]] },
+      { "where": [["userCode", "==", ":userCode"], ["streak", ">", -1]], "limit": 8 },
+      { "where": [["scheduledDate", "==", ":date"], ["userCode", "==", ":userCode"]] },
+      { "where": [["scheduledDate", "==", ":nextDay"]], "orderBy": ["streak", "asc"] },
+      { "where": [["userCode", "==", ":userCode"], ["streak", "<=", 1]], "orderBy": ["streak", "asc"], "limit": 50 },
+      { "where": [["userCode", "==", ":userCode"], ["streak", ">=", 3]], "orderBy": ["streak", "asc"], "limit": 50 },
+      { "where": [["scheduledDate", "==", ":nextDay"], ["userCode", "==", ":userCode"]], "orderBy": ["streak", "asc"] }
+    ]
+  },
+  "user-activity": {
+    "fields": {
+      "code": { "type": "string", "required": true },
+      "word": { "type": "string", "required": false },
+      "check": { "type": "array<object>", "required": false },
+      "backspace": { "type": "array<any>", "required": false },
+      "startTime": { "type": "number", "required": false },
+      "endTime": { "type": "number", "required": false },
+      "submittedAt": { "type": "timestamp", "required": true },
+      "gameType": { "type": "string", "required": false },
+      "sessionId": { "type": "string", "required": false }
+    },
+    "queries": [
+      {
+        "where": [
+          ["code", "==", ":userCode"],
+          ["submittedAt", ">=", ":startOfDay"],
+          ["submittedAt", "<=", ":endOfDay"]
+        ],
+        "orderBy": ["submittedAt", "asc"]
+      }
+    ]
+  },
+  "questions": {
+    "fields": {
+      "userCode": { "type": "string", "required": true },
+      "date": { "type": "string(yyyy-MM-dd)", "required": true },
+      "words": { "type": "array<string>", "required": false },
+      "newWords": { "type": "array<string>", "required": false },
+      "reviewWords": { "type": "array<string>", "required": false },
+      "mcqWords": { "type": "array<string>", "required": false },
+      "gameSequence": { "type": "array<{word:string,type:string}>", "required": false },
+      "createdAt": { "type": "string(yyyy-MM-dd)", "required": false },
+      "updatedAt": { "type": "string(yyyy-MM-dd)", "required": false }
+    },
+    "queries": [
+      { "where": [["userCode", "==", ":userCode"], ["date", "==", ":day"]] }
+    ],
+    "docId": ":userCode"
+  },
+  "bufferWords": {
+    "fields": {
+      "userCode": { "type": "string", "required": true },
+      "words": { "type": "array<string>", "required": true }
+    },
+    "queries": [
+      { "where": [["userCode", "==", ":userCode"]], "limit": ":count" }
+    ]
+  }
+}

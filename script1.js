@@ -2,7 +2,7 @@
 // Firebase is initialized in HTML as a module, we just need to wait for it
 let db = null;
 
-// const customDate = "2025-10-05";
+// const customDate = "2025-10-06";
 const customDate = null;
 
 // Common function to get today's date in YYYY-MM-DD format
