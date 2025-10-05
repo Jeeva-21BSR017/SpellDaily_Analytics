@@ -1146,8 +1146,7 @@
               <div style="text-align: left; margin-top: 15px;">
                 <strong>Existing Data:</strong><br>
                 📅 Created: ${data.date || "N/A"}<br>
-                🆕 New Words: ${data.newWords ? data.newWords.length : 0} words<br>
-                🔄 Review Words: ${data.reviewWords ? data.reviewWords.length : 0} words<br>
+                🆕 New Words: ${data.words ? data.words.length : 0} words<br>
                 🎮 Game Modes: ${data.gameModes ? data.gameModes.length : 0} modes
               </div>
             `;
@@ -1319,8 +1318,7 @@
         // Get additional form data
         const code = document.getElementById("uid").value.trim();
         const date = document.getElementById("date").value;
-        const newWords = document.getElementById("new-words").value.trim();
-        const reviewWords = document.getElementById("review-words").value.trim();
+        const words = document.getElementById("words").value.trim();
         const gameModes = selectedGameModes; // Use the array instead of single value
         const wordHints = document.getElementById("word-hints").value.trim();
         const wordDistractors = document.getElementById("word-distractors").value.trim();
@@ -1435,8 +1433,7 @@
           code: code,
           date: date ? date.split("-").reverse().join("/") : "",
           createdAt: new Date().toISOString(),
-          newWords: newWords ? newWords.split(",").map((w) => w.trim()) : [],
-          reviewWords: reviewWords ? reviewWords.split(",").map((w) => w.trim()) : [],
+          words: words ? words.split(",").map((w) => w.trim()) : [],
           gameSequence: gameModes.map((mode, i) => ({
             word: `word${i + 1}`,
             type: mode,
@@ -1567,8 +1564,7 @@
         document.getElementById("date").value = data.date ? data.date.split("/").reverse().join("-") : "";
         
         // Populate word lists
-        document.getElementById("new-words").value = data.newWords ? data.newWords.join(", ") : "";
-        document.getElementById("review-words").value = data.reviewWords ? data.reviewWords.join(", ") : "";
+        document.getElementById("words").value = data.words ? data.words.join(", ") : "";
         
         // Populate game modes
         if (data.gameSequence && data.gameSequence.length > 0) {

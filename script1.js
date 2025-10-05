@@ -73,8 +73,7 @@ waitForFirebase().catch((error) => {
 class SpellingApp {
   constructor(
     usercode,
-    reviewWords,
-    newWords,
+    words,
     wordHints,
     wordPartsData,
     sentenceTemplates,
@@ -99,8 +98,7 @@ class SpellingApp {
     }
 
     // Default words (fallback if no game code is used)
-    this.reviewWords = reviewWords || []
-    this.newWords = newWords || [];
+    this.words = words || [];
 
     this.learningWords = [];
 
@@ -160,8 +158,7 @@ class SpellingApp {
       correct: 0,
       total: 0,
       wordsToLearn: [],
-      failedReviewWords: [],
-      failedNewWords: [],
+      failedWords: [],
     };
 
     // Initialize other missing properties
@@ -253,7 +250,7 @@ class SpellingApp {
     this.allQuestions = [];
 
     // Combine all words into a single pool (no separation between review/new)
-    const allWords = [...this.reviewWords, ...this.newWords];
+    const allWords = [...this.words];
 
     // Create a flexible word map that can handle any number of words
     const wordMap = {};
@@ -2145,17 +2142,6 @@ class SpellingApp {
       if (!this.isPracticeMode) {
         // Add to failed words tracker for review system
         this.failedWordsTracker.add(question.word);
-
-        // Mark word as failed for practice, regardless of category
-        if (
-          !this.stats.failedReviewWords.includes(question.word) &&
-          !this.stats.failedNewWords.includes(question.word)
-        ) {
-          // Add to both arrays to maintain compatibility with existing code
-          this.stats.failedReviewWords.push(question.word);
-          console.log(`MARKED: Failed word for practice - ${question.word}`);
-        }
-
         // Just track for learning mode, don't add questions yet
         if (!this.stats.wordsToLearn.includes(question.word)) {
           this.stats.wordsToLearn.push(question.word);
@@ -2396,7 +2382,7 @@ class SpellingApp {
 
   startPracticeMode() {
     // Collect all failed words for practice
-    const allFailedWords = [...this.stats.failedReviewWords, ...this.stats.failedNewWords];
+    const allFailedWords = [ ...this.stats.failedWords];
 
     if (allFailedWords.length === 0) {
       alert("No words to practice!");
@@ -2417,8 +2403,7 @@ class SpellingApp {
       correct: 0,
       total: 0,
       wordsToLearn: [],
-      failedReviewWords: this.stats.failedReviewWords,
-      failedNewWords: this.stats.failedNewWords,
+      failedWords: this.stats.failedWords,
     };
 
     // Reinitialize questions for practice mode
@@ -2433,7 +2418,7 @@ class SpellingApp {
   }
 
   startReviewMode() {
-    const allFailedWords = [...this.stats.failedReviewWords, ...this.stats.failedNewWords];
+    const allFailedWords = [...this.stats.failedWords];
 
     if (allFailedWords.length === 0) {
       alert("No wrong words to review yet! Get some questions wrong first.");
@@ -3451,7 +3436,7 @@ class SpellingApp {
     await this.markGameCompleted();
 
     // Check if there are failed words and automatically proceed to review
-    const allFailedWords = [...this.stats.failedReviewWords, ...this.stats.failedNewWords];
+    const allFailedWords = [ ...this.stats.failedWords];
 
     if (this.isPracticeMode) {
       // After review completion, show card directly
@@ -3529,7 +3514,7 @@ class SpellingApp {
             cleaned[key] = 0;
             break;
           case "stats":
-            cleaned[key] = { correct: 0, total: 0, wordsToLearn: [], failedReviewWords: [], failedNewWords: [] };
+            cleaned[key] = { correct: 0, total: 0, wordsToLearn: [], failedWords: [] };
             break;
           case "allQuestions":
           case "failedWordsTracker":
@@ -3861,8 +3846,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
 
         app = new SpellingApp(
           code,
-          questionData.reviewWords,
-          questionData.newWords,
+          questionData.words,
           safeParse(questionData.wordHints),
           safeParse(questionData.wordPartsData),
           safeParse(questionData.sentenceTemplates),
