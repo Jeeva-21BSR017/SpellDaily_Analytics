@@ -2,6 +2,34 @@
 // Firebase is initialized in HTML as a module, we just need to wait for it
 let db = null;
 
+// Common function to get today's date in YYYY-MM-DD format
+function getTodayDate() {
+  //const customDate = "2025-10-05";
+  const customDate = null;
+
+  if (customDate) {
+    return new Date(customDate);
+  }
+
+  return new Date();
+}
+
+function getTodayDateNow() {
+  return getTodayDate().now();
+}
+
+function getTodayDateISOString() {
+  return getTodayDate().toISOString();
+}
+
+function getTodayDateString() {
+  const today = getTodayDate();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Wait for Firebase to be initialized from the module in HTML
 function waitForFirebase() {
   return new Promise((resolve) => {
@@ -119,68 +147,113 @@ class SpellingApp {
     this.wordMeanings = wordMeanings || {
       resilient: {
         correct: "Quick to recover",
-        options: ["Easy to break", "Quick to recover", "Hard to decide", "Slow to move"]
+        options: ["Easy to break", "Quick to recover", "Hard to decide", "Slow to move"],
       },
       abundant: {
         correct: "Existing in large quantities",
-        options: ["Very rare", "Existing in large quantities", "Difficult to find", "Small in size"]
+        options: ["Very rare", "Existing in large quantities", "Difficult to find", "Small in size"],
       },
       meticulous: {
         correct: "Showing great attention to detail",
-        options: ["Careless and sloppy", "Showing great attention to detail", "Moving very quickly", "Speaking loudly"]
+        options: ["Careless and sloppy", "Showing great attention to detail", "Moving very quickly", "Speaking loudly"],
       },
       eloquent: {
         correct: "Fluent and persuasive in speaking",
-        options: ["Unable to speak clearly", "Fluent and persuasive in speaking", "Writing very slowly", "Thinking quietly"]
+        options: [
+          "Unable to speak clearly",
+          "Fluent and persuasive in speaking",
+          "Writing very slowly",
+          "Thinking quietly",
+        ],
       },
       serene: {
         correct: "Calm and peaceful",
-        options: ["Very noisy and chaotic", "Calm and peaceful", "Extremely angry", "Moving rapidly"]
+        options: ["Very noisy and chaotic", "Calm and peaceful", "Extremely angry", "Moving rapidly"],
       },
       innovative: {
         correct: "Introducing new ideas",
-        options: ["Following old traditions", "Introducing new ideas", "Avoiding all changes", "Copying others exactly"]
+        options: [
+          "Following old traditions",
+          "Introducing new ideas",
+          "Avoiding all changes",
+          "Copying others exactly",
+        ],
       },
       tenacious: {
         correct: "Holding firmly to something",
-        options: ["Giving up very easily", "Holding firmly to something", "Moving without direction", "Speaking very softly"]
+        options: [
+          "Giving up very easily",
+          "Holding firmly to something",
+          "Moving without direction",
+          "Speaking very softly",
+        ],
       },
       pragmatic: {
         correct: "Dealing with things practically",
-        options: ["Ignoring all practical matters", "Dealing with things practically", "Dreaming without action", "Acting without thinking"]
+        options: [
+          "Ignoring all practical matters",
+          "Dealing with things practically",
+          "Dreaming without action",
+          "Acting without thinking",
+        ],
       },
       disgrace: {
         correct: "Loss of reputation or respect",
-        options: ["Great honor and pride", "Loss of reputation or respect", "Feeling of happiness", "State of confusion"]
+        options: [
+          "Great honor and pride",
+          "Loss of reputation or respect",
+          "Feeling of happiness",
+          "State of confusion",
+        ],
       },
       console: {
         correct: "To comfort someone in distress",
-        options: ["To comfort someone in distress", "To argue with someone", "To ignore completely", "To celebrate loudly"]
+        options: [
+          "To comfort someone in distress",
+          "To argue with someone",
+          "To ignore completely",
+          "To celebrate loudly",
+        ],
       },
       suspect: {
         correct: "To believe something is likely true",
-        options: ["To know for certain", "To believe something is likely true", "To completely ignore", "To prove wrong"]
+        options: [
+          "To know for certain",
+          "To believe something is likely true",
+          "To completely ignore",
+          "To prove wrong",
+        ],
       },
       everlasting: {
         correct: "Lasting forever or for a very long time",
-        options: ["Ending very quickly", "Lasting forever or for a very long time", "Happening once only", "Changing constantly"]
+        options: [
+          "Ending very quickly",
+          "Lasting forever or for a very long time",
+          "Happening once only",
+          "Changing constantly",
+        ],
       },
       special: {
         correct: "Better, greater, or different from what is usual",
-        options: ["Completely ordinary", "Better, greater, or different from what is usual", "Very boring", "Always the same"]
+        options: [
+          "Completely ordinary",
+          "Better, greater, or different from what is usual",
+          "Very boring",
+          "Always the same",
+        ],
       },
       tender: {
         correct: "Gentle and caring",
-        options: ["Rough and harsh", "Gentle and caring", "Loud and noisy", "Cold and distant"]
+        options: ["Rough and harsh", "Gentle and caring", "Loud and noisy", "Cold and distant"],
       },
       clutch: {
         correct: "To hold tightly",
-        options: ["To throw away", "To hold tightly", "To push gently", "To ignore completely"]
+        options: ["To throw away", "To hold tightly", "To push gently", "To ignore completely"],
       },
       impose: {
         correct: "To force something on others",
-        options: ["To ask politely", "To force something on others", "To give freely", "To take away"]
-      }
+        options: ["To ask politely", "To force something on others", "To give freely", "To take away"],
+      },
     };
 
     // Context choice data for the context-choice game
@@ -188,43 +261,48 @@ class SpellingApp {
       resilient: {
         sentence: "The boy was resilient. Even after falling many times, he stood up and tried again.",
         correct: "Kept trying",
-        options: ["Gave up", "Kept trying", "Slept early", "Ran away"]
+        options: ["Gave up", "Kept trying", "Slept early", "Ran away"],
       },
       abundant: {
         sentence: "The garden had abundant flowers. There were so many colorful blooms everywhere you looked.",
         correct: "Plenty of",
-        options: ["Very few", "Plenty of", "Ugly", "Expensive"]
+        options: ["Very few", "Plenty of", "Ugly", "Expensive"],
       },
       meticulous: {
-        sentence: "Sarah was meticulous with her homework. She checked every answer twice and made sure her handwriting was perfect.",
+        sentence:
+          "Sarah was meticulous with her homework. She checked every answer twice and made sure her handwriting was perfect.",
         correct: "Very careful",
-        options: ["Very careless", "Very careful", "Very fast", "Very lazy"]
+        options: ["Very careless", "Very careful", "Very fast", "Very lazy"],
       },
       eloquent: {
-        sentence: "The speaker was eloquent during the presentation. Everyone listened carefully to his clear and persuasive words.",
+        sentence:
+          "The speaker was eloquent during the presentation. Everyone listened carefully to his clear and persuasive words.",
         correct: "Spoke beautifully",
-        options: ["Spoke quietly", "Spoke beautifully", "Spoke angrily", "Spoke quickly"]
+        options: ["Spoke quietly", "Spoke beautifully", "Spoke angrily", "Spoke quickly"],
       },
       serene: {
         sentence: "The lake was serene in the morning. The water was perfectly still and peaceful.",
         correct: "Calm and quiet",
-        options: ["Rough and noisy", "Calm and quiet", "Deep and dark", "Cold and frozen"]
+        options: ["Rough and noisy", "Calm and quiet", "Deep and dark", "Cold and frozen"],
       },
       innovative: {
-        sentence: "The company was innovative with their new product. They created something completely different from anything before.",
+        sentence:
+          "The company was innovative with their new product. They created something completely different from anything before.",
         correct: "Creative and new",
-        options: ["Old-fashioned", "Creative and new", "Expensive", "Complicated"]
+        options: ["Old-fashioned", "Creative and new", "Expensive", "Complicated"],
       },
       tenacious: {
-        sentence: "The athlete was tenacious during training. She never gave up, even when the exercises became very difficult.",
+        sentence:
+          "The athlete was tenacious during training. She never gave up, even when the exercises became very difficult.",
         correct: "Never gave up",
-        options: ["Gave up easily", "Never gave up", "Worked slowly", "Complained often"]
+        options: ["Gave up easily", "Never gave up", "Worked slowly", "Complained often"],
       },
       pragmatic: {
-        sentence: "His approach to the problem was pragmatic. He focused on what would actually work rather than perfect theories.",
+        sentence:
+          "His approach to the problem was pragmatic. He focused on what would actually work rather than perfect theories.",
         correct: "Practical and realistic",
-        options: ["Dreamy and idealistic", "Practical and realistic", "Complicated and confusing", "Quick and simple"]
-      }
+        options: ["Dreamy and idealistic", "Practical and realistic", "Complicated and confusing", "Quick and simple"],
+      },
     };
 
     // Correct sentence data for the correct-sentence game
@@ -236,8 +314,8 @@ class SpellingApp {
           "Rina fell while skating but stood up to try again",
           "Arjun got a puzzle wrong and threw it away angrily",
           "A dog slept in the sun all day",
-          "A boy ate five chocolates quickly"
-        ]
+          "A boy ate five chocolates quickly",
+        ],
       },
       abundant: {
         question: "Which sentence shows something being abundant?",
@@ -246,8 +324,8 @@ class SpellingApp {
           "The library had abundant books on every topic imaginable",
           "There was only one apple left in the basket",
           "The room was completely empty and quiet",
-          "She found a single coin in her pocket"
-        ]
+          "She found a single coin in her pocket",
+        ],
       },
       meticulous: {
         question: "Which sentence shows someone being meticulous?",
@@ -256,8 +334,8 @@ class SpellingApp {
           "Tom rushed through his work without looking back",
           "Sarah checked her homework three times to make sure every answer was perfect",
           "The painter splashed colors randomly on the canvas",
-          "He quickly signed the document without reading it"
-        ]
+          "He quickly signed the document without reading it",
+        ],
       },
       eloquent: {
         question: "Which sentence shows someone being eloquent?",
@@ -266,8 +344,8 @@ class SpellingApp {
           "He mumbled quietly so no one could understand him",
           "The speaker captivated the audience with her beautiful and persuasive words",
           "She wrote a short note with just two words",
-          "The student remained silent during the entire presentation"
-        ]
+          "The student remained silent during the entire presentation",
+        ],
       },
       serene: {
         question: "Which sentence describes something serene?",
@@ -276,8 +354,8 @@ class SpellingApp {
           "The construction site was loud and chaotic all day",
           "The lake was perfectly calm and peaceful in the morning light",
           "The busy street was filled with honking cars and shouting",
-          "The storm brought heavy rain and strong winds"
-        ]
+          "The storm brought heavy rain and strong winds",
+        ],
       },
       innovative: {
         question: "Which sentence shows someone being innovative?",
@@ -286,8 +364,8 @@ class SpellingApp {
           "He always did things exactly the same way his grandfather taught him",
           "Maya invented a new way to organize her school supplies using recycled materials",
           "She copied her friend's project word for word",
-          "The company used the same old methods they had used for decades"
-        ]
+          "The company used the same old methods they had used for decades",
+        ],
       },
       tenacious: {
         question: "Which sentence shows someone being tenacious?",
@@ -296,8 +374,8 @@ class SpellingApp {
           "After one mistake, Lisa gave up and walked away",
           "Despite failing the test twice, Alex kept studying and finally passed on the third try",
           "He quit the team after the first practice session",
-          "She stopped trying when things became slightly difficult"
-        ]
+          "She stopped trying when things became slightly difficult",
+        ],
       },
       pragmatic: {
         question: "Which sentence shows someone being pragmatic?",
@@ -306,9 +384,9 @@ class SpellingApp {
           "He spent hours planning impossible and unrealistic schemes",
           "Instead of dreaming about perfect solutions, she chose the approach that would actually work",
           "She ignored all practical concerns and followed her wild imagination",
-          "The team focused only on theoretical ideas without considering reality"
-        ]
-      }
+          "The team focused only on theoretical ideas without considering reality",
+        ],
+      },
     };
 
     // Word parts data for the word parts puzzle game
@@ -541,49 +619,49 @@ class SpellingApp {
     // console.log("🔍 Word distractors:", typeof wordDistractors);
     // console.log("🔍 Final sequence:", typeof finalSequence);
 
-    this.fillupsBlankPositions=JSON.parse(fillupsBlankPositions)||{
-      'patience': [2, 3, 4,5],        // p_t_e_ce -> blanks at positions 1, 4, 6 (a, i, n)
-      'careful': [1, 4, 6],         // c_r_f_l -> blanks at positions 1, 4, 6 (a, e, u)
-      'aggression': [0, 1, 2, 6],   // A___ession -> blanks at positions 0, 1, 2, 6 (g, g, r)
-      'architecture': [0, 4, 8, 11], // _rch_tec_ur_ -> blanks at positions 0, 4, 8, 11 (a, i, t, e)
-      'petroleum': [1, 3, 6],       // p_t_ol_um -> blanks at positions 1, 3, 6 (e, r, e)
-      'receive': [1, 3, 5],         // r_c_i_e -> blanks at positions 1, 3, 5 (e, e, v)
-      'weather': [1, 4, 6],         // w_at_e_ -> blanks at positions 1, 4, 6 (e, h, r)
-      'success': [1, 4, 6],         // s_cc_s_ -> blanks at positions 1, 4, 6 (u, e, s)
-      'leisure': [0, 3, 4],         // L__sure -> blanks at positions 0, 3, 4 (e, i)
-      'tolerance': [1, 3, 6, 8],    // t_l_ra_c_ -> blanks at positions 1, 3, 6, 8 (o, e, n, e)
-      'necessary': [1, 4, 7],       // n_ce_sa_y -> blanks at positions 1, 4, 7 (e, s, r)
-      'feasible': [1, 3, 6],        // f_a_ib_e -> blanks at positions 1, 3, 6 (e, s, l)
-      'beginning': [1, 4, 7],       // b_gi_ni_g -> blanks at positions 1, 4, 7 (e, n, n)
-      'rhythm': [2, 4],             // rh_th_ -> blanks at positions 2, 4 (y, m)
-      'foreign': [3, 4, 5],         // f_r_ig_ -> blanks at positions 1, 3, 6 (o, e, n)
-      'vacuum': [1, 3, 5],          // v_c_u_ -> blanks at positions 1, 3, 5 (a, u, m)
-      'discipline': [1, 4, 7],      // d_sc_pl_ne -> blanks at positions 1, 4, 7 (i, i, i)
-      'imagination': [1, 4, 8],     // i_ag_nat_on -> blanks at positions 1, 4, 8 (m, i, i)
-      'sculpture': [1, 4, 7]        // s_ul_tu_e -> blanks at positions 1, 4, 7 (c, p, r)
-  }
+    this.fillupsBlankPositions = JSON.parse(fillupsBlankPositions) || {
+      patience: [2, 3, 4, 5], // p_t_e_ce -> blanks at positions 1, 4, 6 (a, i, n)
+      careful: [1, 4, 6], // c_r_f_l -> blanks at positions 1, 4, 6 (a, e, u)
+      aggression: [0, 1, 2, 6], // A___ession -> blanks at positions 0, 1, 2, 6 (g, g, r)
+      architecture: [0, 4, 8, 11], // _rch_tec_ur_ -> blanks at positions 0, 4, 8, 11 (a, i, t, e)
+      petroleum: [1, 3, 6], // p_t_ol_um -> blanks at positions 1, 3, 6 (e, r, e)
+      receive: [1, 3, 5], // r_c_i_e -> blanks at positions 1, 3, 5 (e, e, v)
+      weather: [1, 4, 6], // w_at_e_ -> blanks at positions 1, 4, 6 (e, h, r)
+      success: [1, 4, 6], // s_cc_s_ -> blanks at positions 1, 4, 6 (u, e, s)
+      leisure: [0, 3, 4], // L__sure -> blanks at positions 0, 3, 4 (e, i)
+      tolerance: [1, 3, 6, 8], // t_l_ra_c_ -> blanks at positions 1, 3, 6, 8 (o, e, n, e)
+      necessary: [1, 4, 7], // n_ce_sa_y -> blanks at positions 1, 4, 7 (e, s, r)
+      feasible: [1, 3, 6], // f_a_ib_e -> blanks at positions 1, 3, 6 (e, s, l)
+      beginning: [1, 4, 7], // b_gi_ni_g -> blanks at positions 1, 4, 7 (e, n, n)
+      rhythm: [2, 4], // rh_th_ -> blanks at positions 2, 4 (y, m)
+      foreign: [3, 4, 5], // f_r_ig_ -> blanks at positions 1, 3, 6 (o, e, n)
+      vacuum: [1, 3, 5], // v_c_u_ -> blanks at positions 1, 3, 5 (a, u, m)
+      discipline: [1, 4, 7], // d_sc_pl_ne -> blanks at positions 1, 4, 7 (i, i, i)
+      imagination: [1, 4, 8], // i_ag_nat_on -> blanks at positions 1, 4, 8 (m, i, i)
+      sculpture: [1, 4, 7], // s_ul_tu_e -> blanks at positions 1, 4, 7 (c, p, r)
+    };
 
-  this.twoOptionDistractors=JSON.parse(twoOptionDistractors)||{
-    'category': 'catagory',        // Use 'catagory' as the distractor for category
-    'careful': 'carful',          // Use 'carful' as the distractor for careful
-    'aggression': 'agression',    // Use 'agression' as the distractor for aggression
-    'architecture': 'architechure', // Use 'architechure' as the distractor for architecture
-    'petroleum': 'petrolium',     // Use 'petrolium' as the distractor for petroleum
-    'receive': 'recieve',         // Use 'recieve' as the distractor for receive
-    'weather': 'wheather',        // Use 'wheather' as the distractor for weather
-    'success': 'sucess',          // Use 'sucess' as the distractor for success
-    'leisure': 'lishere',         // Use 'liesure' as the distractor for leisure
-    'tolerance': 'tolerence',     // Use 'tolerence' as the distractor for tolerance
-    'necessary': 'neccessary',    // Use 'neccessary' as the distractor for necessary
-    'feasible': 'feasable',       // Use 'feasable' as the distractor for feasible
-    'beginning': 'begining',      // Use 'begining' as the distractor for beginning
-    'rhythm': 'rythm',            // Use 'rythm' as the distractor for rhythm
-    'foreign': 'foriegn',         // Use 'foriegn' as the distractor for foreign
-    'vacuum': 'vaccum',           // Use 'vaccum' as the distractor for vacuum
-    'discipline': 'disipline',    // Use 'disipline' as the distractor for discipline
-    'imagination': 'imagenation', // Use 'imagenation' as the distractor for imagination
-    'sculpture': 'sculpcher'      // Use 'sculpcher' as the distractor for sculpture
-}
+    this.twoOptionDistractors = JSON.parse(twoOptionDistractors) || {
+      category: "catagory", // Use 'catagory' as the distractor for category
+      careful: "carful", // Use 'carful' as the distractor for careful
+      aggression: "agression", // Use 'agression' as the distractor for aggression
+      architecture: "architechure", // Use 'architechure' as the distractor for architecture
+      petroleum: "petrolium", // Use 'petrolium' as the distractor for petroleum
+      receive: "recieve", // Use 'recieve' as the distractor for receive
+      weather: "wheather", // Use 'wheather' as the distractor for weather
+      success: "sucess", // Use 'sucess' as the distractor for success
+      leisure: "lishere", // Use 'liesure' as the distractor for leisure
+      tolerance: "tolerence", // Use 'tolerence' as the distractor for tolerance
+      necessary: "neccessary", // Use 'neccessary' as the distractor for necessary
+      feasible: "feasable", // Use 'feasable' as the distractor for feasible
+      beginning: "begining", // Use 'begining' as the distractor for beginning
+      rhythm: "rythm", // Use 'rythm' as the distractor for rhythm
+      foreign: "foriegn", // Use 'foriegn' as the distractor for foreign
+      vacuum: "vaccum", // Use 'vaccum' as the distractor for vacuum
+      discipline: "disipline", // Use 'disipline' as the distractor for discipline
+      imagination: "imagenation", // Use 'imagenation' as the distractor for imagination
+      sculpture: "sculpcher", // Use 'sculpcher' as the distractor for sculpture
+    };
 
     this.initializeQuestions();
     this.bindEvents();
@@ -637,7 +715,7 @@ class SpellingApp {
     for (let i = 0; i < allWords.length; i++) {
       wordMap[`word${i + 1}`] = allWords[i] || "";
     }
-    
+
     console.log(`📝 Created word map for ${allWords.length} words`);
     console.log(`🎯 Final sequence has ${this.finalSequence.length} games`);
 
@@ -668,11 +746,13 @@ class SpellingApp {
         word: actualWord,
         type: item.type,
       });
-      
+
       console.log(`✅ Added game ${index + 1}: ${item.type} for word "${actualWord}"`);
     });
 
-    console.log(`🎮 Total questions created: ${this.allQuestions.length} out of ${this.finalSequence.length} requested`);
+    console.log(
+      `🎮 Total questions created: ${this.allQuestions.length} out of ${this.finalSequence.length} requested`
+    );
   }
 
   bindEvents() {
@@ -1002,7 +1082,7 @@ class SpellingApp {
       this.showCompletion();
       return;
     }
-    
+
     console.log(`🎮 Displaying question ${this.currentQuestionIndex + 1} of ${this.allQuestions.length}`);
 
     const question = this.allQuestions[this.currentQuestionIndex];
@@ -1110,7 +1190,7 @@ class SpellingApp {
       speakerClicks: 0,
       check: [],
       backspace: [],
-      startTime: Math.round(Date.now() / 1000),
+      startTime: Math.round(getTodayDateNow() / 1000),
       endTime: null,
       submitted: false, // Flag to prevent duplicate submissions
     };
@@ -1152,7 +1232,7 @@ class SpellingApp {
       }
 
       // Create document ID with timestamp for uniqueness
-      const docId = `${this.usercode}-${this.typingAnalytics.word}-${Date.now()}`;
+      const docId = `${this.usercode}-${this.typingAnalytics.word}-${getTodayDateNow()}`;
       const docRef = doc(db, "user-activity", docId);
 
       const analyticsData = {
@@ -1559,92 +1639,92 @@ class SpellingApp {
 
   display2OptionGame(word) {
     // Remove other game classes if present
-    const appContainer = document.querySelector('.app-container');
+    const appContainer = document.querySelector(".app-container");
     if (appContainer) {
-        appContainer.classList.remove('options-4-active');
-        appContainer.classList.add('options-2-active');
+      appContainer.classList.remove("options-4-active");
+      appContainer.classList.add("options-2-active");
     }
-    
+
     // Show speaker button for 2-option games
-    const soundButton = document.getElementById('soundButton');
+    const soundButton = document.getElementById("soundButton");
     if (soundButton) {
-        soundButton.style.display = 'block';
+      soundButton.style.display = "block";
     }
-    
-    const questionType = document.getElementById('questionType');
-    const wordInput = document.getElementById('wordInput');
-    const keypad = document.getElementById('keypad');
-    const wordBoxes = document.getElementById('wordBoxes');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const keyboard = document.getElementById('keyboard');
-    
-    if (questionType) questionType.textContent = 'CHOOSE THE CORRECT SPELLING';
-    if (wordInput) wordInput.style.display = 'none';
-    if (keypad) keypad.style.display = 'none';
-    if (wordBoxes) wordBoxes.style.display = 'none';
-    if (keyboard) keyboard.style.display = 'none';
-    if (optionsContainer) optionsContainer.style.display = 'block';
-    
+
+    const questionType = document.getElementById("questionType");
+    const wordInput = document.getElementById("wordInput");
+    const keypad = document.getElementById("keypad");
+    const wordBoxes = document.getElementById("wordBoxes");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const keyboard = document.getElementById("keyboard");
+
+    if (questionType) questionType.textContent = "CHOOSE THE CORRECT SPELLING";
+    if (wordInput) wordInput.style.display = "none";
+    if (keypad) keypad.style.display = "none";
+    if (wordBoxes) wordBoxes.style.display = "none";
+    if (keyboard) keyboard.style.display = "none";
+    if (optionsContainer) optionsContainer.style.display = "block";
+
     // Create options (1 correct + 1 specific distractor)
     const options = [word]; // Correct answer
-    
+
     // Use specific distractor for 2-option game instead of random selection
     const specificDistractor = this.twoOptionDistractors[word.toLowerCase()];
     if (specificDistractor) {
-        options.push(specificDistractor);
+      options.push(specificDistractor);
     } else {
-        // Fallback to random distractor if specific one not found
-        console.warn(`No specific 2-option distractor found for word: ${word}. Using fallback.`);
-        const wordDistractors = this.wordDistractors;
-        const distractors = wordDistractors[word.toLowerCase()] || [];
-        if (distractors.length > 0) {
-            const randomDistractor = distractors[Math.floor(Math.random() * distractors.length)];
-            options.push(randomDistractor);
-        }
+      // Fallback to random distractor if specific one not found
+      console.warn(`No specific 2-option distractor found for word: ${word}. Using fallback.`);
+      const wordDistractors = this.wordDistractors;
+      const distractors = wordDistractors[word.toLowerCase()] || [];
+      if (distractors.length > 0) {
+        const randomDistractor = distractors[Math.floor(Math.random() * distractors.length)];
+        options.push(randomDistractor);
+      }
     }
-    
+
     // Shuffle the two options
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
-    
+
     // Set options container class for 2-option style
     if (optionsContainer) {
-        optionsContainer.className = 'options-container options-2';
-        optionsContainer.innerHTML = '';
+      optionsContainer.className = "options-container options-2";
+      optionsContainer.innerHTML = "";
     }
-    
+
     // Create a single row with two options
-    const row = document.createElement('div');
-    row.className = 'options-row';
-    
+    const row = document.createElement("div");
+    row.className = "options-row";
+
     // Reset selected option for this question
     this.selectedOption = null;
-    
+
     // Ensure check button is disabled initially
-    const checkButton = document.getElementById('checkButton');
+    const checkButton = document.getElementById("checkButton");
     if (checkButton) {
-        checkButton.disabled = true;
+      checkButton.disabled = true;
     }
-    
+
     // Set question type for validation
     const question = this.allQuestions[this.currentQuestionIndex];
     if (question) {
-        question.type = '2-option';
+      question.type = "2-option";
     }
-    
+
     shuffledOptions.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'option-btn';
-        button.textContent = option.toUpperCase();
-        button.style.flex = '1';
-        button.style.margin = '0 10px';
-        
-        button.addEventListener('click', () => this.selectOption(button, option));
-        
-        row.appendChild(button);
+      const button = document.createElement("button");
+      button.className = "option-btn";
+      button.textContent = option.toUpperCase();
+      button.style.flex = "1";
+      button.style.margin = "0 10px";
+
+      button.addEventListener("click", () => this.selectOption(button, option));
+
+      row.appendChild(button);
     });
-    
+
     optionsContainer.appendChild(row);
-}
+  }
 
   displayLetterScramble(correctWord, container) {
     // Ensure clean UI state for letter-scramble
@@ -2299,7 +2379,7 @@ class SpellingApp {
 
       // Track check button analytics for typing games
       if (this.typingAnalytics) {
-        const timeTaken = Math.round(Date.now() / 1000) - this.typingAnalytics.startTime;
+        const timeTaken = Math.round(getTodayDateNow() / 1000) - this.typingAnalytics.startTime;
         this.typingAnalytics.check.push({
           word: this.typedWord,
           timeTaken: timeTaken,
@@ -2389,10 +2469,13 @@ class SpellingApp {
 
       // Show correct answer indicator and color the options
       document.querySelectorAll(".sticky-note-option").forEach((note) => {
-        const noteText = note.querySelector('.sticky-note-text').textContent;
+        const noteText = note.querySelector(".sticky-note-text").textContent;
         // Extract option text more reliably by removing checkmark and prefix
-        const optionText = noteText.replace(/\s*✅\s*$/, '').substring(4).trim();
-        
+        const optionText = noteText
+          .replace(/\s*✅\s*$/, "")
+          .substring(4)
+          .trim();
+
         if (optionText === wordData.correct) {
           note.classList.add("correct");
           // Don't show the checkmark - just highlight in green
@@ -2415,8 +2498,11 @@ class SpellingApp {
       document.querySelectorAll(".context-option-btn").forEach((btn) => {
         const btnText = btn.textContent;
         // Extract option text more reliably by removing checkmark and prefix
-        const optionText = btnText.replace(/\s*✅\s*$/, '').substring(4).trim();
-        
+        const optionText = btnText
+          .replace(/\s*✅\s*$/, "")
+          .substring(4)
+          .trim();
+
         if (optionText === contextData.correct) {
           btn.classList.add("correct");
           // Don't show the checkmark - just highlight in green
@@ -2439,8 +2525,11 @@ class SpellingApp {
       document.querySelectorAll(".sentence-option-btn").forEach((btn) => {
         const btnText = btn.textContent;
         // Extract sentence text more reliably by removing checkmark and prefix
-        const sentenceText = btnText.replace(/\s*✅\s*$/, '').substring(4).trim();
-        
+        const sentenceText = btnText
+          .replace(/\s*✅\s*$/, "")
+          .substring(4)
+          .trim();
+
         if (sentenceText === sentenceData.correct) {
           btn.classList.add("correct");
           // Don't show the checkmark - just highlight in green
@@ -2468,7 +2557,7 @@ class SpellingApp {
 
     // Console log analytics for typing games when question is completed
     if (question.type === "typing" && this.typingAnalytics) {
-      this.typingAnalytics.endTime = Math.round(Date.now() / 1000);
+      this.typingAnalytics.endTime = Math.round(getTodayDateNow() / 1000);
       console.log("Typing Game Analytics:", JSON.stringify(this.typingAnalytics, null, 2));
     }
 
@@ -2551,39 +2640,38 @@ class SpellingApp {
   }
 
   showCorrectAnswerWithHighlights(correctWord, userAttempt) {
-    const correctBoxes = document.getElementById('correctAnswerBoxes');
-    correctBoxes.innerHTML = '';
-    
+    const correctBoxes = document.getElementById("correctAnswerBoxes");
+    correctBoxes.innerHTML = "";
+
     // Get the letter box size from the previous attempt
-    const previousBoxes = document.querySelectorAll('#previousWordBoxes .letter-box');
-    const boxSize = previousBoxes.length > 0 ? 
-      window.getComputedStyle(previousBoxes[0]).width : '40px';
-    
+    const previousBoxes = document.querySelectorAll("#previousWordBoxes .letter-box");
+    const boxSize = previousBoxes.length > 0 ? window.getComputedStyle(previousBoxes[0]).width : "40px";
+
     for (let i = 0; i < correctWord.length; i++) {
-      const letterBox = document.createElement('div');
-      letterBox.className = 'letter-box';
-      
+      const letterBox = document.createElement("div");
+      letterBox.className = "letter-box";
+
       // Match the size of previous attempt boxes
       letterBox.style.width = boxSize;
       letterBox.style.height = boxSize;
       letterBox.style.lineHeight = `calc(${boxSize} - 4px)`; // Account for border
-      
+
       // Check if this position was incorrect in the user's attempt
-      const userChar = userAttempt[i] || '';
-      const isIncorrect = userChar !== correctWord[i] && userChar !== '';
-      
+      const userChar = userAttempt[i] || "";
+      const isIncorrect = userChar !== correctWord[i] && userChar !== "";
+
       if (isIncorrect) {
-        letterBox.classList.add('incorrect-letter');
-        letterBox.title = `You wrote: ${userChar || 'empty'}`;
+        letterBox.classList.add("incorrect-letter");
+        letterBox.title = `You wrote: ${userChar || "empty"}`;
       }
-      
+
       letterBox.textContent = correctWord[i].toUpperCase();
       correctBoxes.appendChild(letterBox);
     }
-    
+
     // Show the correct answer section
-    document.getElementById("correctAnswerSection").style.display = 'block';
-    
+    document.getElementById("correctAnswerSection").style.display = "block";
+
     // Hide any feedback that might show "INCORRECT" message
     this.hideFeedback();
   }
@@ -2977,10 +3065,10 @@ class SpellingApp {
 
   displayWordsMeaning(word) {
     // Remove other game classes if present
-    const appContainer = document.querySelector('.app-container');
+    const appContainer = document.querySelector(".app-container");
     if (appContainer) {
-      appContainer.classList.remove('options-2-active');
-      appContainer.classList.add('words-meaning-active');
+      appContainer.classList.remove("options-2-active");
+      appContainer.classList.add("words-meaning-active");
     }
 
     // Show sound buttons for words-meaning game
@@ -2989,7 +3077,9 @@ class SpellingApp {
       soundButtonsContainer.style.display = "flex";
     }
 
-    document.getElementById("questionType").textContent = `Select the correct meaning of the word "${word.charAt(0).toUpperCase() + word.slice(1)}"`;
+    document.getElementById("questionType").textContent = `Select the correct meaning of the word "${
+      word.charAt(0).toUpperCase() + word.slice(1)
+    }"`;
     document.getElementById("inputContainer").style.display = "none";
 
     const optionsContainer = document.getElementById("optionsContainer");
@@ -3005,7 +3095,7 @@ class SpellingApp {
 
     const options = [...wordData.options]; // Create a copy to shuffle
     const shuffledOptions = this.shuffleArray(options);
-    
+
     optionsContainer.innerHTML = "";
 
     // Disable check button until user selects an option
@@ -3013,21 +3103,21 @@ class SpellingApp {
 
     // Create sticky note styled options
     const stickyColors = [
-      '#FFE4B5', // Moccasin (light peach)
-      '#E6E6FA', // Lavender (light purple)
-      '#F0F8FF', // Alice Blue (light blue)
-      '#F5F5DC'  // Beige (light yellow)
+      "#FFE4B5", // Moccasin (light peach)
+      "#E6E6FA", // Lavender (light purple)
+      "#F0F8FF", // Alice Blue (light blue)
+      "#F5F5DC", // Beige (light yellow)
     ];
 
     shuffledOptions.forEach((option, index) => {
       const stickyNote = document.createElement("div");
       stickyNote.className = "sticky-note-option";
       stickyNote.style.backgroundColor = stickyColors[index % stickyColors.length];
-      
+
       const optionText = document.createElement("div");
       optionText.className = "sticky-note-text";
       optionText.textContent = `(${String.fromCharCode(97 + index)}) ${option}`;
-      
+
       // Add correct answer indicator (✅) for the correct option
       if (option === wordData.correct) {
         const checkmark = document.createElement("span");
@@ -3036,23 +3126,23 @@ class SpellingApp {
         checkmark.style.display = "none"; // Hidden initially
         optionText.appendChild(checkmark);
       }
-      
+
       stickyNote.appendChild(optionText);
-      
+
       stickyNote.addEventListener("click", () => this.selectWordsMeaningOption(stickyNote, option, word));
-      
+
       optionsContainer.appendChild(stickyNote);
     });
   }
 
   selectWordsMeaningOption(selectedElement, selectedOption, word) {
     // Remove previous selections
-    document.querySelectorAll('.sticky-note-option').forEach(option => {
-      option.classList.remove('selected');
+    document.querySelectorAll(".sticky-note-option").forEach((option) => {
+      option.classList.remove("selected");
     });
 
     // Mark current selection
-    selectedElement.classList.add('selected');
+    selectedElement.classList.add("selected");
     this.selectedOption = selectedOption;
 
     // Enable check button
@@ -3064,10 +3154,10 @@ class SpellingApp {
 
   displayContextChoice(word) {
     // Remove other game classes if present
-    const appContainer = document.querySelector('.app-container');
+    const appContainer = document.querySelector(".app-container");
     if (appContainer) {
-      appContainer.classList.remove('options-2-active', 'words-meaning-active');
-      appContainer.classList.add('context-choice-active');
+      appContainer.classList.remove("options-2-active", "words-meaning-active");
+      appContainer.classList.add("context-choice-active");
     }
 
     // Show sound buttons for context-choice game
@@ -3086,10 +3176,10 @@ class SpellingApp {
     // Get the actual word from the current question
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
     const actualWord = currentQuestion.word;
-    
+
     console.log("Word parameter:", word); // Debug log
     console.log("Actual word from question:", actualWord); // Debug log
-    
+
     // Get context choice data using the actual word
     const contextData = this.contextChoiceData[actualWord];
     if (!contextData) {
@@ -3104,15 +3194,15 @@ class SpellingApp {
     const sentenceDiv = document.createElement("div");
     sentenceDiv.className = "context-sentence";
     sentenceDiv.innerHTML = `<p>${contextData.sentence}</p><p class="context-question">Which word fits best?</p>`;
-    
+
     console.log("Sentence div created:", sentenceDiv); // Debug log
 
     const options = [...contextData.options]; // Create a copy to shuffle
     const shuffledOptions = this.shuffleArray(options);
-    
+
     // Clear the container first
     optionsContainer.innerHTML = "";
-    
+
     // Add the sentence div first
     optionsContainer.appendChild(sentenceDiv);
 
@@ -3127,7 +3217,7 @@ class SpellingApp {
       const optionButton = document.createElement("button");
       optionButton.className = "context-option-btn";
       optionButton.textContent = `(${String.fromCharCode(97 + index)}) ${option}`;
-      
+
       // Add correct answer indicator (✅) for the correct option
       if (option === contextData.correct) {
         const checkmark = document.createElement("span");
@@ -3136,9 +3226,9 @@ class SpellingApp {
         checkmark.style.display = "none"; // Hidden initially
         optionButton.appendChild(checkmark);
       }
-      
+
       optionButton.addEventListener("click", () => this.selectContextChoiceOption(optionButton, option, actualWord));
-      
+
       optionsGrid.appendChild(optionButton);
     });
 
@@ -3148,12 +3238,12 @@ class SpellingApp {
 
   selectContextChoiceOption(selectedElement, selectedOption, word) {
     // Remove previous selections
-    document.querySelectorAll('.context-option-btn').forEach(option => {
-      option.classList.remove('selected');
+    document.querySelectorAll(".context-option-btn").forEach((option) => {
+      option.classList.remove("selected");
     });
 
     // Mark current selection
-    selectedElement.classList.add('selected');
+    selectedElement.classList.add("selected");
     this.selectedOption = selectedOption;
 
     // Enable check button
@@ -3165,10 +3255,10 @@ class SpellingApp {
 
   displayCorrectSentence(word) {
     // Remove other game classes if present
-    const appContainer = document.querySelector('.app-container');
+    const appContainer = document.querySelector(".app-container");
     if (appContainer) {
-      appContainer.classList.remove('options-2-active', 'words-meaning-active', 'context-choice-active');
-      appContainer.classList.add('correct-sentence-active');
+      appContainer.classList.remove("options-2-active", "words-meaning-active", "context-choice-active");
+      appContainer.classList.add("correct-sentence-active");
     }
 
     // Show sound buttons for correct-sentence game
@@ -3180,10 +3270,10 @@ class SpellingApp {
     // Get the actual word from the current question
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
     const actualWord = currentQuestion.word;
-    
+
     console.log("Word parameter:", word); // Debug log
     console.log("Actual word from question:", actualWord); // Debug log
-    
+
     // Get correct sentence data using the actual word
     const sentenceData = this.correctSentenceData[actualWord];
     if (!sentenceData) {
@@ -3203,7 +3293,7 @@ class SpellingApp {
 
     const options = [...sentenceData.options]; // Create a copy to shuffle
     const shuffledOptions = this.shuffleArray(options);
-    
+
     // Clear the container first
     optionsContainer.innerHTML = "";
 
@@ -3211,9 +3301,9 @@ class SpellingApp {
     const questionDiv = document.createElement("div");
     questionDiv.className = "sentence-question";
     questionDiv.innerHTML = `<p>${sentenceData.question}</p>`;
-    
+
     console.log("Question div created:", questionDiv); // Debug log
-    
+
     // Add the question div first
     optionsContainer.appendChild(questionDiv);
 
@@ -3225,7 +3315,7 @@ class SpellingApp {
       const optionButton = document.createElement("button");
       optionButton.className = "sentence-option-btn";
       optionButton.innerHTML = `<span class="option-letter">(${String.fromCharCode(97 + index)})</span> ${option}`;
-      
+
       // Add correct answer indicator (✅) for the correct option
       if (option === sentenceData.correct) {
         const checkmark = document.createElement("span");
@@ -3234,21 +3324,21 @@ class SpellingApp {
         checkmark.style.display = "none"; // Hidden initially
         optionButton.appendChild(checkmark);
       }
-      
+
       optionButton.addEventListener("click", () => this.selectCorrectSentenceOption(optionButton, option, actualWord));
-      
+
       optionsContainer.appendChild(optionButton);
     });
   }
 
   selectCorrectSentenceOption(selectedElement, selectedOption, word) {
     // Remove previous selections
-    document.querySelectorAll('.sentence-option-btn').forEach(option => {
-      option.classList.remove('selected');
+    document.querySelectorAll(".sentence-option-btn").forEach((option) => {
+      option.classList.remove("selected");
     });
 
     // Mark current selection
-    selectedElement.classList.add('selected');
+    selectedElement.classList.add("selected");
     this.selectedOption = selectedOption;
 
     // Enable check button
@@ -3264,12 +3354,13 @@ class SpellingApp {
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
 
     // Hide hint for specific game types
-    if (currentQuestion && (
-      currentQuestion.type === "correct-word" || 
-      currentQuestion.type === "words-meaning" || 
-      currentQuestion.type === "context-choice" || 
-      currentQuestion.type === "correct-sentence"
-    )) {
+    if (
+      currentQuestion &&
+      (currentQuestion.type === "correct-word" ||
+        currentQuestion.type === "words-meaning" ||
+        currentQuestion.type === "context-choice" ||
+        currentQuestion.type === "correct-sentence")
+    ) {
       hintElement.style.display = "none";
       return;
     }
@@ -3302,15 +3393,15 @@ class SpellingApp {
     const correctAnswerSection = document.getElementById("correctAnswerSection");
     const checkButton = document.getElementById("checkButton");
     const continueButton = document.getElementById("continueButton");
-    
+
     // Immediately hide UI elements to prevent flicker
     feedback.classList.remove("show");
-    correctAnswerSection.style.display = 'none';
-    checkButton.style.display = 'none';
-    continueButton.style.display = 'none';
-    
+    correctAnswerSection.style.display = "none";
+    checkButton.style.display = "none";
+    continueButton.style.display = "none";
+
     // Add a small delay to allow UI to update before heavy operations
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Stop all speech synthesis immediately
     if (speechSynthesis.speaking) {
@@ -3334,7 +3425,7 @@ class SpellingApp {
     // Update question index and save progress
     this.currentQuestionIndex++;
     await this.updateGameAnalytics();
-    
+
     // Use requestAnimationFrame for smoother UI updates
     requestAnimationFrame(() => {
       this.displayCurrentQuestion();
@@ -3412,20 +3503,18 @@ class SpellingApp {
       "lottie/3inarow7.lottie",
     ];
     const fiveInARowAnimations = [
-      "lottie/5inarow.lottie", 
+      "lottie/5inarow.lottie",
       "lottie/5inarow2.lottie",
       "lottie/5inarow3.lottie",
       "lottie/5inarow4.lottie",
-
     ];
 
-    const tenInARowAnimations = 
-    ["lottie/10inarow.lottie",
-     "lottie/10inarow2.lottie",
-     "lottie/10inarow3.lottie",
-     "lottie/10inarow4.lottie",
-     "lottie/10inarow5.lottie",
-
+    const tenInARowAnimations = [
+      "lottie/10inarow.lottie",
+      "lottie/10inarow2.lottie",
+      "lottie/10inarow3.lottie",
+      "lottie/10inarow4.lottie",
+      "lottie/10inarow5.lottie",
     ];
 
     // Randomly select an animation for the current streak level
@@ -3768,40 +3857,40 @@ class SpellingApp {
     // Reset feedback and buttons
     const feedback = document.getElementById("feedback");
     feedback.classList.remove("show", "correct", "incorrect");
-    feedback.textContent = '';
-    
+    feedback.textContent = "";
+
     // Reset buttons
     document.getElementById("checkButton").style.display = "inline-block";
     document.getElementById("continueButton").style.display = "none";
-    
+
     // Reset input and word boxes
     const wordInput = document.getElementById("wordInput");
     if (wordInput) {
-      wordInput.value = '';
+      wordInput.value = "";
       wordInput.disabled = false;
     }
-    
+
     // Clear previous attempts
     const previousAttempt = document.getElementById("previousAttempt");
     if (previousAttempt) {
       previousAttempt.style.display = "none";
       const previousWordBoxes = document.getElementById("previousWordBoxes");
-      if (previousWordBoxes) previousWordBoxes.innerHTML = '';
+      if (previousWordBoxes) previousWordBoxes.innerHTML = "";
     }
-    
+
     // Clear current attempt boxes
     const wordBoxes = document.getElementById("wordBoxes");
-    if (wordBoxes) wordBoxes.innerHTML = '';
-    
+    if (wordBoxes) wordBoxes.innerHTML = "";
+
     // Hide correct answer section
     const correctAnswerSection = document.getElementById("correctAnswerSection");
-    if (correctAnswerSection) correctAnswerSection.style.display = 'none';
-    
+    if (correctAnswerSection) correctAnswerSection.style.display = "none";
+
     // Reset keyboard state
     this.resetKeyboardColors();
-    
+
     // Reset any game-specific states
-    this.typedWord = '';
+    this.typedWord = "";
     this.currentAttempt = 1;
     this.previousAttempts = [];
 
@@ -3899,7 +3988,7 @@ class SpellingApp {
   // Game Analytics Functions
   generateSessionId() {
     // Generate a unique session ID using timestamp and random string
-    const timestamp = Date.now().toString(36);
+    const timestamp = getTodayDateNow().toString(36);
     const randomStr = Math.random().toString(36).substring(2, 8);
     return `${this.usercode}-${timestamp}-${randomStr}`;
   }
@@ -3937,7 +4026,7 @@ class SpellingApp {
           case "gameStarted":
           case "lastUpdated":
           case "completedAt":
-            cleaned[key] = new Date().toISOString();
+            cleaned[key] = getTodayDateISOString();
             break;
           default:
             cleaned[key] = value;
@@ -3949,11 +4038,7 @@ class SpellingApp {
 
   // Helper function to generate date-based document ID (yyyy/mm/dd format)
   getDateBasedDocumentId() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${this.usercode}#${year}-${month}-${day}`;
+    return `${this.usercode}#${getTodayDateString()}`;
   }
 
   async saveGameProgress() {
@@ -3989,7 +4074,7 @@ class SpellingApp {
         consecutiveCorrect: this.consecutiveCorrect,
         failedWordsTracker: Array.from(this.failedWordsTracker || []),
         sessionId: this.sessionId,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: getTodayDateISOString(),
         gameStarted: this.gameStarted,
         isCompleted: false,
       };
@@ -4042,11 +4127,11 @@ class SpellingApp {
         console.log(`📍 Resuming from question ${this.currentQuestionIndex + 1} of ${this.allQuestions.length}`);
       } else {
         console.log("🆕 No existing progress found, starting fresh game");
-        this.gameStarted = new Date().toISOString();
+        this.gameStarted = getTodayDateISOString();
       }
     } catch (error) {
       console.error("❌ Error loading game progress:", error);
-      this.gameStarted = new Date().toISOString();
+      this.gameStarted = getTodayDateISOString();
     }
   }
 
@@ -4083,7 +4168,7 @@ class SpellingApp {
         consecutiveCorrect: this.consecutiveCorrect,
         failedWordsTracker: Array.from(this.failedWordsTracker || []),
         sessionId: this.sessionId,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: getTodayDateISOString(),
         gameStarted: this.gameStarted,
         isCompleted: false,
       };
@@ -4131,16 +4216,15 @@ class SpellingApp {
         consecutiveCorrect: this.consecutiveCorrect,
         failedWordsTracker: Array.from(this.failedWordsTracker || []),
         sessionId: this.sessionId,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: getTodayDateISOString(),
         gameStarted: this.gameStarted,
         isCompleted: true,
-        completedAt: new Date().toISOString(),
+        completedAt: getTodayDateISOString(),
       };
 
       const cleanedData = this.cleanDataForFirebase(gameAnalyticsData);
       await setDoc(docRef, cleanedData);
       console.log("✅ Game marked as completed");
-
     } catch (error) {
       console.error("❌ Error marking game as completed:", error);
     }
@@ -4183,7 +4267,7 @@ class SpellingApp {
         consecutiveCorrect: this.consecutiveCorrect,
         failedWordsTracker: Array.from(this.failedWordsTracker || []),
         sessionId: this.sessionId,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: getTodayDateISOString(),
         gameStarted: this.gameStarted,
         isCompleted: false,
       };
@@ -4245,11 +4329,11 @@ document.getElementById("startGameBtn").addEventListener("click", async function
         document.querySelector(".app-container").style.display = "block";
         // Safe parsing function to handle both strings and objects
         const safeParse = (data) => {
-          if (typeof data === 'string') {
+          if (typeof data === "string") {
             try {
               return JSON.parse(data);
             } catch (e) {
-              console.warn('Failed to parse JSON string:', data);
+              console.warn("Failed to parse JSON string:", data);
               return {};
             }
           }
@@ -4397,10 +4481,10 @@ async function fetchQuestionsFromFirebase(userCode = null) {
     console.log("✅ Successfully fetched questions from Firebase:");
     console.log("👤 Document ID:", actualUserCode);
     console.log("📝 Available fields:", Object.keys(documentData));
-    
+
     // Check for missing game data fields
-    const requiredFields = ['wordMeanings', 'contextChoice', 'correctSentence'];
-    const missingFields = requiredFields.filter(field => !documentData[field]);
+    const requiredFields = ["wordMeanings", "contextChoice", "correctSentence"];
+    const missingFields = requiredFields.filter((field) => !documentData[field]);
     if (missingFields.length > 0) {
       console.warn("⚠️ Missing game data fields:", missingFields);
     }
