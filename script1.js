@@ -4,7 +4,7 @@ let db = null;
 
 // Common function to get today's date in YYYY-MM-DD format
 function getTodayDate() {
-  //const customDate = "2025-10-05";
+  // const customDate = "2025-10-05";
   const customDate = null;
 
   if (customDate) {
@@ -15,7 +15,14 @@ function getTodayDate() {
 }
 
 function getTodayDateNow() {
-  return getTodayDate().now();
+  // const customDate = "2025-10-05";
+  const customDate = null;
+  
+  if (customDate) {
+    return new Date(customDate).getTime();
+  }
+  
+  return Date.now();
 }
 
 function getTodayDateISOString() {
