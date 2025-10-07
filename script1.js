@@ -2949,8 +2949,50 @@ class SpellingApp {
       "lottie/10inarow5.lottie",
       "lottie/complete1.lottie",
       "lottie/complete2.lottie",
+      "lottie/3inarow8.lottie",
+      "lottie/3inarow9.lottie",
+      "lottie/3inarow10.lottie",
+      "lottie/3inarow11.lottie",
+      "lottie/3inarow12.lottie",
+      "lottie/3inarow13.lottie",
+      "lottie/3inarow14.lottie",
+      "lottie/3inarow15.lottie",
+      "lottie/3inarow16.lottie",
+      "lottie/3inarow17.lottie",
+      "lottie/3inarow18.lottie",
+      "lottie/3inarow19.lottie",
+      "lottie/3inarow20.lottie",
+      "lottie/3inarow21.lottie",
+      "lottie/3inarow22.lottie",
+      "lottie/3inarow23.lottie",
+      "lottie/3inarow24.lottie",
+      "lottie/3inarow25.lottie",
+      "lottie/3inarow26.lottie",
+      "lottie/3inarow27.lottie",
+      "lottie/5inarow10.lottie",
+      "lottie/5inarow11.lottie",
+      "lottie/5inarow12.lottie",
+      "lottie/5inarow13.lottie",
+      "lottie/5inarow14.lottie",
+      "lottie/5inarow15.lottie",
+      "lottie/5inarow16.lottie",
+      "lottie/5inarow17.lottie",
+      "lottie/5inarow18.lottie",
+      "lottie/5inarow19.lottie",
+      "lottie/5inarow20.lottie",
+      "lottie/5inarow21.lottie",
+      "lottie/10inarow10.lottie",
+      "lottie/10inarow11.lottie",
+      "lottie/10inarow12.lottie",
+      "lottie/10inarow13.lottie",
+      "lottie/10inarow14.lottie",
+      "lottie/10inarow15.lottie",
+      "lottie/10inarow16.lottie",
+      "lottie/10inarow17.lottie",
+      "lottie/10inarow18.lottie",
+      "lottie/10inarow19.lottie",
+      
     ];
-
     // Create hidden preload container
     const preloadContainer = document.createElement("div");
     preloadContainer.style.cssText = "position: absolute; width: 0; height: 0; overflow: hidden; z-index: -1;";
@@ -2988,6 +3030,8 @@ class SpellingApp {
     let animationSize = "";
 
     // Arrays of animations for each streak level
+   
+    // Arrays of animations for each streak level
     const threeInARowAnimations = [
       "lottie/3inarow2.lottie",
       "lottie/3inarow3.lottie",
@@ -2996,20 +3040,64 @@ class SpellingApp {
       "lottie/3inarow5.lottie",
       "lottie/3inarow6.lottie",
       "lottie/3inarow7.lottie",
+      "lottie/3inarow8.lottie",
+      "lottie/3inarow9.lottie",
+      "lottie/3inarow10.lottie",
+      "lottie/3inarow11.lottie",
+      "lottie/3inarow12.lottie",
+      "lottie/3inarow13.lottie",
+      "lottie/3inarow14.lottie",
+      "lottie/3inarow15.lottie",
+      "lottie/3inarow16.lottie",
+      "lottie/3inarow17.lottie",
+      "lottie/3inarow18.lottie",
+      "lottie/3inarow19.lottie",
+      "lottie/3inarow20.lottie",
+      "lottie/3inarow21.lottie",
+      "lottie/3inarow22.lottie",
+      "lottie/3inarow23.lottie",
+      "lottie/3inarow24.lottie",
+      "lottie/3inarow25.lottie",
+      "lottie/3inarow26.lottie",
+      "lottie/3inarow27.lottie",
     ];
     const fiveInARowAnimations = [
-      "lottie/5inarow.lottie",
+      "lottie/5inarow.lottie", 
       "lottie/5inarow2.lottie",
       "lottie/5inarow3.lottie",
       "lottie/5inarow4.lottie",
+      "lottie/5inarow10.lottie",
+      "lottie/5inarow11.lottie",
+      "lottie/5inarow12.lottie",
+      "lottie/5inarow13.lottie",
+      "lottie/5inarow14.lottie",
+      "lottie/5inarow15.lottie",
+      "lottie/5inarow16.lottie",
+      "lottie/5inarow17.lottie",
+      "lottie/5inarow18.lottie",
+      "lottie/5inarow19.lottie",
+      "lottie/5inarow20.lottie",
+      "lottie/5inarow21.lottie",
+
     ];
 
-    const tenInARowAnimations = [
-      "lottie/10inarow.lottie",
-      "lottie/10inarow2.lottie",
-      "lottie/10inarow3.lottie",
-      "lottie/10inarow4.lottie",
-      "lottie/10inarow5.lottie",
+    const tenInARowAnimations = 
+    ["lottie/10inarow.lottie",
+     "lottie/10inarow2.lottie",
+     "lottie/10inarow3.lottie",
+     "lottie/10inarow4.lottie",
+     "lottie/10inarow5.lottie",
+     "lottie/10inarow10.lottie",
+     "lottie/10inarow11.lottie",
+     "lottie/10inarow12.lottie",
+     "lottie/10inarow13.lottie",
+     "lottie/10inarow14.lottie",
+     "lottie/10inarow15.lottie",
+     "lottie/10inarow16.lottie",
+     "lottie/10inarow17.lottie",
+     "lottie/10inarow18.lottie",
+     "lottie/10inarow19.lottie",
+
     ];
 
     // Randomly select an animation for the current streak level
