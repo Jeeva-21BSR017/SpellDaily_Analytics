@@ -1890,7 +1890,7 @@ class SpellingApp {
     let userAnswer;
     let isCorrect;
 
-    if (["mcq", "2-option"].includes(question.type)) {
+    if (["mcq", "2-option", "4-option"].includes(question.type)) {
       // For multiple-choice questions, ensure an option is selected
       if (this.selectedOption === null || this.selectedOption === undefined) {
         this.showFeedback(false, "Please select an option.");
@@ -1899,6 +1899,17 @@ class SpellingApp {
 
       userAnswer = this.selectedOption;
       isCorrect = userAnswer.toLowerCase() === question.word.toLowerCase();
+      
+      // Highlight correct and incorrect answers
+      document.querySelectorAll(".option-btn").forEach((btn) => {
+        const btnText = btn.textContent.toLowerCase();
+        if (btnText === question.word.toLowerCase()) {
+          btn.classList.add("correct");
+        } else if (btn.classList.contains("selected") && !isCorrect) {
+          btn.classList.add("incorrect");
+        }
+      });
+
     } else if (question.type === "typing") {
       userAnswer = this.typedWord.trim().toLowerCase();
       isCorrect = userAnswer === question.word.toLowerCase();
