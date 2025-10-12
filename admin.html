@@ -1910,7 +1910,7 @@
         const allWords = new Set();
 
         data.forEach(item => {
-          const date = item.submittedAt.toDate().toDateString();
+          const date = new Date(item.submittedAt).toDateString();
           const word = item.word;          
           allDates.add(date);
           allWords.add(word);
@@ -2014,7 +2014,7 @@
       // Function to show word details in modal
       function showWordDetails(word, date, attemptIndex) {
         const wordData = allAnalyticsData.find(item => 
-          item.word === word && item.submittedAt.toDate().toDateString() === date
+          item.word === word && new Date(item.submittedAt).toDateString() === date
         );
         
         if (!wordData) return;
