@@ -991,6 +991,55 @@
 
         <div id="wordbank-status"></div>
 
+        <!-- Today Scheduled Words Section -->
+        <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #4caf50">
+          <h3 style="margin-bottom: 15px; color: #495057">📅 Today Scheduled Words</h3>
+          
+          <div style="background: white; padding: 15px; border-radius: 8px">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px">
+              <div class="form-group">
+                <label for="scheduled-usercode">User Code</label>
+                <input
+                  type="text"
+                  id="scheduled-usercode"
+                  placeholder="Enter user code"
+                  maxlength="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="scheduled-date">Date (YYYY/MM/DD)</label>
+                <input
+                  type="text"
+                  id="scheduled-date"
+                  placeholder="YYYY/MM/DD"
+                />
+              </div>
+            </div>
+            
+            <button type="button" class="btn" onclick="fetchScheduledWords()">
+              🔍 Fetch Scheduled Words
+            </button>
+            
+            <!-- Results Display -->
+            <div id="scheduled-results" style="display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px">
+              <h4 style="color: #4caf50; margin-bottom: 10px">📊 Scheduled Words Summary</h4>
+              <div id="scheduled-summary" style="margin-bottom: 15px"></div>
+              
+              <div id="scheduled-words-display" style="margin-top: 15px">
+                <div style="margin-bottom: 15px">
+                  <h5 style="color: #495057; margin-bottom: 8px">📝 Words:</h5>
+                  <div id="scheduled-words-list" style="background: white; padding: 10px; border-radius: 5px; min-height: 40px"></div>
+                </div>
+                
+                <div>
+                  <h5 style="color: #495057; margin-bottom: 8px">🎯 MCQ Words:</h5>
+                  <div id="scheduled-mcq-list" style="background: white; padding: 10px; border-radius: 5px; min-height: 40px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Bulk Upload Section -->
         <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #2196f3">
           <h3 style="margin-bottom: 15px; color: #495057">📤 Bulk Upload Words</h3>
@@ -2369,6 +2418,109 @@
         }
       }
 
+      // Fetch Scheduled Words by Date
+      async function fetchScheduledWords() {
+        const userCode = document.getElementById("scheduled-usercode").value.trim();
+        const dateInput = document.getElementById("scheduled-date").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code", "error");
+          return;
+        }
+
+        if (!dateInput) {
+          showStatus("wordbank-status", "❌ Please enter a date", "error");
+          return;
+        }
+
+        try {
+          showStatus("wordbank-status", `Fetching scheduled words for ${dateInput}...`, "info");
+
+          // Query the wordbank collection
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(
+            collection(db, "wordbank"), 
+            where("userCode", "==", userCode),
+            where("date", "==", dateInput)
+          );
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("wordbank-status", `❌ No scheduled words found for "${userCode}" on ${dateInput}`, "error");
+            document.getElementById("scheduled-results").style.display = "none";
+            return;
+          }
+
+          // Get the first matching document
+          const data = querySnapshot.docs[0].data();
+          
+          // Display the results
+          displayScheduledWords(data, dateInput);
+          
+          const totalWords = (data.words ? data.words.length : 0) + (data.mcqWords ? data.mcqWords.length : 0);
+          showStatus("wordbank-status", `✅ Found ${totalWords} scheduled words for ${dateInput}`, "success");
+
+        } catch (error) {
+          console.error("Error fetching scheduled words:", error);
+          showStatus("wordbank-status", `❌ Error fetching: ${error.message}`, "error");
+        }
+      }
+
+      // Display Scheduled Words
+      function displayScheduledWords(data, date) {
+        const resultsDiv = document.getElementById("scheduled-results");
+        const summaryDiv = document.getElementById("scheduled-summary");
+        const wordsListDiv = document.getElementById("scheduled-words-list");
+        const mcqListDiv = document.getElementById("scheduled-mcq-list");
+
+        // Calculate counts
+        const wordsCount = data.words ? data.words.length : 0;
+        const mcqCount = data.mcqWords ? data.mcqWords.length : 0;
+        const totalCount = wordsCount + mcqCount;
+
+        // Display summary
+        summaryDiv.innerHTML = `
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
+            <div style="background: white; padding: 10px; border-radius: 5px; text-align: center">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #4caf50">${totalCount}</div>
+              <div style="font-size: 0.8rem; color: #6c757d">Total Words</div>
+            </div>
+            <div style="background: white; padding: 10px; border-radius: 5px; text-align: center">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #2196f3">${wordsCount}</div>
+              <div style="font-size: 0.8rem; color: #6c757d">Regular Words</div>
+            </div>
+            <div style="background: white; padding: 10px; border-radius: 5px; text-align: center">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #ff9800">${mcqCount}</div>
+              <div style="font-size: 0.8rem; color: #6c757d">MCQ Words</div>
+            </div>
+          </div>
+          <div style="margin-top: 10px; padding: 8px; background: white; border-radius: 5px; text-align: center">
+            <strong>📅 Date:</strong> ${date}
+            <span style="margin-left: 15px"><strong>👤 User Code:</strong> ${data.userCode}</span>
+          </div>
+        `;
+
+        // Display words list
+        if (data.words && data.words.length > 0) {
+          wordsListDiv.innerHTML = data.words.map((word, index) => 
+            `<span style="display: inline-block; background: #e3f2fd; color: #1976d2; padding: 5px 10px; margin: 3px; border-radius: 5px; font-weight: 500">${index + 1}. ${word}</span>`
+          ).join('');
+        } else {
+          wordsListDiv.innerHTML = '<span style="color: #9e9e9e; font-style: italic">No words scheduled</span>';
+        }
+
+        // Display MCQ words list
+        if (data.mcqWords && data.mcqWords.length > 0) {
+          mcqListDiv.innerHTML = data.mcqWords.map((word, index) => 
+            `<span style="display: inline-block; background: #fff3e0; color: #f57c00; padding: 5px 10px; margin: 3px; border-radius: 5px; font-weight: 500">${index + 1}. ${word}</span>`
+          ).join('');
+        } else {
+          mcqListDiv.innerHTML = '<span style="color: #9e9e9e; font-style: italic">No MCQ words scheduled</span>';
+        }
+
+        resultsDiv.style.display = "block";
+      }
+
       // Initialize
       document.addEventListener("DOMContentLoaded", () => {
         console.log("🎯 Admin panel initialized");
@@ -2376,6 +2528,13 @@
         // Set current date as default
         const today = new Date().toISOString().split("T")[0];
         document.getElementById("date").value = today;
+
+        // Set current date for scheduled words (in YYYY/MM/DD format)
+        const todayScheduled = new Date();
+        const scheduledDateString = todayScheduled.getFullYear() + '/' + 
+                          String(todayScheduled.getMonth() + 1).padStart(2, '0') + '/' + 
+                          String(todayScheduled.getDate()).padStart(2, '0');
+        document.getElementById("scheduled-date").value = scheduledDateString;
 
         // Initialize drag and drop functionality
         initializeDragAndDrop();
