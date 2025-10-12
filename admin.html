@@ -695,6 +695,7 @@
         <button class="tab active" onclick="switchTab('create-questions')">Create Questions</button>
         <button class="tab" onclick="switchTab('check-code')">Check Code</button>
         <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+        <button class="tab" onclick="switchTab('wordbank')">Wordbank</button>
       </div>
 
       <!-- Create Questions Tab -->
@@ -982,6 +983,89 @@
             <div id="modal-body"></div>
           </div>
         </div>
+      </div>
+
+      <!-- Wordbank Tab -->
+      <div id="wordbank" class="tab-content">
+        <h2>📚 Word Bank Management</h2>
+
+        <div id="wordbank-status"></div>
+
+        <!-- Bulk Upload Section -->
+        <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #2196f3">
+          <h3 style="margin-bottom: 15px; color: #495057">📤 Bulk Upload Words</h3>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px">
+            <!-- Word Pools Upload -->
+            <div style="background: white; padding: 15px; border-radius: 8px">
+              <h4 style="color: #4caf50; margin-bottom: 10px">📖 Word Pools</h4>
+              <div class="form-group">
+                <label for="wordpools-usercode">User Code</label>
+                <input
+                  type="text"
+                  id="wordpools-usercode"
+                  placeholder="Enter user code"
+                  maxlength="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="wordpools-words">Words (one per line or comma-separated)</label>
+                <textarea
+                  id="wordpools-words"
+                  rows="8"
+                  placeholder="Enter words, one per line or comma-separated&#10;Example:&#10;apple&#10;banana&#10;cherry"
+                  style="width: 100%"
+                ></textarea>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <button type="button" class="btn btn-success" onclick="uploadWordPools()">
+                  📤 Upload New
+                </button>
+                <button type="button" class="btn" onclick="retrieveWordPools()">
+                  📥 Retrieve
+                </button>
+                <button type="button" class="btn btn-success" onclick="updateWordPools()">
+                  💾 Update & Save
+                </button>
+              </div>
+            </div>
+
+            <!-- Buffer Words Upload -->
+            <div style="background: white; padding: 15px; border-radius: 8px">
+              <h4 style="color: #ff9800; margin-bottom: 10px">📚 Buffer Words</h4>
+              <div class="form-group">
+                <label for="bufferwords-usercode">User Code</label>
+                <input
+                  type="text"
+                  id="bufferwords-usercode"
+                  placeholder="Enter user code"
+                  maxlength="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="bufferwords-words">Words (one per line or comma-separated)</label>
+                <textarea
+                  id="bufferwords-words"
+                  rows="8"
+                  placeholder="Enter words, one per line or comma-separated&#10;Example:&#10;dog&#10;cat&#10;bird"
+                  style="width: 100%"
+                ></textarea>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <button type="button" class="btn btn-success" onclick="uploadBufferWords()">
+                  📤 Upload New
+                </button>
+                <button type="button" class="btn" onclick="retrieveBufferWords()">
+                  📥 Retrieve
+                </button>
+                <button type="button" class="btn btn-success" onclick="updateBufferWords()">
+                  💾 Update & Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1982,6 +2066,308 @@
                           String(today.getDate()).padStart(2, '0');
         // document.getElementById("analytics-date").value = dateString;
       });
+
+      // Wordbank functionality
+
+      // Upload Word Pools to Firebase
+      async function uploadWordPools() {
+        const userCode = document.getElementById("wordpools-usercode").value.trim();
+        const wordsText = document.getElementById("wordpools-words").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code for word pools", "error");
+          return;
+        }
+
+        if (!wordsText) {
+          showStatus("wordbank-status", "❌ Please enter words to upload", "error");
+          return;
+        }
+
+        try {
+          // Parse words - support line-separated, comma-separated, or mixed
+          let words = [];
+          // Split by both newlines and commas, then filter out empty strings
+          words = wordsText
+            .split(/[\n,]+/)
+            .map(w => w.trim())
+            .filter(w => w !== '');
+
+          if (words.length === 0) {
+            showStatus("wordbank-status", "❌ No valid words found", "error");
+            return;
+          }
+
+          showStatus("wordbank-status", `Uploading ${words.length} words to wordPools...`, "info");
+
+          const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          
+          const wordPoolData = {
+            userCode: userCode,
+            words: words,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+
+          await setDoc(doc(db, "wordPools", userCode), wordPoolData);
+
+          showStatus("wordbank-status", `✅ Successfully uploaded ${words.length} words to wordPools (${userCode})`, "success");
+          
+          // Clear form
+          document.getElementById("wordpools-words").value = "";
+
+        } catch (error) {
+          console.error("Error uploading word pools:", error);
+          showStatus("wordbank-status", `❌ Error uploading: ${error.message}`, "error");
+        }
+      }
+
+      // Retrieve Word Pools from Firebase
+      async function retrieveWordPools() {
+        const userCode = document.getElementById("wordpools-usercode").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code to retrieve", "error");
+          return;
+        }
+
+        try {
+          showStatus("wordbank-status", `Retrieving word pools for ${userCode}...`, "info");
+
+          // Query the collection where userCode field matches
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(collection(db, "wordPools"), where("userCode", "==", userCode));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("wordbank-status", `❌ No word pools found for user code "${userCode}"`, "error");
+            return;
+          }
+
+          // Get the first matching document
+          const data = querySnapshot.docs[0].data();
+          
+          // Populate the form with retrieved data (comma-separated)
+          if (data.words && data.words.length > 0) {
+            document.getElementById("wordpools-words").value = data.words.join(', ');
+            showStatus("wordbank-status", `✅ Retrieved ${data.words.length} words for "${userCode}".`, "success");
+          } else {
+            document.getElementById("wordpools-words").value = "";
+            showStatus("wordbank-status", `⚠️ Word pool found for "${userCode}" but contains no words.`, "info");
+          }
+
+        } catch (error) {
+          console.error("Error retrieving word pools:", error);
+          showStatus("wordbank-status", `❌ Error retrieving: ${error.message}`, "error");
+        }
+      }
+
+      // Update Word Pools in Firebase
+      async function updateWordPools() {
+        const userCode = document.getElementById("wordpools-usercode").value.trim();
+        const wordsText = document.getElementById("wordpools-words").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code for word pools", "error");
+          return;
+        }
+
+        if (!wordsText) {
+          showStatus("wordbank-status", "❌ Please enter words to update", "error");
+          return;
+        }
+
+        try {
+          // Parse words - support line-separated, comma-separated, or mixed
+          let words = [];
+          words = wordsText
+            .split(/[\n,]+/)
+            .map(w => w.trim())
+            .filter(w => w !== '');
+
+          if (words.length === 0) {
+            showStatus("wordbank-status", "❌ No valid words found", "error");
+            return;
+          }
+
+          showStatus("wordbank-status", `Updating ${words.length} words in wordPools...`, "info");
+
+          // Query to find the document with this userCode
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(collection(db, "wordPools"), where("userCode", "==", userCode));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("wordbank-status", `❌ No word pool found for "${userCode}". Use "Upload New" instead.`, "error");
+            return;
+          }
+
+          // Update the existing document
+          const { updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "wordPools", querySnapshot.docs[0].id);
+          
+          await updateDoc(docRef, {
+            words: words,
+            updatedAt: new Date().toISOString()
+          });
+
+          showStatus("wordbank-status", `✅ Successfully updated ${words.length} words in wordPools (${userCode})`, "success");
+
+        } catch (error) {
+          console.error("Error updating word pools:", error);
+          showStatus("wordbank-status", `❌ Error updating: ${error.message}`, "error");
+        }
+      }
+
+      // Upload Buffer Words to Firebase
+      async function uploadBufferWords() {
+        const userCode = document.getElementById("bufferwords-usercode").value.trim();
+        const wordsText = document.getElementById("bufferwords-words").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code for buffer words", "error");
+          return;
+        }
+
+        if (!wordsText) {
+          showStatus("wordbank-status", "❌ Please enter words to upload", "error");
+          return;
+        }
+
+        try {
+          // Parse words - support line-separated, comma-separated, or mixed
+          let words = [];
+          // Split by both newlines and commas, then filter out empty strings
+          words = wordsText
+            .split(/[\n,]+/)
+            .map(w => w.trim())
+            .filter(w => w !== '');
+
+          if (words.length === 0) {
+            showStatus("wordbank-status", "❌ No valid words found", "error");
+            return;
+          }
+
+          showStatus("wordbank-status", `Uploading ${words.length} words to bufferWords...`, "info");
+
+          const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          
+          const bufferWordsData = {
+            userCode: userCode,
+            words: words,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+
+          await setDoc(doc(db, "bufferWords", userCode), bufferWordsData);
+
+          showStatus("wordbank-status", `✅ Successfully uploaded ${words.length} words to bufferWords (${userCode})`, "success");
+          
+          // Clear form
+          document.getElementById("bufferwords-words").value = "";
+
+        } catch (error) {
+          console.error("Error uploading buffer words:", error);
+          showStatus("wordbank-status", `❌ Error uploading: ${error.message}`, "error");
+        }
+      }
+
+      // Retrieve Buffer Words from Firebase
+      async function retrieveBufferWords() {
+        const userCode = document.getElementById("bufferwords-usercode").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code to retrieve", "error");
+          return;
+        }
+
+        try {
+          showStatus("wordbank-status", `Retrieving buffer words for ${userCode}...`, "info");
+
+          // Query the collection where userCode field matches
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(collection(db, "bufferWords"), where("userCode", "==", userCode));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("wordbank-status", `❌ No buffer words found for user code "${userCode}"`, "error");
+            return;
+          }
+
+          // Get the first matching document
+          const data = querySnapshot.docs[0].data();
+          
+          // Populate the form with retrieved data (comma-separated)
+          if (data.words && data.words.length > 0) {
+            document.getElementById("bufferwords-words").value = data.words.join(', ');
+            showStatus("wordbank-status", `✅ Retrieved ${data.words.length} words for "${userCode}".`, "success");
+          } else {
+            document.getElementById("bufferwords-words").value = "";
+            showStatus("wordbank-status", `⚠️ Buffer words found for "${userCode}" but contains no words.`, "info");
+          }
+
+        } catch (error) {
+          console.error("Error retrieving buffer words:", error);
+          showStatus("wordbank-status", `❌ Error retrieving: ${error.message}`, "error");
+        }
+      }
+
+      // Update Buffer Words in Firebase
+      async function updateBufferWords() {
+        const userCode = document.getElementById("bufferwords-usercode").value.trim();
+        const wordsText = document.getElementById("bufferwords-words").value.trim();
+
+        if (!userCode) {
+          showStatus("wordbank-status", "❌ Please enter a user code for buffer words", "error");
+          return;
+        }
+
+        if (!wordsText) {
+          showStatus("wordbank-status", "❌ Please enter words to update", "error");
+          return;
+        }
+
+        try {
+          // Parse words - support line-separated, comma-separated, or mixed
+          let words = [];
+          words = wordsText
+            .split(/[\n,]+/)
+            .map(w => w.trim())
+            .filter(w => w !== '');
+
+          if (words.length === 0) {
+            showStatus("wordbank-status", "❌ No valid words found", "error");
+            return;
+          }
+
+          showStatus("wordbank-status", `Updating ${words.length} words in bufferWords...`, "info");
+
+          // Query to find the document with this userCode
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(collection(db, "bufferWords"), where("userCode", "==", userCode));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("wordbank-status", `❌ No buffer words found for "${userCode}". Use "Upload New" instead.`, "error");
+            return;
+          }
+
+          // Update the existing document
+          const { updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "bufferWords", querySnapshot.docs[0].id);
+          
+          await updateDoc(docRef, {
+            words: words,
+            updatedAt: new Date().toISOString()
+          });
+
+          showStatus("wordbank-status", `✅ Successfully updated ${words.length} words in bufferWords (${userCode})`, "success");
+
+        } catch (error) {
+          console.error("Error updating buffer words:", error);
+          showStatus("wordbank-status", `❌ Error updating: ${error.message}`, "error");
+        }
+      }
 
       // Initialize
       document.addEventListener("DOMContentLoaded", () => {
