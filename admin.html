@@ -2441,7 +2441,7 @@
           const q = firestoreQuery(
             collection(db, "wordbank"), 
             where("userCode", "==", userCode),
-            where("date", "==", dateInput)
+            where("date", "==", dateInput.replaceAll("/","-"))
           );
           const querySnapshot = await getDocs(q);
 
@@ -2542,3 +2542,4 @@
     </script>
   </body>
 </html>
+ 
