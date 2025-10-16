@@ -1921,6 +1921,7 @@ class SpellingApp {
           word: this.typedWord,
           timeTaken: timeTaken,
           isCorrect: isCorrect,
+          isFirstAttempt: this.currentAttempt === 1,
         });
       }
 
