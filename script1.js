@@ -305,6 +305,7 @@ class SpellingApp {
         this.typingAnalytics.speakerClicks++;
       }
     });
+    updateEmojiInProgressBar('by_rating/2');
     document.getElementById("checkButton").addEventListener("click", () => this.checkAnswer());
     document.getElementById("continueButton").addEventListener("click", async () => await this.nextQuestion());
     document.getElementById("startPracticeButton").addEventListener("click", () => this.startPracticeMode());
@@ -742,9 +743,10 @@ class SpellingApp {
       // Check if this word already has an entry for this user (first-time only rule)
       const existingQuery = query(
         collection(db, "user-activity"),
-        where("usercode", "==", this.usercode),
+        where("code", "==", this.usercode),
         where("word", "==", this.typingAnalytics.word),
-        where("gameType", "==", "typing")
+        where("gameType", "==", "typing"),
+        where("submittedAt", ">=", new Date(new Date().setHours(0, 0, 0, 0)).toISOString())
       );
 
       const existingDocs = await getDocs(existingQuery);
@@ -1909,6 +1911,11 @@ class SpellingApp {
           btn.classList.add("incorrect");
         }
       });
+      if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
 
     } else if (question.type === "typing") {
       userAnswer = this.typedWord.trim().toLowerCase();
@@ -1937,6 +1944,12 @@ class SpellingApp {
 
       // Always color the word boxes after each attempt
       this.colorWordBoxes(isCorrect);
+
+      if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
 
       if (!isCorrect) {
         if (this.currentAttempt < this.maxAttempts) {
@@ -1981,6 +1994,11 @@ class SpellingApp {
 
       // Disable letter tiles after attempt
       this.disableLetterTiles();
+       if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
     } else if (question.type === "fillups") {
       userAnswer = this.typedWord.trim().toLowerCase();
       isCorrect = userAnswer === question.word.toLowerCase();
@@ -1994,6 +2012,11 @@ class SpellingApp {
 
       // Always color the word boxes after each attempt
       this.colorWordBoxes(isCorrect);
+       if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
     } else if (question.type === "words-meaning") {
       // Words-meaning game checking logic
       if (this.selectedOption === null || this.selectedOption === undefined) {
@@ -2021,6 +2044,11 @@ class SpellingApp {
           note.classList.add("incorrect");
         }
       });
+       if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
     } else if (question.type === "context-choice") {
       // Context-choice game checking logic
       if (this.selectedOption === null || this.selectedOption === undefined) {
@@ -2048,6 +2076,11 @@ class SpellingApp {
           btn.classList.add("incorrect");
         }
       });
+       if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
     } else if (question.type === "correct-sentence") {
       // Correct-sentence game checking logic
       if (this.selectedOption === null || this.selectedOption === undefined) {
@@ -2075,6 +2108,11 @@ class SpellingApp {
           btn.classList.add("incorrect");
         }
       });
+       if(!isCorrect) {
+        updateEmojiInProgressBar('by_rating/1');
+      } else {
+        updateEmojiInProgressBar('by_rating/4');
+      }
     } else {
       userAnswer = this.selectedOption;
       isCorrect = userAnswer && userAnswer.toLowerCase() === question.word.toLowerCase();
