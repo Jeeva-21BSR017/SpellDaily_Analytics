@@ -692,10 +692,10 @@
       </div>
 
       <div class="tabs">
-        <button class="tab active" onclick="switchTab('create-questions')">Create Questions</button>
-        <button class="tab" onclick="switchTab('check-code')">Check Code</button>
-        <button class="tab" onclick="switchTab('analytics')">Analytics</button>
-        <button class="tab" onclick="switchTab('wordbank')">Wordbank</button>
+        <button class="tab active" onclick="switchTab('create-questions', event)">Create Questions</button>
+        <button class="tab" onclick="switchTab('check-code', event)">Check Code</button>
+        <button class="tab" onclick="switchTab('analytics', event)">Analytics</button>
+        <button class="tab" onclick="switchTab('wordbank', event)">Wordbank</button>
       </div>
 
       <!-- Create Questions Tab -->
@@ -1115,6 +1115,53 @@
           </div>
         </div>
 
+        <!-- Words Management Section -->
+        <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #ffc107">
+          <h3 style="margin-bottom: 15px; color: #495057">📖 Words Management</h3>
+          
+          <div id="words-status"></div>
+
+          <!-- User Code Input Section -->
+          <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px">
+            <div class="form-group">
+              <label for="words-usercode">User Code</label>
+              <input
+                type="text"
+                id="words-usercode"
+                placeholder="Enter user code"
+                maxlength="20"
+              />
+            </div>
+            
+            <button type="button" class="btn" onclick="fetchWords()">
+              🔍 Fetch Words
+            </button>
+          </div>
+
+          <!-- Words Table Section -->
+          <div id="words-table-container" style="display: none">
+            <div style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #e9ecef">
+              <h3 style="margin-bottom: 15px; color: #495057">📝 Words List</h3>
+              
+              <div style="overflow-x: auto">
+                <table class="analytics-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">ID</th>
+                      <th style="text-align: center">Word</th>
+                      <th style="text-align: center">Streak</th>
+                      <th style="text-align: center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="words-table-body">
+                    <!-- Table rows will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1217,10 +1264,11 @@
       }
 
       // Tab switching function
-      function switchTab(tabName) {
+      function switchTab(tabName, event) {
         // Hide all tab contents
         document.querySelectorAll(".tab-content").forEach((content) => {
           content.classList.remove("active");
+          content.style.display = "none";
         });
 
         // Remove active class from all tabs
@@ -1229,10 +1277,16 @@
         });
 
         // Show selected tab content
-        document.getElementById(tabName).classList.add("active");
+        const tabContent = document.getElementById(tabName);
+        if (tabContent) {
+          tabContent.classList.add("active");
+          tabContent.style.display = "block";
+        }
 
         // Add active class to clicked tab
-        event.target.classList.add("active");
+        if (event && event.target) {
+          event.target.classList.add("active");
+        }
       }
 
       // Code availability check function
@@ -2519,6 +2573,179 @@
         }
 
         resultsDiv.style.display = "block";
+      }
+
+      // Words Management Functions
+
+      // Fetch Words from Firebase
+      async function fetchWords() {
+        const userCode = document.getElementById("words-usercode").value.trim();
+
+        if (!userCode) {
+          showStatus("words-status", "❌ Please enter a user code", "error");
+          return;
+        }
+
+        try {
+          showStatus("words-status", `Fetching words for ${userCode}...`, "info");
+
+          // Query the word collection where userCode field matches
+          const { query: firestoreQuery, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const q = firestoreQuery(collection(db, "words"), where("userCode", "==", userCode));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            showStatus("words-status", `❌ No words found for user code "${userCode}"`, "error");
+            document.getElementById("words-table-container").style.display = "none";
+            return;
+          }
+
+          // Collect all words
+          const words = [];
+          querySnapshot.forEach((doc) => {
+            words.push({
+              id: doc.id,
+              ...doc.data()
+            });
+          });
+
+          // Display words in table
+          displayWordsTable(words);
+          
+          showStatus("words-status", `✅ Found ${words.length} words for "${userCode}"`, "success");
+
+        } catch (error) {
+          console.error("Error fetching words:", error);
+          showStatus("words-status", `❌ Error fetching: ${error.message}`, "error");
+        }
+      }
+
+      // Display Words Table
+      function displayWordsTable(words) {
+        const tableBody = document.getElementById("words-table-body");
+        const tableContainer = document.getElementById("words-table-container");
+
+        // Sort words alphabetically
+        words.sort((a, b) => (a.word || "").localeCompare(b.word || ""));
+
+        // Clear existing rows
+        tableBody.innerHTML = "";
+
+        // Populate table rows
+        words.forEach(wordData => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td style="text-align: center; padding: 12px">${wordData.id}</td>
+            <td style="text-align: center; padding: 12px; font-weight: 600">${wordData.word || "N/A"}</td>
+            <td style="text-align: center; padding: 12px">
+              <span id="streak-display-${wordData.id}">${wordData.streak !== undefined ? wordData.streak : 0}</span>
+              <input 
+                type="number" 
+                id="streak-input-${wordData.id}" 
+                value="${wordData.streak !== undefined ? wordData.streak : 0}" 
+                style="display: none; width: 80px; padding: 5px; text-align: center"
+                min="0"
+              />
+            </td>
+            <td style="text-align: center; padding: 12px">
+              <button 
+                id="edit-btn-${wordData.id}" 
+                class="btn btn-success" 
+                style="padding: 8px 15px; margin: 0"
+                onclick="editStreak('${wordData.id}')"
+              >
+                ✏️ Edit
+              </button>
+              <button 
+                id="save-btn-${wordData.id}" 
+                class="btn" 
+                style="display: none; padding: 8px 15px; margin: 0"
+                onclick="saveStreak('${wordData.id}')"
+              >
+                💾 Save
+              </button>
+              <button 
+                id="cancel-btn-${wordData.id}" 
+                class="btn btn-secondary" 
+                style="display: none; padding: 8px 15px; margin: 0"
+                onclick="cancelEdit('${wordData.id}', ${wordData.streak !== undefined ? wordData.streak : 0})"
+              >
+                ❌ Cancel
+              </button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        tableContainer.style.display = "block";
+      }
+
+      // Edit Streak
+      function editStreak(docId) {
+        // Hide display, show input
+        document.getElementById(`streak-display-${docId}`).style.display = "none";
+        document.getElementById(`streak-input-${docId}`).style.display = "inline-block";
+        
+        // Hide edit button, show save and cancel buttons
+        document.getElementById(`edit-btn-${docId}`).style.display = "none";
+        document.getElementById(`save-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`cancel-btn-${docId}`).style.display = "inline-block";
+      }
+
+      // Cancel Edit
+      function cancelEdit(docId, originalStreak) {
+        // Reset input to original value
+        document.getElementById(`streak-input-${docId}`).value = originalStreak;
+        
+        // Show display, hide input
+        document.getElementById(`streak-display-${docId}`).style.display = "inline";
+        document.getElementById(`streak-input-${docId}`).style.display = "none";
+        
+        // Show edit button, hide save and cancel buttons
+        document.getElementById(`edit-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`save-btn-${docId}`).style.display = "none";
+        document.getElementById(`cancel-btn-${docId}`).style.display = "none";
+      }
+
+      // Save Streak
+      async function saveStreak(docId) {
+        const newStreak = parseInt(document.getElementById(`streak-input-${docId}`).value);
+        
+        if (isNaN(newStreak) || newStreak < 0) {
+          showStatus("words-status", "❌ Please enter a valid streak value (0 or greater)", "error");
+          return;
+        }
+
+        try {
+          showStatus("words-status", "Updating streak...", "info");
+
+          // Update the document in Firebase
+          const { updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "words", docId);
+          
+          await updateDoc(docRef, {
+            streak: newStreak,
+            updatedAt: new Date().toISOString()
+          });
+
+          // Update the display
+          document.getElementById(`streak-display-${docId}`).textContent = newStreak;
+          
+          // Hide input, show display
+          document.getElementById(`streak-display-${docId}`).style.display = "inline";
+          document.getElementById(`streak-input-${docId}`).style.display = "none";
+          
+          // Show edit button, hide save and cancel buttons
+          document.getElementById(`edit-btn-${docId}`).style.display = "inline-block";
+          document.getElementById(`save-btn-${docId}`).style.display = "none";
+          document.getElementById(`cancel-btn-${docId}`).style.display = "none";
+
+          showStatus("words-status", `✅ Successfully updated streak for document ${docId}`, "success");
+
+        } catch (error) {
+          console.error("Error updating streak:", error);
+          showStatus("words-status", `❌ Error updating: ${error.message}`, "error");
+        }
       }
 
       // Initialize
