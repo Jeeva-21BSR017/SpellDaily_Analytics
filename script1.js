@@ -777,6 +777,7 @@ class SpellingApp {
       this.typingAnalytics.submitted = true;
     } catch (error) {
       console.error("❌ Error submitting typing analytics to Firebase:", error);
+      logError("❌ Error submitting typing analytics to Firebase:", error);
     }
   }
 
@@ -1884,6 +1885,7 @@ class SpellingApp {
 
   async checkAnswer() {
     if (this.isAnswered) return;
+    pushStartedEvent(this.usercode);
 
     // Clear any existing feedback when user clicks check button
     document.getElementById("feedback").classList.remove("show");
@@ -3596,6 +3598,7 @@ class SpellingApp {
 
     // Save points to localStorage before redirecting
     localStorage.setItem("dailyChallengePoints", points);
+    await pushCompletedEvent(this.usercode);
 
     // Redirect to the completion page only when test is completed
     window.location.href = "complete.html";
@@ -3716,6 +3719,7 @@ class SpellingApp {
       console.log("✅ Game progress saved to Firebase");
     } catch (error) {
       console.error("❌ Error saving game progress:", error);
+      logError(`Error saving game progress to Firebase, ${error?.message}`);
     }
   }
 
@@ -3763,6 +3767,7 @@ class SpellingApp {
       }
     } catch (error) {
       console.error("❌ Error loading game progress:", error);
+      logError(`Error loading game progress from Firebase, ${error?.message}`);
       this.gameStarted = getTodayDateISOString();
     }
   }
@@ -3812,6 +3817,7 @@ class SpellingApp {
       console.log("✅ Game analytics updated");
     } catch (error) {
       console.error("❌ Error updating game analytics:", error);
+      logError(`Error updating game analytics to Firebase, ${error?.message}`);
     }
   }
 
@@ -3859,6 +3865,7 @@ class SpellingApp {
       console.log("✅ Game marked as completed");
     } catch (error) {
       console.error("❌ Error marking game as completed:", error);
+      logError(`Error marking game as completed in Firebase, ${error?.message}`);
     }
   }
 
@@ -3913,6 +3920,7 @@ class SpellingApp {
       }
     } catch (error) {
       console.error("❌ Error saving game progress on unload:", error);
+      logError(`Error saving game progress on unload to Firebase, ${error?.message}`);
     }
   }
 }
@@ -3966,6 +3974,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
               return JSON.parse(data);
             } catch (e) {
               console.warn("Failed to parse JSON string:", data);
+              logError(`Error parsing JSON string: ${data}, ${e?.message}`);
               return {};
             }
           }
@@ -3993,6 +4002,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
       }
     } catch (error) {
       console.error("Error loading questions:", error);
+      logError(`Error loading questions for user code ${code}, ${error?.message}`);
       // Reset button state on error
       startBtn.disabled = false;
       startBtn.textContent = "Start Game";
@@ -4044,6 +4054,7 @@ function initializeLogRocket() {
         console.log("✅ LogRocket initialized successfully for user:", userCode);
       } catch (error) {
         console.error("❌ LogRocket initialization failed:", error);
+        logError(`LogRocket initialization error, ${error?.message}`);
       }
     } else {
       console.log("⏳ LogRocket not yet available, retrying...");
@@ -4124,6 +4135,7 @@ async function fetchQuestionsFromFirebase(userCode = null) {
     return documentData;
   } catch (error) {
     console.error("❌ Error fetching questions from Firebase:", error);
+    logError(`Error fetching questions from Firebase for user code ${userCode}, ${error?.message}`);
     alert("Test is not active");
     return null;
   }
