@@ -108,7 +108,7 @@ export interface StatusMessage {
 }
 
 // Tab types
-export type TabType = 'create-questions' | 'check-code' | 'analytics' | 'syllable-test';
+export type TabType = 'create-questions'  | 'analytics';
 
 // Analytics interfaces
 export interface UserAnalytics {
@@ -124,6 +124,43 @@ export interface AttemptData {
   attempts: number;
   correct: boolean;
   timestamp: Date;
+}
+
+// Firebase Analytics Data Structure
+export interface AnalyticsAttempt {
+  word: string;
+  isCorrect: boolean;
+  timeTaken: number;
+}
+
+export interface AnalyticsData {
+  id: string;
+  code: string;
+  word: string;
+  submittedAt: string;
+  check: AnalyticsAttempt[];
+  backspace: string[];
+  speakerClicks: number;
+}
+
+export interface WordsByDate {
+  [word: string]: {
+    [date: string]: AnalyticsData[];
+  };
+}
+
+export interface AnalyticsModalData {
+  word: string;
+  date: string;
+  dayTotalAttempts: number;
+  dayCorrectAttempts: number;
+  dayAvgTime: number;
+  allWordAttempts: number;
+  allWordCorrect: number;
+  allWordAvgTime: number;
+  attempts: AnalyticsAttempt[];
+  speakerClicks: number;
+  backspaces: string[];
 }
 
 export interface AppUsageData {

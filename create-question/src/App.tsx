@@ -99,14 +99,8 @@ const App: React.FC = () => {
             clearForm={clearForm}
           />
         );
-      case 'check-code':
-        return (
-          null
-        );
       case 'analytics':
         return <Analytics showStatusMessage={showStatusMessage} />;
-      case 'syllable-test':
-        return <SyllableTest showStatusMessage={showStatusMessage} />;
       default:
         return null;
     }

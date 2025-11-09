@@ -1,6 +1,6 @@
 // Firebase configuration and initialization
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs, where, orderBy } from 'firebase/firestore';
 import { GameMode, QuestionFormData } from '../types';
 import {FirebaseQuestionData} from '../types/index';
 
