@@ -3,7 +3,7 @@ const isLocal =
   window.location.hostname === "127.0.0.1";
 
 const BASE_URL = isLocal
-  ? "http://localhost:8001"
+  ? "http://localhost:8000"
   : "https://spell-daily-backend.vercel.app";
 
 const logError = (error) => {
