@@ -1962,12 +1962,26 @@
         const wordsByDate = {};
         const allDates = new Set();
         const allWords = new Set();
+        const dateStartTimes = {}; // Store the earliest time for each date
 
         data.forEach(item => {
           const date = new Date(item.submittedAt).toDateString();
           const word = item.word;          
           allDates.add(date);
           allWords.add(word);
+          
+          // Track the earliest start time for each date using testStartTime field
+          // Store null if testStartTime is not available (will show hyphen)
+          if (item.testStartTime) {
+            if (!dateStartTimes[date] || new Date(item.testStartTime) < new Date(dateStartTimes[date])) {
+              dateStartTimes[date] = item.testStartTime;
+            }
+          } else {
+            // If no testStartTime exists for this date yet, mark it as null
+            if (!dateStartTimes[date]) {
+              dateStartTimes[date] = null;
+            }
+          }
           
           if (!wordsByDate[word]) {
             wordsByDate[word] = {};
@@ -1989,9 +2003,21 @@
                 <tr>
                   <th class="word-column">Word</th>
                   <th>Attempt</th>
-                  ${sortedDates.map((date, index) => `
-                    <th class="day-header">Day ${index + 1}<br/>${new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</th>
-                  `).join('')}
+                  ${sortedDates.map((date, index) => {
+                    const dateStr = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    let timeStr = '-';
+                    if (dateStartTimes[date]) {
+                      const startTime = new Date(dateStartTimes[date]);
+                      timeStr = startTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    }
+                    return `
+                      <th class="day-header">
+                        Day ${index + 1}<br/>
+                        ${dateStr}<br/>
+                        <span style="font-size: 0.85em; color: #666;">🕐 ${timeStr}</span>
+                      </th>
+                    `;
+                  }).join('')}
                 </tr>
               </thead>
               <tbody>

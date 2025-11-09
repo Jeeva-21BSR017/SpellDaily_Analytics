@@ -768,6 +768,7 @@ class SpellingApp {
         submittedAt: getTodayDateString(),
         gameType: "typing",
         sessionId: this.sessionId || "unknown",
+        testStartTime: this.gameStarted || getTodayDateISOString(),
       };
 
       await setDoc(docRef, analyticsData);
