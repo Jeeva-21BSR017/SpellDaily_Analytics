@@ -168,10 +168,10 @@
                 
                 // Track completion page view
                 LogRocket.track('Challenge Completion Page View');
-                
+                const urlParams = new URLSearchParams(window.location.search);
+                const logRocketUserId = urlParams.get("code");
+                const logRocketUserName = logRocketUserId; // Using the same code as name
                 // Identify user if needed
-                const logRocketUserId = localStorage.getItem('auth_userId');
-                const logRocketUserName = localStorage.getItem('auth_name');
                 if (logRocketUserId) {
                     LogRocket.identify(logRocketUserId, {
                         name: logRocketUserName || 'Spelling Challenge Player',

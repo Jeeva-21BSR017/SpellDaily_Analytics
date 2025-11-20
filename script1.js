@@ -76,6 +76,12 @@ class SpellingApp {
     correctSentence
   ) {
     this.usercode = usercode;
+    if(window.LogRocket) {
+      LogRocket.identify(usercode, {
+        name: usercode || "Spelling Drill Player",
+        gameType: "spelling_drill",
+      });
+    }
 
     // Check if this is test mode (code ends with 'test')
     this.isTestMode = usercode && usercode.toLowerCase().endsWith("test");
@@ -3597,12 +3603,10 @@ class SpellingApp {
     // Hide completion screen
     document.getElementById("completionScreen").style.display = "none";
 
-    // Save points to localStorage before redirecting
-    localStorage.setItem("dailyChallengePoints", points);
     await pushCompletedEvent(this.usercode);
 
     // Redirect to the completion page only when test is completed
-    window.location.href = "complete.html";
+    window.location.href = "complete.html?code=" + encodeURIComponent(this.usercode);
   }
 
   restartGame() {
@@ -3616,8 +3620,6 @@ class SpellingApp {
   }
 
   async clearGameSession() {
-    localStorage.removeItem("currentGameSession");
-    localStorage.removeItem(`gameProgress-${this.usercode}`);
     this.sessionId = this.generateSessionId(); // Generate new sessionId
   }
 
@@ -4025,7 +4027,7 @@ document.getElementById("usernameInput").addEventListener("keypress", function (
 function initializeLogRocket() {
   // Check if current user is in test mode
   const urlParams = new URLSearchParams(window.location.search);
-  const userCode = urlParams.get("code") || localStorage.getItem("currentUserCode");
+  const userCode = urlParams.get("code");
   const isTestMode = userCode && userCode.toLowerCase().endsWith("test");
 
   if (isTestMode) {
@@ -4042,12 +4044,9 @@ function initializeLogRocket() {
         // Track spelling drill game view
         LogRocket.track("Spelling Drill Game View");
 
-        // Identify user if needed
-        const logRocketUserId = localStorage.getItem("auth_userId");
-        const logRocketUserName = localStorage.getItem("auth_name");
-        if (logRocketUserId) {
-          LogRocket.identify(logRocketUserId, {
-            name: logRocketUserName || "Spelling Drill Player",
+        if (userCode) {
+          LogRocket.identify(userCode, {
+            name: code || "Spelling Drill Player",
             gameType: "spelling_drill",
           });
         }
