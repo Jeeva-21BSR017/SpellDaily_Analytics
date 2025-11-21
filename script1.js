@@ -4046,7 +4046,7 @@ function initializeLogRocket() {
 
         if (userCode) {
           LogRocket.identify(userCode, {
-            name: code || "Spelling Drill Player",
+            name: userCode || "Spelling Drill Player",
             gameType: "spelling_drill",
           });
         }
