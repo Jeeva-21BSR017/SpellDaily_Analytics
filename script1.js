@@ -606,7 +606,7 @@ class SpellingApp {
     // Learning mode has been disabled as requested
 
     // Stop all speech synthesis when starting a new question
-    if (speechSynthesis.speaking) {
+    if (speechSynthesis && speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
 
@@ -2959,7 +2959,7 @@ class SpellingApp {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Stop all speech synthesis immediately
-    if (speechSynthesis.speaking) {
+    if (speechSynthesis && speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
 
