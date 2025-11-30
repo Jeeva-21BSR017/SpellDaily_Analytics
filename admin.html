@@ -738,40 +738,22 @@
           <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px">
             <h3 style="margin-bottom: 20px; color: #495057">📝 Template Configuration</h3>
 
-            <!-- Game Mode Selection -->
+            <!-- Game Mode Sequence -->
             <div class="form-group">
-              <label>Game Mode Sequence (Drag & Drop)</label>
-              <div
-                id="available-game-modes"
-                style="background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 10px; min-height: 60px"
-              >
-                <div class="game-mode-tag draggable" draggable="true" data-mode="4-option">4-option</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="typing">typing</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="fillups">fillups</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="word-parts">word-parts</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="letter-scramble">letter-scramble</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="correct-word">correct-word</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="2-option">2-option</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="words-meaning">words-meaning</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="context-choice">context-choice</div>
-                <div class="game-mode-tag draggable" draggable="true" data-mode="correct-sentence">correct-sentence</div>
-              </div>
-              <div style="margin-bottom: 10px">
-                <strong>Selected Game Modes:</strong>
-              </div>
-              <div
-                id="selected-game-modes"
-                style="
-                  background: #d4edda;
-                  padding: 15px;
-                  border-radius: 8px;
-                  border: 2px dashed #28a745;
-                  min-height: 60px;
-                "
-              >
-                <div class="drop-hint">Drag game modes here to select them</div>
-              </div>
-              <input type="hidden" id="selected-game-mode" value="" />
+              <label>🎮 Game Sequence</label>
+              <textarea 
+                id="game-sequence" 
+                rows="8" 
+                style="width: 100%; font-family: monospace; font-size: 0.9rem;"
+                placeholder='Example format:
+[
+  { "word": "word1", "type": "4-option" },
+  { "word": "word1", "type": "typing" },
+  { "word": "word1", "type": "fillups" }
+]
+
+Available types: 4-option, typing, fillups, word-parts, letter-scramble, correct-word, 2-option, words-meaning, context-choice, correct-sentence'
+              ></textarea>
               <input type="hidden" id="edit-mode" value="false" />
             </div>
           </div>
@@ -1352,8 +1334,6 @@
     </script>
 
     <script>
-      let selectedGameModes = [];
-
       // UID validation function
       function validateUID(input) {
         // Remove any non-alphanumeric characters (preserve original case)
@@ -1491,130 +1471,20 @@
         }
       }
 
-      function initializeDragAndDrop() {
-        const availableContainer = document.getElementById("available-game-modes");
-        const selectedContainer = document.getElementById("selected-game-modes");
-
-        // Add drag event listeners to available game mode tags
-        availableContainer.addEventListener("dragstart", handleDragStart);
-        availableContainer.addEventListener("dragend", handleDragEnd);
-
-        // Add drop event listeners to selected container
-        selectedContainer.addEventListener("dragover", handleDragOver);
-        selectedContainer.addEventListener("drop", handleDrop);
-        selectedContainer.addEventListener("dragenter", handleDragEnter);
-        selectedContainer.addEventListener("dragleave", handleDragLeave);
-        selectedContainer.addEventListener("click", handleRemoveMode);
-      }
-
-      function handleDragStart(e) {
-        if (e.target.classList.contains("draggable")) {
-          e.target.classList.add("dragging");
-          e.dataTransfer.setData("text/plain", e.target.dataset.mode);
-          e.dataTransfer.effectAllowed = "copy";
-        }
-      }
-
-      function handleDragEnd(e) {
-        if (e.target.classList.contains("draggable")) {
-          e.target.classList.remove("dragging");
-        }
-      }
-
-      function handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-      }
-
-      function handleDragEnter(e) {
-        e.preventDefault();
-        document.getElementById("selected-game-modes").classList.add("drag-over");
-      }
-
-      function handleDragLeave(e) {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-          document.getElementById("selected-game-modes").classList.remove("drag-over");
-        }
-      }
-
-      function handleDrop(e) {
-        e.preventDefault();
-        const selectedContainer = document.getElementById("selected-game-modes");
-        selectedContainer.classList.remove("drag-over");
-
-        const mode = e.dataTransfer.getData("text/plain");
-
-        // Allow duplicates since order matters
-        addGameMode(mode);
-      }
-
-      function addGameMode(mode) {
-        selectedGameModes.push(mode);
-        updateSelectedGameModesDisplay();
-        updateGameModeValue();
-        showStatus("question-status", `Game mode "${mode}" added at position ${selectedGameModes.length}.`, "success");
-      }
-
-      function removeGameMode(index) {
-        if (index > -1 && index < selectedGameModes.length) {
-          const mode = selectedGameModes[index];
-          selectedGameModes.splice(index, 1);
-          updateSelectedGameModesDisplay();
-          updateGameModeValue();
-          showStatus("question-status", `Game mode "${mode}" removed from position ${index + 1}.`, "info");
-        }
-      }
-
-      function handleRemoveMode(e) {
-        if (e.target.classList.contains("removable") || e.target.closest(".removable")) {
-          const tag = e.target.classList.contains("removable") ? e.target : e.target.closest(".removable");
-          const index = parseInt(tag.dataset.index);
-          removeGameMode(index);
-        }
-      }
-
-      function updateSelectedGameModesDisplay() {
-        const container = document.getElementById("selected-game-modes");
-
-        if (selectedGameModes.length === 0) {
-          container.innerHTML =
-            '<div class="drop-hint">Drag game modes here to build your sequence (duplicates allowed, order matters)</div>';
-          return;
-        }
-
-        container.innerHTML = "";
-        selectedGameModes.forEach((mode, index) => {
-          const tag = document.createElement("div");
-          tag.className = "game-mode-tag removable";
-          tag.dataset.mode = mode;
-          tag.dataset.index = index;
-          tag.innerHTML = `<span class="position-number">${index + 1}.</span> ${mode}`;
-          container.appendChild(tag);
-        });
-      }
-
-      function updateGameModeValue() {
-        document.getElementById("selected-game-mode").value = selectedGameModes.join(",");
-      }
-
       function clearForm() {
         document.getElementById("question-form").reset();
-        selectedGameModes = [];
 
         // Reset UID field styling
         const uidField = document.getElementById("uid");
         uidField.style.borderColor = "#e9ecef";
         uidField.style.backgroundColor = "white";
 
-        // Reset game modes
-        updateSelectedGameModesDisplay();
-        updateGameModeValue();
-
         // Clear word lists
         document.getElementById("new-words").value = "";
         document.getElementById("review-words").value = "";
 
         // Clear additional text areas
+        document.getElementById("game-sequence").value = "";
         document.getElementById("word-hints").value = "";
         document.getElementById("word-distractors").value = "";
         document.getElementById("sentence-templates").value = "";
@@ -1640,7 +1510,7 @@
         const code = document.getElementById("uid").value.trim();
         const date = document.getElementById("date").value;
         const words = document.getElementById("words").value.trim();
-        const gameModes = selectedGameModes; // Use the array instead of single value
+        const gameSequence = document.getElementById("game-sequence").value.trim();
         const wordHints = document.getElementById("word-hints").value.trim();
         const wordDistractors = document.getElementById("word-distractors").value.trim();
         const sentenceTemplates = document.getElementById("sentence-templates").value.trim();
@@ -1652,6 +1522,7 @@
         const correctSentence = document.getElementById("correct-sentence").value.trim();
 
         // Parse JSON fields or create empty objects/arrays
+        let parsedGameSequence = [];
         let parsedSentenceTemplates = {};
         let parsedWordDistractors = {};
         let parsedWordHints = {};
@@ -1661,6 +1532,19 @@
         let parsedWordMeanings = {};
         let parsedContextChoice = {};
         let parsedCorrectSentence = {};
+
+        try {
+          if (gameSequence.trim()) {
+            parsedGameSequence = JSON.parse(gameSequence);
+            if (!Array.isArray(parsedGameSequence)) {
+              alert("Game sequence must be an array");
+              return;
+            }
+          }
+        } catch (e) {
+          alert("Invalid JSON for game sequence");
+          return;
+        }
 
         try {
           if (sentenceTemplates.trim()) {
@@ -1755,10 +1639,7 @@
           date: date ? date.split("-").reverse().join("/") : "",
           createdAt: new Date().toISOString(),
           words: words ? words.split(",").map((w) => w.trim()) : [],
-          gameSequence: gameModes.map((mode, i) => ({
-            word: `word${i + 1}`,
-            type: mode,
-          })),
+          gameSequence: parsedGameSequence,
           wordHints: parsedWordHints,
           wordDistractors: parsedWordDistractors,
           sentenceTemplates: parsedSentenceTemplates,
@@ -1887,11 +1768,9 @@
         // Populate word lists
         document.getElementById("words").value = data.words ? data.words.join(", ") : "";
         
-        // Populate game modes
+        // Populate game sequence
         if (data.gameSequence && data.gameSequence.length > 0) {
-          selectedGameModes = data.gameSequence.map(item => item.type);
-          updateSelectedGameModesDisplay();
-          updateGameModeValue();
+          document.getElementById("game-sequence").value = JSON.stringify(data.gameSequence, null, 2);
         }
         
         // Populate JSON fields - handle stringified JSON properly
@@ -2931,9 +2810,6 @@
                           String(todayScheduled.getMonth() + 1).padStart(2, '0') + '/' + 
                           String(todayScheduled.getDate()).padStart(2, '0');
         document.getElementById("scheduled-date").value = scheduledDateString;
-
-        // Initialize drag and drop functionality
-        initializeDragAndDrop();
       });
 
       // ============================================
