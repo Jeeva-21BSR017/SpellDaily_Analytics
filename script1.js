@@ -73,7 +73,8 @@ class SpellingApp {
     twoOptionDistractors,
     wordMeanings,
     contextChoice,
-    correctSentence
+    correctSentence,
+    wordsWithStreak
   ) {
     this.usercode = usercode;
     if (window.LogRocket) {
@@ -139,6 +140,7 @@ class SpellingApp {
     this.typedWord = "";
     this.maxLength = 0;
     this.selectedOption = null;
+    this.wordsWithStreak = {};
 
     // Word parts game state
     this.wordPartsAttempt = 1;
@@ -189,6 +191,7 @@ class SpellingApp {
     this.fillupsBlankPositions = JSON.parse(fillupsBlankPositions) || {};
 
     this.twoOptionDistractors = JSON.parse(twoOptionDistractors) || {};
+    this.wordsWithStreak = wordsWithStreak|| {};
 
     this.initializeQuestions();
     this.bindEvents();
@@ -687,6 +690,9 @@ class SpellingApp {
       // Show sound buttons for all other game types including 2-option
       soundButtonsContainer.style.display = "flex";
     }
+    if (this.wordsWithStreak[question.word] > 3) {
+      question.type = "full-typing";
+    }
 
     // Display based on question type
     switch (question.type) {
@@ -720,7 +726,7 @@ class SpellingApp {
       case "correct-sentence":
         this.displayCorrectSentence(question.word);
         break;
-      case "full typing":
+      case "full-typing":
         this.displayFullTypingQuestion();
         break;
     }
@@ -1231,7 +1237,7 @@ class SpellingApp {
   handlePhysicalKeyboard(e) {
     const question = this.allQuestions[this.currentQuestionIndex];
     if (
-      (question.type !== "typing" && question.type !== "fillups" && question.type !== "full typing") ||
+      (question.type !== "typing" && question.type !== "fillups" && question.type !== "full-typing") ||
       this.isAnswered
     )
       return;
@@ -1253,7 +1259,7 @@ class SpellingApp {
   handleVirtualKeyboard(key) {
     const question = this.allQuestions[this.currentQuestionIndex];
     if (
-      (question.type !== "typing" && question.type !== "fillups" && question.type !== "full typing") ||
+      (question.type !== "typing" && question.type !== "fillups" && question.type !== "full-typing") ||
       this.isAnswered
     )
       return;
@@ -1328,7 +1334,7 @@ class SpellingApp {
       this.playLetterSound(letter);
 
       this.typedWord += letter;
-      if (question.type === "full typing") {
+      if (question.type === "full-typing") {
         this.updateFullTypingDisplay();
       } else {
         this.updateWordBoxes();
@@ -1366,7 +1372,7 @@ class SpellingApp {
       // Regular backspace behavior
       this.typedWord = this.typedWord.slice(0, -1);
       // Special handling for full typing - update the long dash display
-      if (question.type === "full typing") {
+      if (question.type === "full-typing") {
         this.updateFullTypingDisplay();
       } else {
         this.updateWordBoxes();
@@ -2258,7 +2264,7 @@ class SpellingApp {
         this.markSelectedWordParts(correctParts);
         userAnswer = this.wordPartsChosen.join("");
       }
-    } else if (question.type === "full typing") {
+    } else if (question.type === "full-typing") {
       userAnswer = this.typedWord.trim().toLowerCase();
       isCorrect = userAnswer === question.word.toLowerCase();
 
@@ -2957,7 +2963,7 @@ class SpellingApp {
       // For typing games, check if word is complete
       const isComplete = this.typedWord.length === this.maxLength;
       checkButton.disabled = !isComplete;
-    } else if (question.type === "full typing") {
+    } else if (question.type === "full-typing") {
       // For full typing games, allow checking with any input
       checkButton.disabled = this.typedWord.length === 0;
     } else {
@@ -3587,7 +3593,7 @@ class SpellingApp {
     } else if (question.type === "typing") {
       // For typing, animate the word boxes
       elements = Array.from(document.querySelectorAll(".letter-box"));
-    } else if (question.type === "full typing") {
+    } else if (question.type === "full-typing") {
       // For full typing, animate the long dash display
       elements = [document.getElementById("longDash")].filter(Boolean);
     }
@@ -4328,7 +4334,8 @@ document.getElementById("startGameBtn").addEventListener("click", async function
           safeParse(questionData.twoOptionDistractors),
           safeParse(questionData.wordMeanings),
           safeParse(questionData.contextChoice),
-          safeParse(questionData.correctSentence)
+          safeParse(questionData.correctSentence),
+          questionData.wordsWithStreak
         );
       } else {
         console.log("❌ Questions not loaded, staying on username screen");
