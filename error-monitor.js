@@ -4,7 +4,7 @@ const isLocal =
 
 const BASE_URL = isLocal
   ? "http://localhost:8000"
-  : "https://spell-daily-backend.vercel.app";
+  : "https://api.spelldaily.com";
 
 const logError = (error) => {
   const safeMessage =
