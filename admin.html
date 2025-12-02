@@ -1638,7 +1638,7 @@ Available types: 4-option, typing, fillups, word-parts, letter-scramble, correct
           code: code,
           date: date ? date.split("-").reverse().join("/") : "",
           createdAt: new Date().toISOString(),
-          words: words ? words.split(",").map((w) => w.trim()) : [],
+          words: words ? words.split(",").map((w) => w.trim().toLowerCase()) : [],
           gameSequence: parsedGameSequence,
           wordHints: parsedWordHints,
           wordDistractors: parsedWordDistractors,
@@ -1766,7 +1766,7 @@ Available types: 4-option, typing, fillups, word-parts, letter-scramble, correct
         document.getElementById("date").value = data.date ? data.date.split("/").reverse().join("-") : "";
         
         // Populate word lists
-        document.getElementById("words").value = data.words ? data.words.join(", ") : "";
+        document.getElementById("words").value = data.words ? data.words.join(", ").toLowerCase() : "";
         
         // Populate game sequence
         if (data.gameSequence && data.gameSequence.length > 0) {
