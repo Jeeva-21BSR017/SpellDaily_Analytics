@@ -2467,8 +2467,8 @@ class SpellingApp {
     this.isAnswered = true;
     this.stats.total++;
 
-    // Console log analytics for typing games when question is completed
-    if (question.type === "typing" && this.typingAnalytics) {
+    // Calculate and submit analytics for typing games BEFORE animation
+    if ((question.type === "typing" || question.type === "full-typing") && this.typingAnalytics) {
       this.typingAnalytics.endTime = Math.round(getTodayDateNow() / 1000);
     }
 
@@ -2483,7 +2483,7 @@ class SpellingApp {
       }
 
       // Add chain reaction effect for letter-scramble and typing games
-      if (question.type === "letter-scramble" || question.type === "typing") {
+      if (question.type === "letter-scramble" || question.type === "typing" || question.type === "full-typing") {
         this.playChainReactionAnimation();
       }
 
@@ -3304,7 +3304,7 @@ class SpellingApp {
 
     // Submit typing analytics if needed
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
-    if (currentQuestion && currentQuestion.type === "typing" && this.typingAnalytics) {
+    if (currentQuestion && (currentQuestion.type === "typing" || currentQuestion.type === "full-typing") && this.typingAnalytics) {
       await this.submitTypingAnalyticsToFirebase();
     }
 
