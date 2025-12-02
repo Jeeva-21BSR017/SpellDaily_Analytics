@@ -610,28 +610,6 @@ class SpellingApp {
       speechSynthesis.cancel();
     }
 
-    // Clear full typing timer if it exists
-    if (this.fullTypingTimer) {
-      clearInterval(this.fullTypingTimer);
-      this.fullTypingTimer = null;
-    }
-
-    // Remove timer display from DOM if it exists
-    const timerDisplay = document.getElementById("fullTypingTimer");
-    if (timerDisplay) {
-      timerDisplay.remove();
-    }
-
-    // Restore original background (only for full typing task)
-    document.body.style.background = "#faf7ff";
-
-    // Remove NEW label if it exists
-    const questionTypeElement = document.getElementById("questionType");
-    const newLabel = questionTypeElement.querySelector("span");
-    if (newLabel && newLabel.textContent === "NEW") {
-      newLabel.remove();
-    }
-
     if (this.currentQuestionIndex >= this.allQuestions.length) {
       console.log(`🏁 Game completed! Question ${this.currentQuestionIndex + 1} of ${this.allQuestions.length}`);
       this.showCompletion();
@@ -690,7 +668,8 @@ class SpellingApp {
       // Show sound buttons for all other game types including 2-option
       soundButtonsContainer.style.display = "flex";
     }
-    if (this.wordsWithStreak[question.word] > 3) {
+
+    if(this.wordsWithStreak[question.word] > 3){
       question.type = "full-typing";
     }
 
@@ -822,6 +801,7 @@ class SpellingApp {
 
     document.getElementById("questionType").textContent = "TYPE WHAT YOU HEAR";
     document.getElementById("inputContainer").style.display = "block";
+    document.getElementById("optionsContainer").style.display = "none";
 
     // Change background to PURPLE
     document.body.style.background = "linear-gradient(135deg, #8B5CF6 0%, #6B21A8 100%)";
