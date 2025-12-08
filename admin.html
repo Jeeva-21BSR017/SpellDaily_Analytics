@@ -1170,6 +1170,7 @@ Enter an object with wordsWithStreak key containing an object of words and their
                       <th style="text-align: center">ID</th>
                       <th style="text-align: center">Word</th>
                       <th style="text-align: center">Streak</th>
+                      <th style="text-align: center">Scheduled Date</th>
                       <th style="text-align: center">Actions</th>
                     </tr>
                   </thead>
@@ -2888,6 +2889,28 @@ Enter an object with wordsWithStreak key containing an object of words and their
 
         // Populate table rows
         words.forEach((wordData) => {
+          // Format scheduled date for display
+          let scheduledDateDisplay = "-";
+          let scheduledDateValue = "";
+          if (wordData.scheduledDate) {
+            if (typeof wordData.scheduledDate === "string") {
+              // Handle YYYY-MM-DD format (e.g., "2025-11-09") or ISO string
+              scheduledDateValue = wordData.scheduledDate.split("T")[0]; // Extract YYYY-MM-DD if it's an ISO string
+              // Try to format the date for display
+              try {
+                const date = new Date(wordData.scheduledDate);
+                scheduledDateDisplay = date.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+              } catch (e) {
+                scheduledDateDisplay = wordData.scheduledDate;
+              }
+            } else if (wordData.scheduledDate.toDate) {
+              // Firestore Timestamp
+              const date = wordData.scheduledDate.toDate();
+              scheduledDateValue = date.toISOString().split("T")[0];
+              scheduledDateDisplay = date.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+            }
+          }
+
           const row = document.createElement("tr");
           row.innerHTML = `
             <td style="text-align: center; padding: 12px">${wordData.id}</td>
@@ -2903,30 +2926,65 @@ Enter an object with wordsWithStreak key containing an object of words and their
               />
             </td>
             <td style="text-align: center; padding: 12px">
-              <button 
-                id="edit-btn-${wordData.id}" 
-                class="btn btn-success" 
-                style="padding: 8px 15px; margin: 0"
-                onclick="editStreak('${wordData.id}')"
-              >
-                ✏️ Edit
-              </button>
-              <button 
-                id="save-btn-${wordData.id}" 
-                class="btn" 
-                style="display: none; padding: 8px 15px; margin: 0"
-                onclick="saveStreak('${wordData.id}')"
-              >
-                💾 Save
-              </button>
-              <button 
-                id="cancel-btn-${wordData.id}" 
-                class="btn btn-secondary" 
-                style="display: none; padding: 8px 15px; margin: 0"
-                onclick="cancelEdit('${wordData.id}', ${wordData.streak !== undefined ? wordData.streak : 0})"
-              >
-                ❌ Cancel
-              </button>
+              <span id="scheduled-date-display-${wordData.id}">${scheduledDateDisplay}</span>
+              <input 
+                type="date" 
+                id="scheduled-date-input-${wordData.id}" 
+                value="${scheduledDateValue}" 
+                style="display: none; width: 150px; padding: 5px; text-align: center"
+              />
+            </td>
+            <td style="text-align: center; padding: 12px">
+              <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap">
+                <button 
+                  id="edit-streak-btn-${wordData.id}" 
+                  class="btn btn-success" 
+                  style="padding: 8px 15px; margin: 0"
+                  onclick="editStreak('${wordData.id}')"
+                >
+                  ✏️ Edit Streak
+                </button>
+                <button 
+                  id="save-streak-btn-${wordData.id}" 
+                  class="btn" 
+                  style="display: none; padding: 8px 15px; margin: 0"
+                  onclick="saveStreak('${wordData.id}')"
+                >
+                  💾 Save Streak
+                </button>
+                <button 
+                  id="cancel-streak-btn-${wordData.id}" 
+                  class="btn btn-secondary" 
+                  style="display: none; padding: 8px 15px; margin: 0"
+                  onclick="cancelEditStreak('${wordData.id}', ${wordData.streak !== undefined ? wordData.streak : 0})"
+                >
+                  ❌ Cancel
+                </button>
+                <button 
+                  id="edit-date-btn-${wordData.id}" 
+                  class="btn btn-success" 
+                  style="padding: 8px 15px; margin: 0"
+                  onclick="editScheduledDate('${wordData.id}')"
+                >
+                  📅 Edit Date
+                </button>
+                <button 
+                  id="save-date-btn-${wordData.id}" 
+                  class="btn" 
+                  style="display: none; padding: 8px 15px; margin: 0"
+                  onclick="saveScheduledDate('${wordData.id}')"
+                >
+                  💾 Save Date
+                </button>
+                <button 
+                  id="cancel-date-btn-${wordData.id}" 
+                  class="btn btn-secondary" 
+                  style="display: none; padding: 8px 15px; margin: 0"
+                  onclick="cancelEditScheduledDate('${wordData.id}', '${scheduledDateValue}')"
+                >
+                  ❌ Cancel
+                </button>
+              </div>
             </td>
           `;
           tableBody.appendChild(row);
@@ -2942,13 +3000,13 @@ Enter an object with wordsWithStreak key containing an object of words and their
         document.getElementById(`streak-input-${docId}`).style.display = "inline-block";
 
         // Hide edit button, show save and cancel buttons
-        document.getElementById(`edit-btn-${docId}`).style.display = "none";
-        document.getElementById(`save-btn-${docId}`).style.display = "inline-block";
-        document.getElementById(`cancel-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`edit-streak-btn-${docId}`).style.display = "none";
+        document.getElementById(`save-streak-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`cancel-streak-btn-${docId}`).style.display = "inline-block";
       }
 
-      // Cancel Edit
-      function cancelEdit(docId, originalStreak) {
+      // Cancel Edit Streak
+      function cancelEditStreak(docId, originalStreak) {
         // Reset input to original value
         document.getElementById(`streak-input-${docId}`).value = originalStreak;
 
@@ -2957,9 +3015,9 @@ Enter an object with wordsWithStreak key containing an object of words and their
         document.getElementById(`streak-input-${docId}`).style.display = "none";
 
         // Show edit button, hide save and cancel buttons
-        document.getElementById(`edit-btn-${docId}`).style.display = "inline-block";
-        document.getElementById(`save-btn-${docId}`).style.display = "none";
-        document.getElementById(`cancel-btn-${docId}`).style.display = "none";
+        document.getElementById(`edit-streak-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`save-streak-btn-${docId}`).style.display = "none";
+        document.getElementById(`cancel-streak-btn-${docId}`).style.display = "none";
       }
 
       // Save Streak
@@ -2991,13 +3049,87 @@ Enter an object with wordsWithStreak key containing an object of words and their
           document.getElementById(`streak-input-${docId}`).style.display = "none";
 
           // Show edit button, hide save and cancel buttons
-          document.getElementById(`edit-btn-${docId}`).style.display = "inline-block";
-          document.getElementById(`save-btn-${docId}`).style.display = "none";
-          document.getElementById(`cancel-btn-${docId}`).style.display = "none";
+          document.getElementById(`edit-streak-btn-${docId}`).style.display = "inline-block";
+          document.getElementById(`save-streak-btn-${docId}`).style.display = "none";
+          document.getElementById(`cancel-streak-btn-${docId}`).style.display = "none";
 
           showStatus("words-status", `✅ Successfully updated streak for document ${docId}`, "success");
         } catch (error) {
           console.error("Error updating streak:", error);
+          showStatus("words-status", `❌ Error updating: ${error.message}`, "error");
+        }
+      }
+
+      // Edit Scheduled Date
+      function editScheduledDate(docId) {
+        // Hide display, show input
+        document.getElementById(`scheduled-date-display-${docId}`).style.display = "none";
+        document.getElementById(`scheduled-date-input-${docId}`).style.display = "inline-block";
+
+        // Hide edit button, show save and cancel buttons
+        document.getElementById(`edit-date-btn-${docId}`).style.display = "none";
+        document.getElementById(`save-date-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`cancel-date-btn-${docId}`).style.display = "inline-block";
+      }
+
+      // Cancel Edit Scheduled Date
+      function cancelEditScheduledDate(docId, originalDate) {
+        // Reset input to original value
+        document.getElementById(`scheduled-date-input-${docId}`).value = originalDate;
+
+        // Show display, hide input
+        document.getElementById(`scheduled-date-display-${docId}`).style.display = "inline";
+        document.getElementById(`scheduled-date-input-${docId}`).style.display = "none";
+
+        // Show edit button, hide save and cancel buttons
+        document.getElementById(`edit-date-btn-${docId}`).style.display = "inline-block";
+        document.getElementById(`save-date-btn-${docId}`).style.display = "none";
+        document.getElementById(`cancel-date-btn-${docId}`).style.display = "none";
+      }
+
+      // Save Scheduled Date
+      async function saveScheduledDate(docId) {
+        const newDate = document.getElementById(`scheduled-date-input-${docId}`).value.trim();
+
+        try {
+          showStatus("words-status", "Updating scheduled date...", "info");
+
+          // Update the document in Firebase
+          const { updateDoc, deleteField } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+          const docRef = doc(db, "words", docId);
+
+          let updateData = {
+            updatedAt: new Date().toISOString(),
+          };
+
+          if (newDate) {
+            // Store in YYYY-MM-DD format (e.g., "2025-11-09")
+            updateData.scheduledDate = newDate;
+            
+            // Update the display with formatted date
+            const dateObj = new Date(newDate);
+            const formattedDate = dateObj.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+            document.getElementById(`scheduled-date-display-${docId}`).textContent = formattedDate;
+          } else {
+            // Remove the scheduled date field
+            updateData.scheduledDate = deleteField();
+            document.getElementById(`scheduled-date-display-${docId}`).textContent = "-";
+          }
+
+          await updateDoc(docRef, updateData);
+
+          // Hide input, show display
+          document.getElementById(`scheduled-date-display-${docId}`).style.display = "inline";
+          document.getElementById(`scheduled-date-input-${docId}`).style.display = "none";
+
+          // Show edit button, hide save and cancel buttons
+          document.getElementById(`edit-date-btn-${docId}`).style.display = "inline-block";
+          document.getElementById(`save-date-btn-${docId}`).style.display = "none";
+          document.getElementById(`cancel-date-btn-${docId}`).style.display = "none";
+
+          showStatus("words-status", `✅ Successfully updated scheduled date for document ${docId}`, "success");
+        } catch (error) {
+          console.error("Error updating scheduled date:", error);
           showStatus("words-status", `❌ Error updating: ${error.message}`, "error");
         }
       }
