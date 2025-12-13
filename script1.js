@@ -3924,8 +3924,9 @@ class SpellingApp {
 
     await pushCompletedEvent(this.usercode);
 
+    const twa = isTwa() 
     // Redirect to the completion page only when test is completed
-    window.location.href = "complete.html?code=" + encodeURIComponent(this.usercode);
+    window.location.href = "complete.html?code=" + encodeURIComponent(this.usercode) + "&source=" + (twa ? "twa" : "web");
   }
 
   restartGame() {

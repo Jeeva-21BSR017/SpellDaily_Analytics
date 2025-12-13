@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 
     
+    <script src="./twa-settings.js" ></script>
     <!-- Lottie Animation Player -->
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
@@ -190,6 +191,15 @@
         } else {
             initLogRocket();
         }
+
+        setTimeout(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const testCode = urlParams.get("code") || "";
+            if(testCode) {
+                console.log("Publishing completed for code:", testCode);
+                window.publishCompleted(testCode);
+            }
+        }, 5000);
     </script>
 </body>
 </html>
