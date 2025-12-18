@@ -344,30 +344,33 @@ class SpellingApp {
   }
 
   playWordAudio(word) {
-    // First try to play external audio file
-    const audioFileName = word.toLowerCase() + ".mp3";
-    const audioPath = "./audio/" + audioFileName; // You can change this path as needed
+    playWordFromS3(word).catch(() => {
+      logError(`Falling back to local audio for word: ${word}`);
+      // First try to play external audio file
+      const audioFileName = word.toLowerCase() + ".mp3";
+      const audioPath = "./audio/" + audioFileName; // You can change this path as needed
 
-    const audio = new Audio();
+      const audio = new Audio();
 
-    // Set up success handler
-    audio.addEventListener("canplaythrough", () => {
-      console.log(`Playing audio file: ${audioPath}`);
-      audio.play().catch((error) => {
-        console.log("Audio file play failed, falling back to speech synthesis:", error);
+      // Set up success handler
+      audio.addEventListener("canplaythrough", () => {
+        console.log(`Playing audio file: ${audioPath}`);
+        audio.play().catch((error) => {
+          console.log("Audio file play failed, falling back to speech synthesis:", error);
+          this.fallbackToSpeechSynthesis(word);
+        });
+      });
+
+      // Set up error handler for file not found
+      audio.addEventListener("error", (error) => {
+        console.log(`Audio file not found: ${audioPath}, using speech synthesis`);
         this.fallbackToSpeechSynthesis(word);
       });
-    });
 
-    // Set up error handler for file not found
-    audio.addEventListener("error", (error) => {
-      console.log(`Audio file not found: ${audioPath}, using speech synthesis`);
-      this.fallbackToSpeechSynthesis(word);
+      // Try to load the audio file
+      audio.src = audioPath;
+      audio.load();
     });
-
-    // Try to load the audio file
-    audio.src = audioPath;
-    audio.load();
   }
 
   fallbackToSpeechSynthesis(word) {
@@ -4303,6 +4306,12 @@ document.getElementById("startGameBtn").addEventListener("click", async function
           }
           return data || {};
         };
+
+        const uniqeWords = [...new Set([
+          ...questionData.words
+        ])]
+        initializeSounds();
+        await downloadSound(uniqeWords);
 
         app = new SpellingApp(
           code,
