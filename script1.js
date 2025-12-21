@@ -3932,15 +3932,6 @@ class SpellingApp {
     window.location.href = "complete.html?code=" + encodeURIComponent(this.usercode) + "&source=" + (twa ? "twa" : "web");
   }
 
-  restartGame() {
-    // Reset all screens
-    document.getElementById("cardScreen").style.display = "none";
-    document.getElementById("completionScreen").style.display = "none";
-    document.getElementById("gameContent").style.display = "block";
-
-    // Start new game
-    window.app = new SpellingApp();
-  }
 
   async clearGameSession() {
     this.sessionId = this.generateSessionId(); // Generate new sessionId
@@ -4002,103 +3993,8 @@ class SpellingApp {
     return `${this.usercode}#${getTodayDateString()}`;
   }
 
-  async saveGameProgress() {
-    if (!db) return;
-
-    // Skip Firebase operations in test mode
-    if (this.isTestMode) {
-      console.log("🧪 TEST MODE: Skipping game progress save to Firebase");
-      return;
-    }
-
-    try {
-      const { doc, setDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
-
-      // Use date-based document ID to allow same user code for new questions each day
-      const documentId = this.getDateBasedDocumentId();
-      const docRef = doc(db, "game-analytics", documentId);
-      const existingDoc = await getDoc(docRef);
-
-      if (existingDoc.exists()) {
-        console.log(
-          `⚠️ Game analytics already exists for user ${this.usercode} on ${documentId}. Skipping save (first-time only rule).`
-        );
-        return;
-      }
-
-      const gameAnalyticsData = {
-        usercode: this.usercode,
-        currentQuestionIndex: this.currentQuestionIndex,
-        stats: this.stats,
-        allQuestions: this.allQuestions,
-        isPracticeMode: this.isPracticeMode,
-        consecutiveCorrect: this.consecutiveCorrect,
-        failedWordsTracker: Array.from(this.failedWordsTracker || []),
-        sessionId: this.sessionId,
-        lastUpdated: getTodayDateISOString(),
-        gameStarted: this.gameStarted,
-        isCompleted: false,
-      };
-
-      const cleanedData = this.cleanDataForFirebase(gameAnalyticsData);
-      await setDoc(docRef, cleanedData);
-      console.log("✅ Game progress saved to Firebase");
-    } catch (error) {
-      console.error("❌ Error saving game progress:", error);
-      logError(`Error saving game progress to Firebase, ${error?.message}`);
-    }
-  }
-
-  async loadGameProgress() {
-    if (!db) return;
-
-    // Skip Firebase operations in test mode
-    if (this.isTestMode) {
-      console.log("🧪 TEST MODE: Skipping game progress load from Firebase");
-      return;
-    }
-
-    try {
-      const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
-
-      // Use date-based document ID to allow same user code for new questions each day
-      const documentId = this.getDateBasedDocumentId();
-      const docRef = doc(db, "game-analytics", documentId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-
-        // Check if game is already completed
-        if (data.isCompleted) {
-          console.log("🎯 Game already completed, starting fresh");
-          return;
-        }
-
-        // Restore game state
-        this.currentQuestionIndex = data.currentQuestionIndex || 0;
-        this.stats = data.stats || this.stats;
-        this.allQuestions = data.allQuestions || this.allQuestions;
-        this.isPracticeMode = data.isPracticeMode || false;
-        this.consecutiveCorrect = data.consecutiveCorrect || 0;
-        this.failedWordsTracker = new Set(data.failedWordsTracker || []);
-        this.sessionId = data.sessionId || this.sessionId; // Keep existing sessionId or use generated one
-        this.gameStarted = data.gameStarted;
-
-        console.log("✅ Game progress loaded from Firebase");
-        console.log(`📍 Resuming from question ${this.currentQuestionIndex + 1} of ${this.allQuestions.length}`);
-      } else {
-        console.log("🆕 No existing progress found, starting fresh game");
-        this.gameStarted = getTodayDateISOString();
-      }
-    } catch (error) {
-      console.error("❌ Error loading game progress:", error);
-      logError(`Error loading game progress from Firebase, ${error?.message}`);
-      this.gameStarted = getTodayDateISOString();
-    }
-  }
-
   async updateGameAnalytics() {
+    // TODO: move to postgress @dreamerchandra
     if (!db) return;
 
     // Skip Firebase operations in test mode
@@ -4148,6 +4044,7 @@ class SpellingApp {
   }
 
   async markGameCompleted() {
+    // TODO: move to postgress @dreamerchandra
     if (!db) return;
 
     // Skip Firebase operations in test mode
@@ -4196,13 +4093,6 @@ class SpellingApp {
   }
 
   setupProgressSaving() {
-    // Save progress when user leaves the page
-    window.addEventListener("beforeunload", (event) => {
-      if (!this.isPracticeMode && this.currentQuestionIndex > 0) {
-        // Use synchronous method for beforeunload
-        this.saveGameProgressSync();
-      }
-    });
 
     // Also save progress periodically (every 30 seconds)
     setInterval(() => {
@@ -4212,51 +4102,8 @@ class SpellingApp {
     }, 30000);
   }
 
-  saveGameProgressSync() {
-    // Synchronous version for beforeunload event
-    if (!db || this.isPracticeMode) return;
-
-    // Skip Firebase operations in test mode
-    if (this.isTestMode) {
-      console.log("🧪 TEST MODE: Skipping sync game progress save to Firebase");
-      return;
-    }
-
-    try {
-      const gameAnalyticsData = {
-        usercode: this.usercode,
-        currentQuestionIndex: this.currentQuestionIndex,
-        stats: this.stats,
-        allQuestions: this.allQuestions,
-        isPracticeMode: this.isPracticeMode,
-        consecutiveCorrect: this.consecutiveCorrect,
-        failedWordsTracker: Array.from(this.failedWordsTracker || []),
-        sessionId: this.sessionId,
-        lastUpdated: getTodayDateISOString(),
-        gameStarted: this.gameStarted,
-        isCompleted: false,
-      };
-
-      const cleanedData = this.cleanDataForFirebase(gameAnalyticsData);
-
-      // Use sendBeacon for reliable data transmission on page unload
-      if (navigator.sendBeacon) {
-        const data = JSON.stringify(cleanedData);
-        navigator.sendBeacon(`/api/save-progress/${this.usercode}`, data);
-      }
-    } catch (error) {
-      console.error("❌ Error saving game progress on unload:", error);
-      logError(`Error saving game progress on unload to Firebase, ${error?.message}`);
-    }
-  }
 }
 
-function restartApp() {
-  document.getElementById("gameContent").style.display = "block";
-  document.getElementById("completionScreen").style.display = "none";
-  document.getElementById("cardScreen").style.display = "none";
-  app = new SpellingApp();
-}
 
 // Check for URL parameters and auto-populate usercode
 function checkURLParameters() {
@@ -4286,7 +4133,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
     try {
       // Fetch questions from Firebase for this user code
       console.log("🚀 Starting game for user code:", code);
-      const questionData = await fetchQuestionsFromFirebase(code);
+      const questionData = await fetchQuestion(code);
 
       // Only proceed if questions were successfully loaded
       if (questionData) {
@@ -4400,7 +4247,7 @@ function initializeLogRocket() {
 setTimeout(initializeLogRocket, 1000); // Give LogRocket script time to load
 
 // Function to fetch questions from Firebase using user code as document ID
-async function fetchQuestionsFromFirebase(userCode = null) {
+async function fetchQuestion(userCode = null) {
   try {
     // Check if user code is present
     if (!userCode) {
@@ -4428,41 +4275,8 @@ async function fetchQuestionsFromFirebase(userCode = null) {
     }
 
     // Import Firebase functions
-    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
-
-    console.log("🔍 Fetching questions from Firebase...");
-    console.log("👤 User code (document ID):", actualUserCode);
-
-    // Fetch document directly using actual user code as document ID
-    const docRef = doc(db, "questions", actualUserCode);
-    const docSnap = await getDoc(docRef);
-
-    // Check if document exists
-    if (!docSnap.exists()) {
-      if (isTestMode) {
-        console.log(`⚠️ No document found for base code '${actualUserCode}' in test mode`);
-        alert(`Test document '${actualUserCode}' not found. Please create questions for '${actualUserCode}' first.`);
-      } else {
-        console.log("⚠️ No document found for user code:", actualUserCode);
-        alert("Test is not active");
-      }
-      return null;
-    }
-
-    const documentData = docSnap.data();
-    console.log("✅ Successfully fetched questions from Firebase:");
-    console.log("👤 Document ID:", actualUserCode);
-    console.log("📝 Available fields:", Object.keys(documentData));
-
-    // Check for missing game data fields
-    const requiredFields = ["wordMeanings", "contextChoice", "correctSentence"];
-    const missingFields = requiredFields.filter((field) => !documentData[field]);
-    if (missingFields.length > 0) {
-      console.warn("⚠️ Missing game data fields:", missingFields);
-    }
-
-    // Return the document data (which should contain the questions)
-    return documentData;
+    const question = await getQuestionByTestCode(actualUserCode);
+    return question.data;
   } catch (error) {
     console.error("❌ Error fetching questions from Firebase:", error);
     logError(`Error fetching questions from Firebase for user code ${userCode}, ${error?.message}`);
@@ -4475,7 +4289,7 @@ async function fetchQuestionsFromFirebase(userCode = null) {
 async function fetchCurrentUserQuestions() {
   if (app && app.usercode) {
     console.log("👤 Fetching questions for current user:", app.usercode);
-    return await fetchQuestionsFromFirebase(app.usercode);
+    return await fetchQuestion(app.usercode);
   } else {
     console.log("⚠️ No user logged in. Please start the game first or provide a user code.");
     alert("Test is not active");
@@ -4493,7 +4307,7 @@ function showTestModeIndicator() {
 
 // Make utility functions available globally for testing
 if (typeof window !== "undefined") {
-  window.fetchQuestionsFromFirebase = fetchQuestionsFromFirebase;
+  window.fetchQuestion = fetchQuestion;
   window.fetchCurrentUserQuestions = fetchCurrentUserQuestions;
   window.showTestModeIndicator = showTestModeIndicator;
 }
