@@ -62,6 +62,7 @@ waitForFirebase().catch((error) => {
 
 class SpellingApp {
   constructor(
+    questionId,
     usercode,
     words,
     wordHints,
@@ -76,6 +77,7 @@ class SpellingApp {
     correctSentence,
     wordsWithStreak
   ) {
+    this.questionId = questionId;
     this.usercode = usercode;
     if (window.LogRocket) {
       LogRocket.identify(usercode, {
@@ -752,33 +754,6 @@ class SpellingApp {
     }
 
     try {
-      const { doc, setDoc, query, collection, where, getDocs, Timestamp } = await import(
-        "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js"
-      );
-
-      // Check if this word already has an entry for this user (first-time only rule)
-      const existingQuery = query(
-        collection(db, "user-activity"),
-        where("code", "==", this.usercode),
-        where("word", "==", this.typingAnalytics.word),
-        where("gameType", "==", "typing"),
-        where("submittedAt", ">=", new Date(new Date().setHours(0, 0, 0, 0)).toISOString())
-      );
-
-      const existingDocs = await getDocs(existingQuery);
-
-      if (!existingDocs.empty) {
-        console.log(
-          `⚠️ Word '${this.typingAnalytics.word}' already has an entry for user ${this.usercode}. Skipping save (first-time only rule).`
-        );
-        this.typingAnalytics.submitted = true;
-        return;
-      }
-
-      // Create document ID with timestamp for uniqueness
-      const docId = `${this.usercode}-${this.typingAnalytics.word}-${getTodayDateNow()}`;
-      const docRef = doc(db, "user-activity", docId);
-
       const analyticsData = {
         ...this.typingAnalytics,
         submittedAt: getTodayDateString(),
@@ -787,10 +762,7 @@ class SpellingApp {
         testStartTime: this.gameStarted || getTodayDateISOString(),
       };
 
-      await setDoc(docRef, analyticsData);
-      console.log("✅ Typing analytics submitted to Firebase:", docId);
-
-      // Mark as submitted to prevent duplicate submissions
+      await submitTypingTestAnalytics(this.usercode, this.questionId, this.typingAnalytics.word, analyticsData)
       this.typingAnalytics.submitted = true;
     } catch (error) {
       console.error("❌ Error submitting typing analytics to Firebase:", error);
@@ -4133,7 +4105,9 @@ document.getElementById("startGameBtn").addEventListener("click", async function
     try {
       // Fetch questions from Firebase for this user code
       console.log("🚀 Starting game for user code:", code);
-      const questionData = await fetchQuestion(code);
+      const response = await fetchQuestion(code);
+      const questionData = response.data;
+      const questionId = response.id;
 
       // Only proceed if questions were successfully loaded
       if (questionData) {
@@ -4161,6 +4135,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
         await downloadSound(uniqeWords);
 
         app = new SpellingApp(
+          questionId,
           code,
           questionData.words,
           safeParse(questionData.wordHints),
@@ -4276,7 +4251,7 @@ async function fetchQuestion(userCode = null) {
 
     // Import Firebase functions
     const question = await getQuestionByTestCode(actualUserCode);
-    return question.data;
+    return question;
   } catch (error) {
     console.error("❌ Error fetching questions from Firebase:", error);
     logError(`Error fetching questions from Firebase for user code ${userCode}, ${error?.message}`);
