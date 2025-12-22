@@ -42,6 +42,7 @@ const App: React.FC = () => {
     'correct-word',
     '2-option',
     'words-meaning',
+    'full-typing',
     'context-choice',
     'correct-sentence',
   ];

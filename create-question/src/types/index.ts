@@ -20,6 +20,7 @@ export type GameMode =
   | '2-option'
   | 'words-meaning'
   | 'context-choice'
+  | 'full-typing'
   | 'correct-sentence';
 
 // Form data interfaces
