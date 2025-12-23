@@ -4191,7 +4191,7 @@ function initializeLogRocket() {
   function tryInitLogRocket() {
     if (window.LogRocket) {
       try {
-        window.LogRocket.init("jsku84/spelldaily");
+        window.LogRocket.init("biy3cl/spelling");
 
         // Track spelling drill game view
         LogRocket.track("Spelling Drill Game View");
