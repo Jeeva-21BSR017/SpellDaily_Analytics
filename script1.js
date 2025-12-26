@@ -347,7 +347,6 @@ class SpellingApp {
 
   playWordAudio(word) {
     playWordFromS3(word).catch(() => {
-      logError(`Falling back to local audio for word: ${word}`);
       // First try to play external audio file
       const audioFileName = word.toLowerCase() + ".mp3";
       const audioPath = "./audio/" + audioFileName; // You can change this path as needed

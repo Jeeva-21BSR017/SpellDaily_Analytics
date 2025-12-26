@@ -58,38 +58,6 @@ window.addEventListener("unhandledrejection", (event) => {
   });
 });
 
-const originalFetch = window.fetch;
-
-window.fetch = async (...args) => {
-  const requestUrl =
-    typeof args[0] === "string" ? args[0] : args[0].url || "";
-
-  if (requestUrl.includes("/v1/on-call")) {
-    return originalFetch(...args);
-  }
-
-  try {
-    const response = await originalFetch(...args);
-
-    if (!response.ok) {
-      logError({
-        message: `Fetch failed: ${response.status} ${response.statusText}`,
-        stack: null,
-        url: requestUrl,
-      });
-    }
-
-    return response;
-  } catch (err) {
-    logError({
-      message: err.message,
-      stack: err.stack,
-      url: requestUrl,
-    });
-    throw err;
-  }
-};
-
 // Resource load errors
 window.addEventListener(
   "error",
