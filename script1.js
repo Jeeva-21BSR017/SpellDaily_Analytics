@@ -3595,7 +3595,7 @@ class SpellingApp {
     const streakCount = this.consecutiveCorrect;
 
     // Play thunder sound only once
-    const thunderSound = new Audio("./audio/thunder.mp3");
+    const thunderSound = new Audio("./gameAsset/thunder.mp3");
     thunderSound.volume = 1.0;
     thunderSound.currentTime = 0; // Reset to beginning
     thunderSound.play().catch((e) => console.log("Thunder sound play error:", e));
@@ -4107,6 +4107,21 @@ document.getElementById("startGameBtn").addEventListener("click", async function
       const response = await fetchQuestion(code);
       const questionData = response.data;
       const questionId = response.id;
+      const activityStatus = response.activityStatus;
+      const expiresAt = new Date(response.expiresAt);
+      const now = new Date();
+      if (expiresAt < now) {
+        alert("The test associated with this code has expired.");
+        // Reset button state
+        startBtn.disabled = false;
+        startBtn.textContent = "Start Game";
+        return;
+      }
+
+      if(activityStatus === "COMPLETED") {
+        const twa = isTwa() 
+        window.location.href = "complete.html?code=" + encodeURIComponent(code) + "&source=" + (twa ? "twa" : "web") + "&nextQuestion=" + encodeURIComponent(expiresAt.toISOString());
+      }
 
       // Only proceed if questions were successfully loaded
       if (questionData) {
@@ -4248,8 +4263,10 @@ async function fetchQuestion(userCode = null) {
       return null;
     }
 
-    // Import Firebase functions
     const question = await getQuestionByTestCode(actualUserCode);
+    if(!question) {
+      throw new Error("No question data found");
+    }
     return question;
   } catch (error) {
     console.error("❌ Error fetching questions from Firebase:", error);
