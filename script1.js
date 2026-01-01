@@ -4110,18 +4110,18 @@ document.getElementById("startGameBtn").addEventListener("click", async function
       const activityStatus = response.activityStatus;
       const expiresAt = new Date(response.expiresAt);
       const now = new Date();
-      if (expiresAt < now) {
-        alert("The test associated with this code has expired.");
-        // Reset button state
-        startBtn.disabled = false;
-        startBtn.textContent = "Start Game";
-        return;
-      }
+      // if (expiresAt < now) {
+      //   alert("The test associated with this code has expired.");
+      //   // Reset button state
+      //   startBtn.disabled = false;
+      //   startBtn.textContent = "Start Game";
+      //   return;
+      // }
 
-      if(activityStatus === "COMPLETED") {
-        const twa = isTwa() 
-        window.location.href = "complete.html?code=" + encodeURIComponent(code) + "&source=" + (twa ? "twa" : "web") + "&nextQuestion=" + encodeURIComponent(expiresAt.toISOString());
-      }
+      // if(activityStatus === "COMPLETED") {
+      //   const twa = isTwa() 
+      //   window.location.href = "complete.html?code=" + encodeURIComponent(code) + "&source=" + (twa ? "twa" : "web") + "&nextQuestion=" + encodeURIComponent(expiresAt.toISOString());
+      // }
 
       // Only proceed if questions were successfully loaded
       if (questionData) {
