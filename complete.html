@@ -68,6 +68,7 @@
             text-transform: uppercase;
         }
 
+
         .message-container p {
             font-size: 1.4rem;
             color: #555;
@@ -75,6 +76,17 @@
             margin: 30px auto 0;
             line-height: 1.6;
             font-weight: 500;
+        }
+
+        .highlight {
+            color: #fff;
+            background: linear-gradient(90deg, #7b2ff2 0%, #f357a8 100%);
+            padding: 0.2em 0.6em;
+            border-radius: 0.5em;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 2px 8px rgba(123, 47, 242, 0.15);
+            display: inline-block;
         }
 
 
@@ -156,8 +168,9 @@
                 }
             })();
         </script>
-        <div class="message-container">
-            <h1>Challenge Completed!</h1>
+        <div class="message-container" id="message-container">
+            <h1 id="completion-title">Challenge Completed!</h1>
+            <p id="completion-message" style="display:none;"></p>
         </div>
 
     </div>
@@ -166,7 +179,6 @@
         function initLogRocket() {
             if (window.LogRocket) {
                 window.LogRocket.init('biy3cl/spelling');
-                
                 // Track completion page view
                 LogRocket.track('Challenge Completion Page View');
                 const urlParams = new URLSearchParams(window.location.search);
@@ -184,12 +196,48 @@
                 setTimeout(initLogRocket, 100);
             }
         }
-        
+
+        // Show 'come back after' message if nextQuestion=date is present
+        function showComeBackMessageIfNeeded() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nextQuestion = urlParams.get('nextQuestion');
+            // Check if nextQuestion is a valid ISO date string (from expiresAt.toISOString())
+            if (nextQuestion && !isNaN(Date.parse(nextQuestion))) {
+                const now = new Date();
+                const target = new Date(nextQuestion);
+                let diff = target - now;
+                if (diff > 0) {
+                    let message = '';
+                    const seconds = Math.floor(diff / 1000);
+                    const minutes = Math.floor(seconds / 60);
+                    const hours = Math.floor(minutes / 60);
+                    if (hours > 0) {
+                        message = `<span class="highlight">The next test code would be active in <br> ${hours} hour${hours !== 1 ? 's' : ''}</span>`;
+                    } else if (minutes > 0) {
+                        message = `<span class="highlight">The next test code would be active in <br> ${minutes} minute${minutes !== 1 ? 's' : ''}</span>`;
+                    } else {
+                        message = `<span class="highlight">The next test code would be active in <br> ${seconds} second${seconds !== 1 ? 's' : ''}</span>`;
+                    }
+                    const title = document.getElementById('completion-title');
+                    const msg = document.getElementById('completion-message');
+                    if (title && msg) {
+                        title.textContent = 'Come Back Later!';
+                        msg.innerHTML = message;
+                        msg.style.display = 'block';
+                    }
+                }
+            }
+        }
+
         // Initialize LogRocket when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initLogRocket);
+            document.addEventListener('DOMContentLoaded', function() {
+                initLogRocket();
+                showComeBackMessageIfNeeded();
+            });
         } else {
             initLogRocket();
+            showComeBackMessageIfNeeded();
         }
 
         setTimeout(() => {
