@@ -346,7 +346,7 @@ class SpellingApp {
   }
 
   playWordAudio(word) {
-    playWordFromS3(word).catch(() => {
+    playWordFromS3(word.toLowerCase()).catch(() => {
       // First try to play external audio file
       const audioFileName = word.toLowerCase() + ".mp3";
       const audioPath = "./audio/" + audioFileName; // You can change this path as needed
@@ -4165,7 +4165,7 @@ document.getElementById("startGameBtn").addEventListener("click", async function
           ...questionData.words
         ])]
         initializeSounds();
-        await downloadSound(uniqeWords);
+        await downloadSound(uniqeWords.map(word => word.toLowerCase()));
 
         app = new SpellingApp(
           questionId,
