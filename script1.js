@@ -377,6 +377,11 @@ class SpellingApp {
   fallbackToSpeechSynthesis(word) {
     // Fallback to Web Speech API if audio file is not available
     try {
+      if (typeof speechSynthesis === 'undefined') {
+        console.log("Speech synthesis not available");
+        return;
+      }
+
       const utterance = new SpeechSynthesisUtterance(word);
       utterance.rate = 0.7;
       utterance.volume = 1;
@@ -429,6 +434,11 @@ class SpellingApp {
   fallbackToSlowSpeechSynthesis(word) {
     // Fallback to Web Speech API at slower speed if audio file is not available
     try {
+      if (typeof speechSynthesis === 'undefined') {
+        console.log("Speech synthesis not available");
+        return;
+      }
+
       const utterance = new SpeechSynthesisUtterance(word);
       utterance.rate = 0.3; // Much slower rate for slow sound
       utterance.volume = 1;
@@ -610,8 +620,12 @@ class SpellingApp {
     // Learning mode has been disabled as requested
 
     // Stop all speech synthesis when starting a new question
-    if (speechSynthesis && speechSynthesis.speaking) {
-      speechSynthesis.cancel();
+    try{
+      if (speechSynthesis && speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+      }
+    }catch(e){
+      console.error("Error stopping speech synthesis:", e);
     }
 
     if (this.currentQuestionIndex >= this.allQuestions.length) {
@@ -1242,6 +1256,11 @@ class SpellingApp {
     const currentQuestion = this.allQuestions[this.currentQuestionIndex];
     if (currentQuestion && (currentQuestion.type === "typing" || currentQuestion.type === "fillups")) {
       try {
+        if (typeof speechSynthesis === 'undefined') {
+          console.log("Speech synthesis not available");
+          return;
+        }
+
         const utterance = new SpeechSynthesisUtterance(letter.toLowerCase());
         utterance.rate = 0.8;
         utterance.volume = 0.7;
