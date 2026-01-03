@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Activity Timestamps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        .user-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .user-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .user-card .reason {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .word-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        select, input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus {
+            border-color: #667eea;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Activity Timestamps</h1>
+
+        <div class="filter-section">
+            <input type="text" id="userSearch" placeholder="Search by user code..." onkeyup="filterUsers()">
+            <select id="sortBy" onchange="sortUsers()">
+                <option value="misspellings">Sort by Misspellings</option>
+                <option value="words">Sort by Words Count</option>
+                <option value="completions">Sort by Completions</option>
+            </select>
+        </div>
+
+        <div id="userList"></div>
+    </div>
+
+    <script>
+        let allData = [];
+
+        function transformData(rawData, datasetName) {
+            return rawData.usersToReachOut.map(userCode => {
+                const userWords = rawData.userToWordsMap[userCode] || {};
+
+                // Count total misspellings
+                let totalMisspellings = 0;
+                Object.values(userWords).forEach(attempts => {
+                    attempts.forEach(attemptArray => {
+                        // Count corrections (array length - 1, since last is correct)
+                        totalMisspellings += Math.max(0, attemptArray.length - 1);
+                    });
+                });
+
+                return {
+                    user: userCode,
+                    totalMisspellings: totalMisspellings,
+                    userToWordsMap: userWords,
+                    completedTime: rawData.completedTime[userCode] || [],
+                    reachoutReason: rawData.reachoutReason[userCode] || '',
+                    dataset: datasetName
+                };
+            });
+        }
+
+        async function loadData() {
+            try {
+                const [data1, data2, data3] = await Promise.all([
+                    fetch('result.json').then(r => r.json()),
+                    fetch('result2.json').then(r => r.json()),
+                    fetch('result3.json').then(r => r.json())
+                ]);
+
+                allData = [
+                    ...transformData(data1, 'result'),
+                    ...transformData(data2, 'result2'),
+                    ...transformData(data3, 'result3')
+                ];
+
+                initializeDashboard();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.querySelector('.container').innerHTML = '<div class="loading">Error loading data. Please ensure result.json, result2.json, and result3.json are in the same directory.</div>';
+            }
+        }
+
+        function initializeDashboard() {
+            updateUserList();
+        }
+
+        function updateUserList() {
+            const sortBy = document.getElementById('sortBy')?.value || 'misspellings';
+            let sorted = [...allData];
+
+            if (sortBy === 'misspellings') {
+                sorted.sort((a, b) => b.totalMisspellings - a.totalMisspellings);
+            } else if (sortBy === 'words') {
+                sorted.sort((a, b) => Object.keys(b.userToWordsMap || {}).length - Object.keys(a.userToWordsMap || {}).length);
+            } else if (sortBy === 'completions') {
+                sorted.sort((a, b) => (b.completedTime?.length || 0) - (a.completedTime?.length || 0));
+            }
+
+            document.getElementById('userList').innerHTML = sorted.map(user => {
+                const userWords = user.userToWordsMap || {};
+                const timestamps = user.completedTime || [];
+
+                // Format timestamps with day numbers
+                const timestampHTML = timestamps.length > 0 ? `
+                    <div style="margin-top: 15px;">
+                        <strong>Completion Timestamps:</strong>
+                        <div style="margin-top: 10px;">
+                            ${timestamps.map((time, index) => {
+                                const date = new Date(time);
+                                const dayName = date.toLocaleDateString('en-IN', { weekday: 'short' });
+                                const dateStr = date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                                const timeStr = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+                                return `
+                                    <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                                        <span style="display: inline-block; min-width: 60px; font-weight: bold; color: #667eea;">Day ${index + 1}:</span>
+                                        <span style="color: #666;">${dayName}, ${dateStr} at ${timeStr}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                ` : '<p style="color: #999; margin-top: 15px;">No completion timestamps available</p>';
+
+                return `
+                    <div class="user-card">
+                        <h3>${user.user} - ${user.totalMisspellings} misspellings</h3>
+                        <p class="reason">${user.reachoutReason || ''}</p>
+                        <p><strong>Words practiced:</strong> ${Object.keys(userWords).length} | <strong>Completions:</strong> ${timestamps.length}</p>
+                        ${timestampHTML}
+                        <div style="margin-top: 15px;">
+                            <strong>Words with mistakes:</strong>
+                            <div class="word-list">
+                                ${Object.entries(userWords).slice(0, 10).map(([word, attempts]) => {
+                                    const attemptCount = attempts.reduce((sum, arr) => sum + Math.max(0, arr.length - 1), 0);
+                                    return `<span class="word-tag">${word} (${attemptCount}x)</span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterUsers() {
+            const search = document.getElementById('userSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('#userList .user-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(search) ? 'block' : 'none';
+            });
+        }
+
+        function sortUsers() {
+            updateUserList();
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

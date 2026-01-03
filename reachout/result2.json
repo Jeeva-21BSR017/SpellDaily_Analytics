@@ -1,0 +1,2101 @@
+{
+  "usersToReachOut": [
+    "hav129",
+    "vai341",
+    "kri549",
+    "gir615",
+    "raj980",
+    "ris168",
+    "shr274",
+    "pra551",
+    "suj692"
+  ],
+  "userToWordsMap": {
+    "raj980": {
+      "restaurant": [
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "autumn": [
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "business": [
+        [
+          "buissnes",
+          "buisness",
+          "buissnes",
+          "buisness",
+          "buisness",
+          "business",
+          "buisness",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ]
+      ],
+      "museum": [
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "disappear": [
+        [
+          "dissapear",
+          "disappear",
+          "dissapear",
+          "disappear",
+          "dissapear",
+          "disappear",
+          "dissapear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "brilliant": [
+        [
+          "brilliant",
+          "brilliant"
+        ]
+      ],
+      "separate": [
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "address": [
+        [
+          "address",
+          "address"
+        ]
+      ],
+      "receive": [
+        [
+          "receive",
+          "receive"
+        ]
+      ],
+      "awkward": [
+        [
+          "akwarde",
+          "awkward",
+          "akwarde",
+          "awkward"
+        ],
+        [
+          "awkward",
+          "awkward"
+        ],
+        [
+          "awkward",
+          "awkward"
+        ]
+      ],
+      "february": [
+        [
+          "february",
+          "february"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "colleague": [
+        [
+          "colleague",
+          "colleague"
+        ]
+      ],
+      "calendar": [
+        [
+          "calender",
+          "calendar",
+          "calender",
+          "calendar"
+        ],
+        [
+          "calendar",
+          "calendar"
+        ],
+        [
+          "calendar",
+          "calendar"
+        ]
+      ],
+      "delicious": [
+        [
+          "delicious",
+          "delicious"
+        ]
+      ],
+      "beautiful": [
+        [
+          "beautiful",
+          "beautiful"
+        ]
+      ],
+      "dialogue": [
+        [
+          "dialouge",
+          "dialogue",
+          "dialouge",
+          "dialogue"
+        ],
+        [
+          "dialogue",
+          "dialogue"
+        ],
+        [
+          "dialogue",
+          "dialogue"
+        ]
+      ],
+      "necessary": [
+        [
+          "necessary",
+          "necessary"
+        ]
+      ],
+      "language": [
+        [
+          "language",
+          "language"
+        ],
+        [
+          "language",
+          "language"
+        ]
+      ],
+      "envelope": [
+        [
+          "envelope",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "envelope"
+        ]
+      ],
+      "apartment": [
+        [
+          "apartment",
+          "apartment"
+        ],
+        [
+          "apartment",
+          "apartment"
+        ]
+      ],
+      "neighbour": [
+        [
+          "neighbour",
+          "neighbour"
+        ]
+      ],
+      "privilege": [
+        [
+          "privileag",
+          "privilege",
+          "privileag",
+          "privilege"
+        ]
+      ],
+      "fascinate": [
+        [
+          "fasicinat",
+          "fascinate",
+          "fasicinat",
+          "fascinate"
+        ]
+      ]
+    },
+    "ris168": {
+      "honest": [
+        [
+          "honest",
+          "honest"
+        ]
+      ],
+      "watch": [
+        [
+          "watch",
+          "watch"
+        ]
+      ],
+      "laugh": [
+        [
+          "laigh",
+          "laugh",
+          "laigh",
+          "laugh"
+        ],
+        [
+          "laugh",
+          "laugh"
+        ],
+        [
+          "laugh",
+          "laugh"
+        ]
+      ],
+      "above": [
+        [
+          "abogh",
+          "above",
+          "abogh",
+          "above"
+        ],
+        [
+          "above",
+          "above"
+        ],
+        [
+          "above",
+          "above"
+        ]
+      ],
+      "fourth": [
+        [
+          "fourth",
+          "fourth"
+        ]
+      ],
+      "pretty": [
+        [
+          "furrie",
+          "preety",
+          "furrie",
+          "preety"
+        ],
+        [
+          "pretty",
+          "pretty"
+        ],
+        [
+          "pretty",
+          "pretty"
+        ]
+      ],
+      "hour": [
+        [
+          "awar",
+          "hour",
+          "awar",
+          "hour"
+        ],
+        [
+          "hour",
+          "hour"
+        ],
+        [
+          "hour",
+          "hour"
+        ]
+      ],
+      "snack": [
+        [
+          "snack",
+          "snack"
+        ]
+      ],
+      "since": [
+        [
+          "sense",
+          "since",
+          "sense",
+          "since"
+        ],
+        [
+          "since",
+          "since",
+          "since",
+          "since"
+        ],
+        [
+          "since",
+          "since"
+        ]
+      ],
+      "again": [
+        [
+          "again",
+          "again"
+        ],
+        [
+          "again",
+          "again"
+        ]
+      ],
+      "would": [
+        [
+          "would",
+          "would"
+        ],
+        [
+          "would",
+          "would"
+        ]
+      ],
+      "child": [
+        [
+          "child",
+          "child"
+        ],
+        [
+          "child",
+          "child"
+        ]
+      ],
+      "little": [
+        [
+          "lettle",
+          "little",
+          "lettle",
+          "little"
+        ],
+        [
+          "lettle",
+          "little",
+          "lettle",
+          "little"
+        ]
+      ],
+      "every": [
+        [
+          "every",
+          "every"
+        ],
+        [
+          "every",
+          "every"
+        ]
+      ],
+      "prove": [
+        [
+          "prove",
+          "prove"
+        ],
+        [
+          "prove",
+          "prove"
+        ]
+      ],
+      "carry": [
+        [
+          "carry",
+          "carry"
+        ],
+        [
+          "carry",
+          "carry"
+        ]
+      ],
+      "young": [
+        [
+          "yummm",
+          "young",
+          "yummm",
+          "young"
+        ],
+        [
+          "young",
+          "young"
+        ]
+      ],
+      "people": [
+        [
+          "people",
+          "people"
+        ],
+        [
+          "people",
+          "people"
+        ]
+      ],
+      "height": [
+        [
+          "height",
+          "height"
+        ],
+        [
+          "height",
+          "height"
+        ]
+      ]
+    },
+    "shr274": {
+      "restaurant": [
+        [
+          "restuarant",
+          "restaurant",
+          "restuarant",
+          "restaurant",
+          "restaurant",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "autumn": [
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "business": [
+        [
+          "buisness",
+          "business",
+          "buisness",
+          "business",
+          "business",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ]
+      ],
+      "museum": [
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "disappear": [
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "brilliant": [
+        [
+          "brilliant",
+          "brilliant"
+        ]
+      ],
+      "separate": [
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "address": [
+        [
+          "address",
+          "address"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "awkward": [
+        [
+          "oqkward",
+          "awkward",
+          "oqkward",
+          "awkward"
+        ],
+        [
+          "awkward",
+          "awkward"
+        ],
+        [
+          "awkward",
+          "awkward"
+        ]
+      ],
+      "february": [
+        [
+          "february",
+          "february"
+        ]
+      ],
+      "receive": [
+        [
+          "receive",
+          "receive"
+        ]
+      ],
+      "colleague": [
+        [
+          "colleague",
+          "colleague"
+        ]
+      ],
+      "delicious": [
+        [
+          "delicious",
+          "delicious"
+        ]
+      ],
+      "beautiful": [
+        [
+          "beautiful",
+          "beautiful"
+        ]
+      ],
+      "calendar": [
+        [
+          "calendar",
+          "calendar"
+        ]
+      ],
+      "dialogue": [
+        [
+          "dialogue",
+          "dialogue"
+        ]
+      ],
+      "necessary": [
+        [
+          "necessary",
+          "necessary"
+        ]
+      ],
+      "envelope": [
+        [
+          "envelope",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "envelope"
+        ]
+      ],
+      "neighbour": [
+        [
+          "neighbour",
+          "neighbour"
+        ],
+        [
+          "neighbour",
+          "neighbour"
+        ]
+      ],
+      "privilege": [
+        [
+          "privilage",
+          "ptivilege",
+          "privilage",
+          "ptivilege"
+        ],
+        [
+          "privelage",
+          "privilage",
+          "privelage",
+          "privilage"
+        ]
+      ],
+      "fascinate": [
+        [
+          "fassinate",
+          "fasiinate",
+          "fassinate",
+          "fasiinate"
+        ],
+        [
+          "fascinate",
+          "fascinate"
+        ]
+      ],
+      "language": [
+        [
+          "language",
+          "language"
+        ],
+        [
+          "language",
+          "language"
+        ]
+      ],
+      "apartment": [
+        [
+          "apartment",
+          "apartment"
+        ],
+        [
+          "apartment",
+          "apartment"
+        ]
+      ],
+      "knowledge": [
+        [
+          "knowledge",
+          "knowledge"
+        ],
+        [
+          "knowledge",
+          "knowledge"
+        ]
+      ],
+      "communication": [
+        [
+          "communication",
+          "communication"
+        ]
+      ]
+    },
+    "suj692": {
+      "balloon": [
+        [
+          "balloon",
+          "balloon"
+        ]
+      ],
+      "appeal": [
+        [
+          "appeal",
+          "appeal"
+        ]
+      ],
+      "height": [
+        [
+          "height",
+          "height"
+        ]
+      ],
+      "secret": [
+        [
+          "secret",
+          "secret"
+        ]
+      ],
+      "grammar": [
+        [
+          "grammar",
+          "grammar"
+        ]
+      ],
+      "library": [
+        [
+          "library",
+          "library"
+        ]
+      ],
+      "culture": [
+        [
+          "culture",
+          "culture"
+        ]
+      ],
+      "foreign": [
+        [
+          "foreign",
+          "foreign"
+        ]
+      ],
+      "colourful": [
+        [
+          "colourful",
+          "colourful"
+        ]
+      ],
+      "separate": [
+        [
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "museum": [
+        [
+          "muesem",
+          "museum",
+          "muesem",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "rhythm": [
+        [
+          "rhythm",
+          "rhythm"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "believe": [
+        [
+          "believe",
+          "believe"
+        ]
+      ],
+      "chocolate": [
+        [
+          "chocolate",
+          "chocolate"
+        ]
+      ],
+      "because": [
+        [
+          "because",
+          "because"
+        ]
+      ],
+      "restaurant": [
+        [
+          "restaurent",
+          "restaurant",
+          "restaurent",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "beautiful": [
+        [
+          "beautiful",
+          "beautiful"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "autumn": [
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "disappear": [
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "adventure": [
+        [
+          "adventour",
+          "adventure",
+          "adventour",
+          "adventure"
+        ],
+        [
+          "adventure",
+          "adventure"
+        ],
+        [
+          "adventure",
+          "adventure"
+        ]
+      ],
+      "business": [
+        [
+          "buissnes",
+          "buisness",
+          "buissnes",
+          "buisness"
+        ],
+        [
+          "business",
+          "business"
+        ]
+      ],
+      "february": [
+        [
+          "february",
+          "february"
+        ],
+        [
+          "february",
+          "february"
+        ]
+      ],
+      "definitely": [
+        [
+          "definitely",
+          "definitely"
+        ],
+        [
+          "definitely",
+          "definitely"
+        ]
+      ],
+      "neighbour": [
+        [
+          "neighbour",
+          "neighbour"
+        ],
+        [
+          "neighbour",
+          "neighbour"
+        ]
+      ],
+      "audience": [
+        [
+          "audiense",
+          "audience",
+          "audiense",
+          "audience"
+        ]
+      ],
+      "dangerous": [
+        [
+          "dangerous",
+          "dangerous"
+        ]
+      ]
+    },
+    "kri549": {
+      "balloon": [
+        [
+          "balloon",
+          "balloon"
+        ],
+        [
+          "balloon",
+          "balloon"
+        ]
+      ],
+      "appeal": [
+        [
+          "apeale",
+          "apaell",
+          "apeale",
+          "apaell"
+        ],
+        [
+          "appeal",
+          "appeal"
+        ],
+        [
+          "appeal",
+          "appeal"
+        ]
+      ],
+      "height": [
+        [
+          "highit",
+          "highth",
+          "highit",
+          "highth"
+        ],
+        [
+          "hieght",
+          "height",
+          "hieght",
+          "height"
+        ],
+        [
+          "height",
+          "height"
+        ],
+        [
+          "height",
+          "height"
+        ]
+      ],
+      "secret": [
+        [
+          "secret",
+          "secret"
+        ],
+        [
+          "secret",
+          "secret"
+        ]
+      ],
+      "grammar": [
+        [
+          "grammar",
+          "grammar"
+        ],
+        [
+          "grammar",
+          "grammar"
+        ]
+      ],
+      "library": [
+        [
+          "library",
+          "library"
+        ],
+        [
+          "library",
+          "library"
+        ]
+      ],
+      "culture": [
+        [
+          "culture",
+          "culture"
+        ],
+        [
+          "culture",
+          "culture"
+        ]
+      ],
+      "foreign": [
+        [
+          "forring",
+          "forigne",
+          "forring",
+          "forigne"
+        ],
+        [
+          "forring",
+          "forinng",
+          "forring",
+          "forinng"
+        ],
+        [
+          "foreign",
+          "foreign"
+        ],
+        [
+          "foregin",
+          "foreign",
+          "foregin",
+          "foreign"
+        ]
+      ],
+      "success": [
+        [
+          "sucsess",
+          "suceess",
+          "sucsess",
+          "suceess"
+        ],
+        [
+          "success",
+          "success"
+        ],
+        [
+          "sucsess",
+          "success",
+          "sucsess",
+          "success"
+        ]
+      ],
+      "chocolate": [
+        [
+          "chocolate",
+          "chocolate"
+        ]
+      ],
+      "colourful": [
+        [
+          "colourful",
+          "colourful"
+        ]
+      ],
+      "separate": [
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "believe": [
+        [
+          "beleive",
+          "believe",
+          "beleive",
+          "believe"
+        ],
+        [
+          "beleive",
+          "believe",
+          "beleive",
+          "believe"
+        ],
+        [
+          "beleive",
+          "believe",
+          "beleive",
+          "believe"
+        ]
+      ],
+      "museum": [
+        [
+          "museum",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "because": [
+        [
+          "because",
+          "because"
+        ],
+        [
+          "because",
+          "because"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ],
+        [
+          "tomorowo",
+          "tomorrow",
+          "tomorowo",
+          "tomorrow"
+        ]
+      ],
+      "rhythm": [
+        [
+          "rythem",
+          "rthymw",
+          "rythem",
+          "rthymw"
+        ],
+        [
+          "rhytem",
+          "rhytme",
+          "rhytem",
+          "rhytme"
+        ]
+      ],
+      "autumn": [
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "disappear": [
+        [
+          "disappear",
+          "disappear"
+        ]
+      ]
+    },
+    "gir615": {
+      "restaurant": [
+        [
+          "restourent",
+          "restaurant",
+          "restourent",
+          "restaurant"
+        ],
+        [
+          "restourant",
+          "restaurant",
+          "restourant",
+          "restaurant"
+        ],
+        [
+          "restaurent",
+          "restaurant",
+          "restaurent",
+          "restaurant"
+        ],
+        [
+          "restaurent",
+          "restaurant",
+          "restaurent",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "autumn": [
+        [
+          "automn",
+          "autemn",
+          "automn",
+          "autemn"
+        ],
+        [
+          "audonm",
+          "autamn",
+          "audonm",
+          "autamn"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "business": [
+        [
+          "bussness",
+          "business",
+          "bussness",
+          "business"
+        ],
+        [
+          "bisuness",
+          "business",
+          "bisuness",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ]
+      ],
+      "museum": [
+        [
+          "muzeim",
+          "museam",
+          "muzeim",
+          "museam"
+        ],
+        [
+          "mucium",
+          "museum",
+          "mucium",
+          "museum"
+        ],
+        [
+          "musuem",
+          "museum",
+          "musuem",
+          "museum"
+        ],
+        [
+          "musium",
+          "museum",
+          "musium",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ],
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "disappear": [
+        [
+          "disapeare",
+          "disapaear",
+          "disapeare",
+          "disapaear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "brilliant": [
+        [
+          "brilliant",
+          "brilliant"
+        ],
+        [
+          "brilliant",
+          "brilliant"
+        ]
+      ],
+      "separate": [
+        [
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "february": [
+        [
+          "february",
+          "february"
+        ],
+        [
+          "febuvary",
+          "february",
+          "febuvary",
+          "february"
+        ],
+        [
+          "february",
+          "february"
+        ]
+      ],
+      "address": [
+        [
+          "address",
+          "address"
+        ],
+        [
+          "address",
+          "address"
+        ],
+        [
+          "address",
+          "address"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ],
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "receive": [
+        [
+          "resieve",
+          "receive",
+          "resieve",
+          "receive"
+        ],
+        [
+          "resseve",
+          "receive",
+          "resseve",
+          "receive"
+        ]
+      ]
+    },
+    "hav129": {
+      "balloon": [
+        [
+          "ballone",
+          "balloun",
+          "ballone",
+          "balloun"
+        ],
+        [
+          "balloon",
+          "balloon"
+        ],
+        [
+          "balloon",
+          "balloon"
+        ]
+      ],
+      "appeal": [
+        [
+          "appear",
+          "appeen",
+          "appear",
+          "appeen"
+        ],
+        [
+          "apeare",
+          "apaeer",
+          "apeare",
+          "apaeer"
+        ],
+        [
+          "appeal",
+          "appeal",
+          "appeal",
+          "appeal"
+        ]
+      ],
+      "height": [
+        [
+          "scaale",
+          "highte",
+          "scaale",
+          "highte"
+        ],
+        [
+          "height",
+          "height"
+        ],
+        [
+          "height",
+          "height"
+        ]
+      ],
+      "secret": [
+        [
+          "secret",
+          "secret"
+        ],
+        [
+          "secret",
+          "secret"
+        ]
+      ],
+      "grammar": [
+        [
+          "grammer",
+          "grammar",
+          "grammer",
+          "grammar"
+        ],
+        [
+          "grammer",
+          "grammar",
+          "grammer",
+          "grammar"
+        ],
+        [
+          "grammer",
+          "grammar",
+          "grammer",
+          "grammar",
+          "grammar",
+          "grammar"
+        ],
+        [
+          "grammar",
+          "grammar"
+        ]
+      ],
+      "library": [
+        [
+          "library",
+          "library"
+        ],
+        [
+          "library",
+          "library"
+        ]
+      ],
+      "culture": [
+        [
+          "culture",
+          "culture"
+        ],
+        [
+          "culture",
+          "culture"
+        ]
+      ],
+      "foreign": [
+        [
+          "forinne",
+          "forgine",
+          "forinne",
+          "forgine"
+        ],
+        [
+          "forgien",
+          "foreige",
+          "forgien",
+          "foreige"
+        ],
+        [
+          "foreign",
+          "foreign",
+          "foreign",
+          "foreign"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "colourful": [
+        [
+          "colourful",
+          "colourful"
+        ]
+      ],
+      "separate": [
+        [
+          "sepreath",
+          "seperate",
+          "sepreath",
+          "seperate",
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "seperate",
+          "saparate",
+          "seperate",
+          "saparate"
+        ]
+      ],
+      "believe": [
+        [
+          "bellive",
+          "believe",
+          "bellive",
+          "believe"
+        ],
+        [
+          "bellive",
+          "beliddy",
+          "bellive",
+          "beliddy"
+        ]
+      ],
+      "chocolate": [
+        [
+          "chocolate",
+          "chocolate"
+        ],
+        [
+          "chocolate",
+          "chocolate"
+        ]
+      ],
+      "museum": [
+        [
+          "musiem",
+          "museum",
+          "musiem",
+          "museum"
+        ],
+        [
+          "museim",
+          "musiem",
+          "museim",
+          "musiem"
+        ]
+      ],
+      "rhythm": [
+        [
+          "rydemm",
+          "hfyofs",
+          "rydemm",
+          "hfyofs"
+        ],
+        [
+          "rhydum",
+          "rhythm",
+          "rhydum",
+          "rhythm"
+        ]
+      ],
+      "because": [
+        [
+          "because",
+          "because"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ]
+    },
+    "pra551": {
+      "balloon": [
+        [
+          "balloon",
+          "balloon"
+        ],
+        [
+          "balloon",
+          "balloon"
+        ]
+      ],
+      "appeal": [
+        [
+          "appear",
+          "appeal",
+          "appear",
+          "appeal"
+        ],
+        [
+          "appeal",
+          "appeal"
+        ],
+        [
+          "appeal",
+          "appeal"
+        ]
+      ],
+      "height": [
+        [
+          "height",
+          "height"
+        ],
+        [
+          "height",
+          "height"
+        ]
+      ],
+      "secret": [
+        [
+          "secret",
+          "secret"
+        ],
+        [
+          "secret",
+          "secret"
+        ]
+      ],
+      "grammar": [
+        [
+          "grammar",
+          "grammar"
+        ],
+        [
+          "grammar",
+          "grammar"
+        ]
+      ],
+      "library": [
+        [
+          "library",
+          "library"
+        ],
+        [
+          "library",
+          "library"
+        ]
+      ],
+      "culture": [
+        [
+          "culture",
+          "culture"
+        ],
+        [
+          "culture",
+          "culture"
+        ]
+      ],
+      "foreign": [
+        [
+          "foriegn",
+          "foreign",
+          "foriegn",
+          "foreign"
+        ],
+        [
+          "foriegn",
+          "foreign",
+          "foriegn",
+          "foreign"
+        ],
+        [
+          "foreign",
+          "foreign"
+        ],
+        [
+          "foreign",
+          "foreign"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "colourful": [
+        [
+          "colourful",
+          "colourful"
+        ]
+      ],
+      "chocolate": [
+        [
+          "chocolate",
+          "chocolate"
+        ]
+      ],
+      "separate": [
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "believe": [
+        [
+          "believe",
+          "believe"
+        ]
+      ],
+      "museum": [
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "rhythm": [
+        [
+          "rethme",
+          "rythme",
+          "rethme",
+          "rythme"
+        ],
+        [
+          "rhythm",
+          "rhythm"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ],
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "disappear": [
+        [
+          "disappear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "beautiful": [
+        [
+          "beautiful",
+          "beautiful"
+        ],
+        [
+          "beautiful",
+          "beautiful"
+        ]
+      ],
+      "because": [
+        [
+          "because",
+          "because"
+        ],
+        [
+          "because",
+          "because"
+        ]
+      ],
+      "autumn": [
+        [
+          "autmum",
+          "authum",
+          "autmum",
+          "authum"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "restaurant": [
+        [
+          "restrarent",
+          "restaurant",
+          "restrarent",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "adventure": [
+        [
+          "adventure",
+          "adventure"
+        ]
+      ]
+    },
+    "vai341": {
+      "restaurant": [
+        [
+          "restourant",
+          "resteurant",
+          "restourant",
+          "resteurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ],
+        [
+          "restaurant",
+          "restaurant"
+        ]
+      ],
+      "autumn": [
+        [
+          "automn",
+          "autumn",
+          "automn",
+          "autumn"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ],
+        [
+          "autumn",
+          "autumn"
+        ]
+      ],
+      "business": [
+        [
+          "buisness",
+          "busuness",
+          "buisness",
+          "busuness"
+        ],
+        [
+          "bisuness",
+          "busuness",
+          "bisuness",
+          "busuness"
+        ],
+        [
+          "business",
+          "business"
+        ],
+        [
+          "business",
+          "business"
+        ]
+      ],
+      "museum": [
+        [
+          "musium",
+          "museum",
+          "musium",
+          "museum"
+        ],
+        [
+          "musium",
+          "museum",
+          "musium",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ],
+        [
+          "museum",
+          "museum"
+        ]
+      ],
+      "tomorrow": [
+        [
+          "tomorrow",
+          "tomorrow"
+        ],
+        [
+          "tomorrow",
+          "tomorrow"
+        ]
+      ],
+      "disappear": [
+        [
+          "dissapear",
+          "disappear",
+          "dissapear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ],
+        [
+          "disappear",
+          "disappear"
+        ]
+      ],
+      "brilliant": [
+        [
+          "briliante",
+          "brilieant",
+          "briliante",
+          "brilieant"
+        ],
+        [
+          "brilliant",
+          "brilliant"
+        ],
+        [
+          "brilliant",
+          "brilliant"
+        ]
+      ],
+      "separate": [
+        [
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "seperate",
+          "separate",
+          "seperate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ],
+        [
+          "separate",
+          "separate"
+        ]
+      ],
+      "february": [
+        [
+          "february",
+          "february"
+        ]
+      ],
+      "success": [
+        [
+          "success",
+          "success"
+        ],
+        [
+          "success",
+          "success"
+        ]
+      ],
+      "receive": [
+        [
+          "receive",
+          "receive"
+        ],
+        [
+          "receive",
+          "receive"
+        ]
+      ],
+      "colleague": [
+        [
+          "coliguage",
+          "coleeguag",
+          "coliguage",
+          "coleeguag"
+        ],
+        [
+          "calligeee",
+          "colleegee",
+          "calligeee",
+          "colleegee"
+        ]
+      ],
+      "awkward": [
+        [
+          "accvord",
+          "accvord",
+          "accvord",
+          "accvord"
+        ],
+        [
+          "awkward",
+          "awkward"
+        ]
+      ],
+      "address": [
+        [
+          "address",
+          "address"
+        ],
+        [
+          "address",
+          "address"
+        ]
+      ],
+      "beautiful": [
+        [
+          "butifulll",
+          "bauteiful",
+          "butifulll",
+          "bauteiful"
+        ]
+      ],
+      "delicious": [
+        [
+          "dellicous",
+          "delesouss",
+          "dellicous",
+          "delesouss"
+        ]
+      ]
+    }
+  },
+  "completedTime": {
+    "gir615": [
+      "2025-12-28 17:43:43",
+      "2025-12-29 20:41:29",
+      "2025-12-30 21:22:57",
+      "2025-12-31 21:11:38",
+      "2026-01-01 19:24:26"
+    ],
+    "hav129": [
+      "2025-12-27 15:56:19",
+      "2025-12-28 18:50:05",
+      "2025-12-30 12:32:24",
+      "2025-12-30 20:50:56",
+      "2025-12-31 17:23:10"
+    ],
+    "kri549": [
+      "2025-12-27 15:39:58",
+      "2025-12-28 20:44:10",
+      "2025-12-29 18:50:25",
+      "2025-12-30 22:24:27",
+      "2025-12-31 22:12:32"
+    ],
+    "pra551": [
+      "2025-12-27 20:04:39",
+      "2025-12-28 15:58:13",
+      "2025-12-29 19:05:28",
+      "2025-12-30 18:23:24",
+      "2025-12-31 18:22:10"
+    ],
+    "raj980": [
+      "2025-12-28 11:52:55",
+      "2025-12-28 15:07:10",
+      "2025-12-29 18:22:43",
+      "2025-12-30 18:43:29",
+      "2025-12-31 20:28:03"
+    ],
+    "ris168": [
+      "2025-12-27 15:08:01",
+      "2025-12-29 18:54:03",
+      "2025-12-31 12:04:53",
+      "2025-12-31 17:10:27",
+      "2026-01-01 17:17:05"
+    ],
+    "shr274": [
+      "2025-12-28 11:08:57",
+      "2025-12-28 17:25:23",
+      "2025-12-29 19:26:00",
+      "2025-12-30 22:21:26",
+      "2026-01-02 17:01:25"
+    ],
+    "suj692": [
+      "2025-12-28 08:39:30",
+      "2025-12-28 15:03:10",
+      "2025-12-29 17:23:31",
+      "2025-12-30 21:26:11",
+      "2025-12-31 19:59:03"
+    ],
+    "vai341": [
+      "2025-12-27 18:59:45",
+      "2025-12-28 18:49:34",
+      "2025-12-29 18:39:16",
+      "2025-12-30 19:13:48",
+      "2025-12-31 19:18:03"
+    ]
+  },
+  "reachoutReason": {
+    "raj980": "Showed significant improvement over time. Initially struggled with 'business', 'disappear', 'awkward', with 20 total misspellings, but demonstrated persistence and learning. business (misspelled 6 times, now mastered); disappear (misspelled 4 times, now mastered); awkward (misspelled 2 times, now mastered).",
+    "ris168": "Showed significant improvement over time. Initially struggled with 'pretty', 'little', 'laugh', with 18 total misspellings, but demonstrated persistence and learning. pretty (misspelled 4 times, now mastered); little (misspelled 4 times, now mastered); laugh (misspelled 2 times, now mastered).",
+    "shr274": "Showed significant improvement over time. Initially struggled with 'fascinate', 'restaurant', 'business', with 18 total misspellings, but demonstrated persistence and learning. fascinate (misspelled 4 times, now mastered); restaurant (misspelled 2 times, now mastered); business (misspelled 2 times, now mastered).",
+    "suj692": "Showed significant improvement over time. Initially struggled with 'business', 'separate', 'museum', with 14 total misspellings, but demonstrated persistence and learning. business (misspelled 4 times, now mastered); separate (misspelled 2 times, now mastered); museum (misspelled 2 times, now mastered).",
+    "kri549": "Showed significant improvement over time. Initially struggled with 'foreign', 'height', 'success', with 42 total misspellings, but demonstrated persistence and learning. foreign (misspelled 10 times, now mastered); height (misspelled 6 times, now mastered); success (misspelled 6 times, now mastered).",
+    "gir615": "Showed significant improvement over time. Initially struggled with 'museum', 'restaurant', 'autumn', with 42 total misspellings, but demonstrated persistence and learning. museum (misspelled 10 times, now mastered); restaurant (misspelled 8 times, now mastered); autumn (misspelled 8 times, now mastered).",
+    "hav129": "Showed significant improvement over time. Initially struggled with 'separate', 'appeal', 'foreign', with 58 total misspellings, but demonstrated persistence and learning. appeal (misspelled 8 times, now mastered); foreign (misspelled 8 times, now mastered).",
+    "pra551": "Showed significant improvement over time. Initially struggled with 'foreign', 'rhythm', 'autumn', with 16 total misspellings, but demonstrated persistence and learning. foreign (misspelled 4 times, now mastered); rhythm (misspelled 4 times, now mastered); autumn (misspelled 4 times, now mastered).",
+    "vai341": "Showed significant improvement over time. Initially struggled with 'business', 'separate', 'restaurant', with 50 total misspellings, but demonstrated persistence and learning. business (misspelled 8 times, now mastered); separate (misspelled 6 times, now mastered); restaurant (misspelled 4 times, now mastered)."
+  }
+}
