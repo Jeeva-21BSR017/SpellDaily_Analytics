@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
-import { StatusMessage } from './types';
 import Analytics from './components/tabs/Analytics';
 import StatusMessageComponent from './components/ui/StatusMessage';
 import Header from './components/Layout/Header';
 import Container from './components/Layout/Container';
 
-const App: React.FC = () => {
-  const [statusMessage, setStatusMessage] = useState<StatusMessage | null>(null);
+const App = () => {
+  const [statusMessage, setStatusMessage] = useState(null);
 
-  const showStatusMessage = (message: string, type: 'success' | 'error' | 'info' | 'warning') => {
+  const showStatusMessage = (message, type) => {
     setStatusMessage({ message, type });
     // Auto clear after 5 seconds
     setTimeout(() => {
@@ -33,7 +32,9 @@ const App: React.FC = () => {
           />
         )}
         <div className="tab-content-wrapper">
-          <Analytics showStatusMessage={showStatusMessage} />
+          <div className="section-container">
+            <Analytics showStatusMessage={showStatusMessage} />
+          </div>
         </div>
       </Container>
     </div>
