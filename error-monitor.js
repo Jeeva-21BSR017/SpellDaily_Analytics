@@ -2,9 +2,7 @@ const isLocal =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1";
 
-const BASE_URL = isLocal
-  ? "http://localhost:8000"
-  : "https://api.spelldaily.com";
+const BASE_URL = "https://api.spelldaily.com";
 
 const logError = (error) => {
   const safeMessage =

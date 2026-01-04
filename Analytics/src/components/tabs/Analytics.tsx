@@ -26,7 +26,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
   // Fetch analytics data
   const fetchAnalytics = async () => {
     const validation = AnalyticsService.validateCode(code);
-    
+
     if (!validation.isValid) {
       showStatusMessage(validation.error!, 'error');
       return;
@@ -35,9 +35,9 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
     setIsLoading(true);
     try {
       showStatusMessage('Fetching analytics data...', 'info');
-      
+
       const data = await AnalyticsService.fetchAnalytics(code);
-      
+
       if (data.length === 0) {
         showStatusMessage(`No analytics data found for code "${code}".`, 'error');
         setShowResults(false);
@@ -48,7 +48,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
       setAnalyticsData(data);
       setShowResults(true);
       showStatusMessage(`Found ${data.length} analytics records for code "${code}".`, 'success');
-      
+
     } catch (error) {
       console.error('Error fetching analytics:', error);
       showStatusMessage(`❌ Error fetching analytics: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
@@ -71,29 +71,29 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
 
   // Handle word click to show details
   const handleWordClick = (word: string, date: string, attemptIndex: number) => {
-    const wordData = analyticsData.find(item => 
+    const wordData = analyticsData.find(item =>
       item.word === word && new Date(item.submittedAt).toDateString() === date
     );
-    
+
     if (!wordData) return;
 
     const dayTotalAttempts = wordData.check.length;
     const dayCorrectAttempts = wordData.check.filter(attempt => attempt.isCorrect).length;
-    const dayAvgTime = dayTotalAttempts > 0 
-      ? Math.round(wordData.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0) / dayTotalAttempts) 
+    const dayAvgTime = dayTotalAttempts > 0
+      ? Math.round(wordData.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0) / dayTotalAttempts)
       : 0;
 
     // Get all attempts for this word across all dates for comprehensive view
     const allWordData = analyticsData.filter(item => item.word === word);
     const allWordAttempts = allWordData.reduce((acc, item) => acc + item.check.length, 0);
-    const allWordCorrect = allWordData.reduce((acc, item) => 
+    const allWordCorrect = allWordData.reduce((acc, item) =>
       acc + item.check.filter(attempt => attempt.isCorrect).length, 0);
-    const allWordAvgTime = allWordData.length > 0 
+    const allWordAvgTime = allWordData.length > 0
       ? Math.round(
-          allWordData.reduce((acc, item) => 
-            acc + item.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0), 0) / 
-          allWordData.reduce((acc, item) => acc + item.check.length, 0)
-        ) 
+        allWordData.reduce((acc, item) =>
+          acc + item.check.reduce((sum, attempt) => sum + attempt.timeTaken, 0), 0) /
+        allWordData.reduce((acc, item) => acc + item.check.length, 0)
+      )
       : 0;
 
     const modalData: AnalyticsModalData = {
@@ -125,7 +125,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
     <div className="analytics">
       <h2>📊 Analytics Report</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div className="analytics-form-grid">
         <div className="form-group">
           <label htmlFor="analytics-code">Enter 6-Character Alphanumeric Code to View Analytics</label>
           <input
@@ -146,17 +146,17 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
       </div>
 
       <div style={{ marginBottom: '30px' }}>
-        <button 
-          type="button" 
-          className="btn" 
+        <button
+          type="button"
+          className="btn btn-primary"
           onClick={fetchAnalytics}
           disabled={isLoading || code.length !== 6}
         >
           {isLoading ? '⏳ Loading...' : '📊 Fetch Analytics'}
         </button>
-        <button 
-          type="button" 
-          className="btn btn-secondary" 
+        <button
+          type="button"
+          className="btn btn-secondary"
           onClick={clearAnalytics}
           disabled={isLoading}
           style={{ marginLeft: '10px' }}
@@ -168,8 +168,8 @@ const Analytics: React.FC<AnalyticsProps> = ({ showStatusMessage }) => {
       {showResults && (
         <div className="analytics-results">
           <div className="analytics-container">
-            <AnalyticsTable 
-              data={analyticsData} 
+            <AnalyticsTable
+              data={analyticsData}
               onWordClick={handleWordClick}
             />
           </div>

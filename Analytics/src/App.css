@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   padding: 20px;
@@ -45,34 +45,7 @@ body {
 }
 
 /* Tabs */
-.tabs {
-  display: flex;
-  background: #f8f9fa;
-  border-bottom: 2px solid #e9ecef;
-}
-
-.tab {
-  flex: 1;
-  padding: 20px;
-  text-align: center;
-  background: none;
-  border: none;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #6c757d;
-}
-
-.tab.active {
-  background: white;
-  color: #4facfe;
-  border-bottom: 3px solid #4facfe;
-}
-
-.tab:hover {
-  background: #e9ecef;
-}
+/* Tabs logic removed */
 
 /* Tab Content */
 .tab-content-wrapper {
@@ -135,22 +108,24 @@ body {
 
 .form-label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-weight: 600;
   color: #495057;
+  font-size: 1rem;
 }
 
-.form-input,
+input,
 textarea,
 select {
   width: 100%;
   padding: 12px 16px;
   border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 1rem;
   transition: all 0.3s ease;
   background: white;
   font-family: inherit;
+  margin-top: 20px;
 }
 
 .form-input:focus,
@@ -173,9 +148,9 @@ textarea {
 
 /* Buttons */
 .btn {
-  padding: 12px 24px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -188,7 +163,7 @@ textarea {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
 }
 
 .btn:active {
@@ -523,7 +498,8 @@ textarea.has-error {
 }
 
 .mode-input-section .form-label {
-  display: none; /* Hide the label since we have context */
+  display: none;
+  /* Hide the label since we have context */
 }
 
 .mode-input-section .form-input {
@@ -787,7 +763,7 @@ textarea.has-error {
   border-radius: 6px;
   padding: 12px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .summary-card h3 {
@@ -802,6 +778,186 @@ textarea.has-error {
   color: #4facfe;
   margin-bottom: 3px;
 }
+
+.summary-card .label {
+  color: #6c757d;
+  font-size: 0.75rem;
+}
+
+/* Analytics Table Styles */
+.analytics-table-container {
+  overflow: auto;
+  max-height: 70vh;
+  margin-top: 20px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  position: relative;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: white;
+}
+
+.analytics-table th,
+.analytics-table td {
+  border: 1px solid #dee2e6;
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.analytics-table th {
+  background: #42a5f5;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.analytics-table .word-column {
+  background: white;
+  font-weight: bold;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  min-width: 120px;
+  border-right: 2px solid #dee2e6;
+}
+
+.analytics-table .attempt-cell {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 80px;
+  height: 60px;
+  position: relative;
+}
+
+.analytics-table .attempt-cell:hover {
+  background: #e3f2fd;
+}
+
+.attempt-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  justify-content: center;
+}
+
+.attempt-item-table {
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.attempt-correct-table {
+  background: #d4edda;
+  color: #155724;
+}
+
+.attempt-incorrect-table {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.attempt-mixed-table {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.day-header {
+  min-width: 80px;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 8px 4px;
+  line-height: 1.2;
+}
+
+/* Modal Styles */
+.analytics-modal {
+  display: block;
+  /* Modal visibility is controlled by React rendering conditionally, but CSS should allow block when rendered */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.analytics-modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.modal-section {
+  margin-bottom: 15px;
+}
+
+.modal-section h4 {
+  margin-bottom: 8px;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.attempts-list {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 6px;
+}
+
+.backspace-list {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 6px;
+}
+
+.backspace-item {
+  display: inline-block;
+  background: #e9ecef;
+  color: #495057;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin: 1px;
+  font-size: 0.7rem;
+}
+
+/* Removed malformed block */
 
 .summary-card .label {
   color: #6c757d;
@@ -922,8 +1078,10 @@ textarea.has-error {
   background: white;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: auto;
+  max-height: 70vh;
   margin-bottom: 20px;
+  position: relative;
 }
 
 .analytics-table {
@@ -934,15 +1092,16 @@ textarea.has-error {
 
 .analytics-table th,
 .analytics-table td {
-  padding: 10px 8px;
+  border: 1px solid #dee2e6;
+  padding: 16px 12px;
   text-align: center;
-  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
 }
 
 .analytics-table th {
-  background: #f8f9fa;
+  background: #42a5f5;
+  color: white;
   font-weight: bold;
-  color: #495057;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -951,23 +1110,24 @@ textarea.has-error {
 .analytics-table th:first-child {
   position: sticky;
   left: 0;
-  z-index: 25;
-  background: #e9ecef;
+  z-index: 30;
+  background: white;
+  color: #495057;
 }
 
 .analytics-table th:nth-child(2) {
   position: sticky;
   left: 120px;
-  z-index: 25;
-  background: #e9ecef;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  z-index: 30;
+  background: #42a5f5;
+  color: white;
 }
 
 .analytics-table .word-column {
   position: sticky;
   left: 0;
-  background: #f8f9fa;
-  z-index: 15;
+  background: white;
+  z-index: 20;
   font-weight: bold;
   color: #495057;
   text-align: left;
@@ -1016,9 +1176,6 @@ textarea.has-error {
 }
 
 .day-header {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  white-space: nowrap;
   min-width: 80px;
 }
 
@@ -1032,7 +1189,7 @@ textarea.has-error {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .analytics-modal-content {
@@ -1081,6 +1238,7 @@ textarea.has-error {
     opacity: 0;
     transform: translateY(-50px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1102,28 +1260,67 @@ textarea.has-error {
   max-width: 300px;
 }
 
+/* Analytics Form Grid */
+.analytics-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
 /* Responsive Analytics Styles */
 @media (max-width: 768px) {
+  .analytics-form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .analytics-form-grid .form-group {
+    margin-bottom: 0;
+  }
+
+  .analyticsContainer .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  /* Target the button container in Analytics.tsx */
+  .analytics>div[style*="marginBottom"] {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .analytics>div[style*="marginBottom"] .btn {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
   .analytics-table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    max-height: 60vh;
   }
 
   .analytics-table {
     min-width: 600px;
+    /* Ensure scroll triggers */
   }
 
   .analytics-modal-content {
     width: 95%;
     margin: 10% auto;
     padding: 15px;
+    max-height: 85vh;
   }
 
   .day-header {
-    writing-mode: horizontal-tb;
-    text-orientation: initial;
-    font-size: 12px;
+    font-size: 11px;
     padding: 5px;
+    min-width: 60px;
   }
 
   .analytics-table .word-column {
@@ -1136,10 +1333,24 @@ textarea.has-error {
     left: 100px;
   }
 
-  .attempt-item-table {
-    font-size: 10px;
+  /* Adjust sticky column labels for mobile */
+  .analytics-table td[style*="sticky"] {
+    left: 100px !important;
+  }
+
+  .container {
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  body {
+    padding: 0;
   }
 }
+
+/* Landscape mobile adjustments */
 
 /* Animations */
 @keyframes slideIn {
@@ -1147,6 +1358,7 @@ textarea.has-error {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1279,8 +1491,13 @@ textarea.has-error {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -1294,29 +1511,29 @@ textarea.has-error {
   body {
     padding: 10px;
   }
-  
+
   .header h1 {
     font-size: 2rem;
   }
-  
+
   .tab-content-wrapper {
     padding: 20px;
   }
-  
+
   .create-questions__header {
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .tabs {
     flex-wrap: wrap;
   }
-  
+
   .tab {
     flex: 1 1 50%;
     min-width: 120px;
@@ -1326,7 +1543,7 @@ textarea.has-error {
   .suggestions-dropdown {
     max-height: 200px;
   }
-  
+
   .suggestion-item {
     padding: 10px 12px;
   }
@@ -1345,7 +1562,8 @@ textarea.has-error {
     font-size: 14px;
     padding: 8px 16px;
     margin: 4px;
-    min-height: 44px; /* Touch target size */
+    min-height: 44px;
+    /* Touch target size */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1381,7 +1599,8 @@ textarea.has-error {
   }
 
   .mode-name {
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Prevent zoom on iOS */
     min-width: 0;
     word-break: break-word;
     padding: 8px 10px;
@@ -1389,7 +1608,8 @@ textarea.has-error {
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    min-height: 44px; /* Touch target size */
+    min-height: 44px;
+    /* Touch target size */
   }
 
   .mode-name:focus {
@@ -1420,7 +1640,8 @@ textarea.has-error {
   }
 
   .suggestable-input-container .form-input {
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
+    /* Prevents zoom on iOS */
     padding: 10px 12px;
   }
 
@@ -1437,7 +1658,7 @@ textarea.has-error {
   .loading-spinner {
     animation: none;
   }
-  
+
   .suggestion-item {
     transition: none;
   }
@@ -1501,8 +1722,10 @@ textarea.has-error {
   /* Mobile keyboard friendly inputs */
   .form-input,
   .suggestable-input-container .form-input {
-    font-size: 16px; /* Prevents iOS zoom */
-    min-height: 44px; /* Touch target size */
+    font-size: 16px;
+    /* Prevents iOS zoom */
+    min-height: 44px;
+    /* Touch target size */
   }
 
   .suggestion-item {
