@@ -10,7 +10,7 @@ export interface FirebaseConfig {
 }
 
 // Game mode types
-export type GameMode = 
+export type GameMode =
   | '4-option'
   | 'typing'
   | 'fillups'
@@ -109,7 +109,7 @@ export interface StatusMessage {
 }
 
 // Tab types
-export type TabType = 'create-questions'  | 'analytics';
+export type TabType = 'create-questions' | 'analytics';
 
 // Analytics interfaces
 export interface UserAnalytics {
@@ -142,6 +142,7 @@ export interface AnalyticsData {
   check: AnalyticsAttempt[];
   backspace: string[];
   speakerClicks: number;
+  testStartTime?: string;
 }
 
 export interface WordsByDate {
